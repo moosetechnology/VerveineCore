@@ -423,7 +423,7 @@ public class Dictionary<B> {
 			}
 			
 			if (bnd != null) {
-				// may happen for when the entity was first created without binding
+				// may happen for example if the entity was first created without binding
 				// and we find a binding for it later
 				mapBind.put(bnd, fmx);
 			}
