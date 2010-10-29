@@ -117,12 +117,12 @@ public class Dictionary<B> {
 
 	/**
 	 * Creates and returns a FAMIX Entity of the type <b>fmxClass</b>.
-	 * The Entity is always created (see {@link Dictionary#ensureFamixStub(Class, Object, String)}).
+	 * The Entity is always created (see {@link Dictionary#ensureFamixEntity(Class, Object, String)}).
 	 * @param fmxClass -- the FAMIX class of the instance to create
 	 * @param name -- the name of the new instance
 	 * @return the FAMIX Entity or null in case of a FAMIX error
 	 */
-	protected <T extends NamedEntity> T createFamixStub(Class<T> fmxClass, String name) {
+	protected <T extends NamedEntity> T createFamixEntity(Class<T> fmxClass, String name) {
 		T fmx = null;
 
 		try {
@@ -163,7 +163,7 @@ public class Dictionary<B> {
 	 * TODO Make public and remove ensureFamixClass(name), ensureFamixAttribute(name), ... ????
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T extends NamedEntity> T ensureFamixStub(Class<T> fmxClass, B bnd, String name) {
+	protected <T extends NamedEntity> T ensureFamixEntity(Class<T> fmxClass, B bnd, String name) {
 		T fmx = null;
 		
 		if (ImplicitVariable.class.isAssignableFrom(fmxClass)) {
@@ -185,7 +185,7 @@ public class Dictionary<B> {
 			return fmx;
 		}
 
-		fmx = createFamixStub(fmxClass, name);
+		fmx = createFamixEntity(fmxClass, name);
 		// put new entity in mappers
 		if (bnd != null) {
 			mapBind.put(bnd, fmx);
@@ -211,7 +211,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public fr.inria.verveine.core.gen.famix.Class ensureFamixClass(String name) {
-		return (fr.inria.verveine.core.gen.famix.Class) ensureFamixStub(fr.inria.verveine.core.gen.famix.Class.class, null, name);
+		return (fr.inria.verveine.core.gen.famix.Class) ensureFamixEntity(fr.inria.verveine.core.gen.famix.Class.class, null, name);
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Method or null in case of a FAMIX error
 	 */
 	public Method ensureFamixMethod(String name) {
-		return (Method) ensureFamixStub(Method.class, null, name);
+		return (Method) ensureFamixEntity(Method.class, null, name);
 	}
 
 	/**
@@ -229,7 +229,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Attribute or null in case of a FAMIX error
 	 */
 	public Attribute ensureFamixAttribute(String name) {
-		return (Attribute) ensureFamixStub(Attribute.class, null, name);
+		return (Attribute) ensureFamixEntity(Attribute.class, null, name);
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX LocalVariable or null in case of a FAMIX error
 	 */
 	public LocalVariable ensureFamixLocalVariable(String name) {
-		return (LocalVariable) ensureFamixStub(LocalVariable.class, null, name);
+		return (LocalVariable) ensureFamixEntity(LocalVariable.class, null, name);
 	}
 
 	///// ensure Famix Relationships /////
@@ -371,7 +371,7 @@ public class Dictionary<B> {
 		ImplicitVariable fmx = getImplicitVariableByClass(clazz, name);
 		
 		if (fmx == null) {
-			fmx = (ImplicitVariable) createFamixStub(ImplicitVariable.class, name);
+			fmx = (ImplicitVariable) createFamixEntity(ImplicitVariable.class, name);
 			if (fmx!=null) {
 				fmx.setContainer(clazz);
 				fmx.setIsStub(Boolean.FALSE);
@@ -419,7 +419,7 @@ public class Dictionary<B> {
 				fmx = l.iterator().next();
 			}
 			else {
-				fmx = createFamixStub(fmxClass, name);
+				fmx = createFamixEntity(fmxClass, name);
 			}
 			
 			if (bnd != null) {
