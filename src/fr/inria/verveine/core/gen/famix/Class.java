@@ -15,7 +15,7 @@ public class Class extends Type {
     @FameProperty(name = "isAbstract", derived = true)
     public Boolean getIsAbstract() {
         // TODO: this is a derived property, implement this method manually.
-        return this.getModifiers().contains("abstract");
+        return super.getIsAbstract() || this.getModifiers().contains("abstract");
     }
     
     private Boolean isInterface;
