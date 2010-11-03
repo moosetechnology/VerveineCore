@@ -19,6 +19,7 @@ import fr.inria.verveine.core.gen.famix.LocalVariable;
 import fr.inria.verveine.core.gen.famix.Method;
 import fr.inria.verveine.core.gen.famix.NamedEntity;
 import fr.inria.verveine.core.gen.famix.Namespace;
+import fr.inria.verveine.core.gen.famix.PrimitiveType;
 import fr.inria.verveine.core.gen.famix.Reference;
 import fr.inria.verveine.core.gen.famix.StructuralEntity;
 
@@ -204,7 +205,7 @@ public class Dictionary<B> {
 	}
 
 	///// ensure Famix Entities /////
-
+	
 	/**
 	 * Returns a FAMIX Class with the given <b>name</b>, creating it if it does not exist yet
 	 * @param name -- the name of the FAMIX Class
@@ -439,7 +440,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Namespace or null in case of a FAMIX error
 	 */
 	public Namespace ensureFamixNamespace(String name) {
-		return (Namespace) ensureFamixUniqEntity(Namespace.class, null, name);
+		return  ensureFamixUniqEntity(Namespace.class, null, name);
 	}
 
 	/**
@@ -453,6 +454,16 @@ public class Dictionary<B> {
 		return fmx;
 	}
 
+	/**
+	 * Returns a FAMIX PrimitiveType with the given <b>name</b>, creating it if it does not exist yet
+	 * We assume that PrimitiveType must be uniq for a given name
+	 * @param name -- the name of the FAMIX PrimitiveType
+	 * @return the FAMIX PrimitiveType or null in case of a FAMIX error
+	 */
+	public PrimitiveType ensureFamixPrimitiveType(String name) {
+		return  ensureFamixUniqEntity(PrimitiveType.class, null, name);
+	}
+	
 	/**
 	 * Creates or recovers a Famix Class to contain the methods stubs (for which we ignore the real owner).
 	 * Because this package does not really exist, it has no binding.
