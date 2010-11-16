@@ -13,6 +13,9 @@ import ch.akuhn.fame.FamePackage;
 public class BehaviouralEntity extends ContainerEntity {
 
 
+	private int cyclo = 0;  // metric: Cyclomatic complexity
+	private int nos = 0;    // metric Number Of Statement
+
 
     private Collection<Access> accesses; 
 
@@ -304,6 +307,24 @@ public class BehaviouralEntity extends ContainerEntity {
     public void setSignature(String signature) {
         this.signature = signature;
     }
+
+    public void setCyclo(int cyclo) {
+		this.cyclo = cyclo;
+	}
+
+	@FameProperty(name = "CYCLO")
+	public int getCyclo() {
+		return cyclo;
+	}
+
+    @FameProperty(name = "NOS")
+	public int getNOS() {
+		return nos;
+	}
+
+	public void setNOS(int nos) {
+		this.nos = nos;
+	}
     
 
 

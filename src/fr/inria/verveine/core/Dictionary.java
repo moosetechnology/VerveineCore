@@ -10,6 +10,7 @@ import ch.akuhn.fame.Repository;
 import fr.inria.verveine.core.gen.famix.Access;
 import fr.inria.verveine.core.gen.famix.Attribute;
 import fr.inria.verveine.core.gen.famix.BehaviouralEntity;
+import fr.inria.verveine.core.gen.famix.Comment;
 import fr.inria.verveine.core.gen.famix.ContainerEntity;
 import fr.inria.verveine.core.gen.famix.Entity;
 import fr.inria.verveine.core.gen.famix.ImplicitVariable;
@@ -21,6 +22,7 @@ import fr.inria.verveine.core.gen.famix.NamedEntity;
 import fr.inria.verveine.core.gen.famix.Namespace;
 import fr.inria.verveine.core.gen.famix.PrimitiveType;
 import fr.inria.verveine.core.gen.famix.Reference;
+import fr.inria.verveine.core.gen.famix.SourcedEntity;
 import fr.inria.verveine.core.gen.famix.StructuralEntity;
 
 /**
@@ -242,6 +244,15 @@ public class Dictionary<B> {
 		return (LocalVariable) ensureFamixEntity(LocalVariable.class, null, name);
 	}
 
+	public Comment createFamixComment(String cmt, SourcedEntity owner) {
+		Comment fmx = new Comment();
+		fmx.setContent(cmt);
+		fmx.setContainer(owner);
+		this.famixRepo.add(fmx);
+		
+		return fmx;
+	}
+	
 	///// ensure Famix Relationships /////
 
 	/**
