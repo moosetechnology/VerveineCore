@@ -244,6 +244,25 @@ public class Dictionary<B> {
 		return (LocalVariable) ensureFamixEntity(LocalVariable.class, null, name);
 	}
 
+	/**
+	 * Creates and returns a FAMIX Comment
+	 * @param cmt -- the content (String) of the comment 
+	 * @return the FAMIX Comment
+	 */
+	public Comment createFamixComment(String cmt) {
+		Comment fmx = new Comment();
+		fmx.setContent(cmt);
+		this.famixRepo.add(fmx);
+		
+		return fmx;
+	}
+
+	/**
+	 * Creates and returns a FAMIX Comment and associates it with an Entity (ex: for Javadocs)
+	 * @param cmt -- the content (String) of the comment 
+	 * @param owner -- the entity concerned by this comment
+	 * @return the FAMIX Comment
+	 */
 	public Comment createFamixComment(String cmt, SourcedEntity owner) {
 		Comment fmx = new Comment();
 		fmx.setContent(cmt);

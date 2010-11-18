@@ -15,7 +15,6 @@ public class EntityStack {
 	
 	private Namespace fmxPckg;
 	private Stack<ClassStack> fmxClass;
-	private String lastComment = null;
 	
 	// for debugging
 	private boolean tracing = false;;
@@ -124,18 +123,6 @@ public class EntityStack {
 
 	public void setTracing(boolean tracing) {
 		this.tracing = tracing;
-	}
-
-	public void setLastComment(String lastComment) {
-		this.lastComment = lastComment;
-	}
-
-	public void clearLastComment() {
-		this.lastComment = null;
-	}
-
-	public String getLastComment() {
-		return lastComment;
 	}
 
 	private ClassStack getTopClass() {
