@@ -10,8 +10,10 @@ import ch.akuhn.fame.Repository;
 import fr.inria.verveine.core.gen.famix.Access;
 import fr.inria.verveine.core.gen.famix.Attribute;
 import fr.inria.verveine.core.gen.famix.BehaviouralEntity;
+import fr.inria.verveine.core.gen.famix.CaughtException;
 import fr.inria.verveine.core.gen.famix.Comment;
 import fr.inria.verveine.core.gen.famix.ContainerEntity;
+import fr.inria.verveine.core.gen.famix.DeclaredException;
 import fr.inria.verveine.core.gen.famix.Entity;
 import fr.inria.verveine.core.gen.famix.ImplicitVariable;
 import fr.inria.verveine.core.gen.famix.Inheritance;
@@ -24,6 +26,7 @@ import fr.inria.verveine.core.gen.famix.PrimitiveType;
 import fr.inria.verveine.core.gen.famix.Reference;
 import fr.inria.verveine.core.gen.famix.SourcedEntity;
 import fr.inria.verveine.core.gen.famix.StructuralEntity;
+import fr.inria.verveine.core.gen.famix.ThrownException;
 
 /**
  * A dictionnary of Famix entities to help create them and find them back
@@ -214,7 +217,17 @@ public class Dictionary<B> {
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public fr.inria.verveine.core.gen.famix.Class ensureFamixClass(String name) {
-		return (fr.inria.verveine.core.gen.famix.Class) ensureFamixEntity(fr.inria.verveine.core.gen.famix.Class.class, null, name);
+		fr.inria.verveine.core.gen.famix.Class fmx = ensureFamixEntity(fr.inria.verveine.core.gen.famix.Class.class, null, name);
+		if (fmx != null) {
+			fmx.setIsAbstract(Boolean.FALSE);
+			fmx.setIsFinal(Boolean.FALSE);
+			fmx.setIsInterface(Boolean.FALSE);
+			fmx.setIsPrivate(Boolean.FALSE);
+			fmx.setIsProtected(Boolean.FALSE);
+			fmx.setIsPublic(Boolean.FALSE);
+		}
+
+		return fmx;
 	}
 
 	/**
@@ -353,6 +366,50 @@ public class Dictionary<B> {
 		famixRepoAdd(acc);
 		
 		return acc;
+	}
+
+	/**
+	 * Returns a Famix DeclaredException between a method and an Exception that it declares to throw
+	 * @param meth -- the method throwing the exception
+	 * @param excep -- the exception declared to be thrown
+	 * @return the DeclaredException
+	 */
+	public DeclaredException ensureFamixDeclaredException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		DeclaredException decl = new DeclaredException();
+		decl.setExceptionClass(excep);
+		decl.setDefiningMethod(meth);
+		famixRepoAdd(decl);
+		return decl;
+	}
+
+	/**
+	 * Returns a Famix CaughtException between a method and an Exception that is caught
+	 * @param meth -- the method catching the exception
+	 * @param excep -- the exception caught
+	 * @return the CaughtException
+	 */
+	public CaughtException ensureFamixCaughtException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		CaughtException decl = new CaughtException();
+		decl.setExceptionClass(excep);
+		decl.setDefiningMethod(meth);
+		famixRepoAdd(decl);
+		return decl;
+	}
+
+	/**
+	 * Returns a Famix ThrownException between a method and an Exception that it (actually) throws.
+	 * Note: DeclaredException indicates that the method declares it can throw the exception,
+	 * here we state that the exception is actually thrown
+	 * @param meth -- the method throwing the exception
+	 * @param excep -- the exception thrown
+	 * @return the ThrownException
+	 */
+	public ThrownException ensureFamixThrownException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		ThrownException decl = new ThrownException();
+		decl.setExceptionClass(excep);
+		decl.setDefiningMethod(meth);
+		famixRepoAdd(decl);
+		return decl;
 	}
 
 	///// Special Case: ImplicitVariables /////
