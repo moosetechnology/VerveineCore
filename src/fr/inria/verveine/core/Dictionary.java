@@ -558,7 +558,15 @@ public class Dictionary<B> {
 	 */
 	public fr.inria.verveine.core.gen.famix.Class ensureFamixClassStubOwner() {
 		fr.inria.verveine.core.gen.famix.Class fmx =  ensureFamixUniqEntity(fr.inria.verveine.core.gen.famix.Class.class, null, STUB_METHOD_CONTAINER_NAME);
-		fmx.setContainer( ensureFamixNamespaceDefault());
+		if (fmx != null) {
+			fmx.setContainer( ensureFamixNamespaceDefault());
+			fmx.setIsAbstract(Boolean.FALSE);
+			fmx.setIsFinal(Boolean.FALSE);
+			fmx.setIsInterface(Boolean.FALSE);
+			fmx.setIsPrivate(Boolean.FALSE);
+			fmx.setIsProtected(Boolean.FALSE);
+			fmx.setIsPublic(Boolean.FALSE);
+		}
 
 		return fmx;
 	}
