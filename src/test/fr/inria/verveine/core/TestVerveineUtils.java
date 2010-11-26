@@ -13,7 +13,9 @@ import fr.inria.verveine.core.gen.famix.NamedEntity;
  */
 public class TestVerveineUtils {
 
-	/** Returns a Collection of all FAMIXEntities in repository of the given fmxClass
+	/**
+	 * Returns a Collection of all FAMIXEntities in repository of the given fmxClass.
+	 * Same method as listAll(Class<T extends Entity>) defined in VerveineParser
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Entity> Collection<T> selectElementsOfType(Repository repository, Class<T> fmxClass) {
