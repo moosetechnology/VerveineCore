@@ -17,25 +17,16 @@ public class TestVerveineUtils {
 	 * Returns a Collection of all FAMIXEntities in repository of the given fmxClass.
 	 * Same method as listAll(Class<T extends Entity>) defined in VerveineParser
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T extends Entity> Collection<T> selectElementsOfType(Repository repository, Class<T> fmxClass) {
-		Collection<T> selection = new Vector<T>();
-		for (Object obj : repository.getElements()) {
-			if (fmxClass.isInstance(obj)) {
-				selection.add((T) obj);
-			}
-		}
-		return selection;
+		return( repository.all(fmxClass));
 	}
 
 	/** Returns the first FAMIXEntities in repository of the given fmxClass and with the given name
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T extends NamedEntity> T detectElement(Repository repository, Class<T> fmxClass, String name) {
-		for (Object obj : repository.getElements()) {
-			if (fmxClass.isInstance(obj)
-				&& ((T) obj).getName().equals(name) ) {
-				return (T) obj;
+		for (T ent : selectElementsOfType(repository, fmxClass)) {
+			if (ent.getName().equals(name) ) {
+				return ent;
 			}
 		}
 		return null;
@@ -43,13 +34,11 @@ public class TestVerveineUtils {
 
 	/** Returns a Collection of FAMIXEntities in repository of the given fmxClass and with the given name
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T extends NamedEntity> Collection<T> listElements(Repository repository, Class<T> fmxClass, String name) {
 		Collection<T> selection = new Vector<T>();
-		for (Object obj : repository.getElements()) {
-			if (fmxClass.isInstance(obj)
-				&& ((T) obj).getName().equals(name) ) {
-				selection.add((T) obj);
+		for (T ent : selectElementsOfType(repository, fmxClass)) {
+			if ( ent.getName().equals(name) ) {
+				selection.add(ent);
 			}
 		}
 		return selection;

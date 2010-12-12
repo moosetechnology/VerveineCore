@@ -60,7 +60,6 @@ public class Access extends Association {
     @FameProperty(name = "isRead", derived = true)
     public Boolean getIsRead() {
         // TODO: this is a derived property, implement this method manually.
-        //throw new UnsupportedOperationException("Access.getIsRead() Not yet implemented!");
     	return ! getIsWrite(); 
     }
 

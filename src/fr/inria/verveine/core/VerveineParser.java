@@ -1,5 +1,6 @@
 package fr.inria.verveine.core;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,19 +22,35 @@ public class VerveineParser extends Main {
 	private Repository famixRepo;
 
 	public VerveineParser() {
-		super(new PrintWriter(System.out), new PrintWriter(System.err), false/*systemExitWhenFinished*/, null/*customDefaultOptions*/, null/*compilationProgress*/);
+		this(new PrintWriter(System.out),
+				new PrintWriter(System.err),
+				false/*systemExitWhenFinished*/,
+				null/*customDefaultOptions*/,
+				null/*compilationProgress*/);
+		
 	}
 
-	@Override
-	public boolean compile(String[] argv) {
-
+	public VerveineParser(PrintWriter outWriter, PrintWriter errWriter,	boolean systemExitWhenFinished, @SuppressWarnings("rawtypes")Map customDefaultOptions, CompilationProgress compilationProgress) {
+		super(outWriter,
+				errWriter,
+				systemExitWhenFinished,
+				customDefaultOptions,
+				compilationProgress);
+		
 		setFamixRepo(new Repository(FAMIXModel.metamodel()));
-
-		boolean ret = super.compile(argv);
-
-		return ret;
 	}
 
+	public boolean linkToExisting() {
+		File existingMSE = new File(OUTPUT_FILE);
+		if (! existingMSE.exists()) {
+			return false;
+		}
+		else {
+			this.getFamixRepo().importMSEFile(OUTPUT_FILE);
+			return true;
+		}
+	}
+	
 	/**
 	 * Outputting repository to a file
 	 */
@@ -44,10 +61,6 @@ public class VerveineParser extends Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public VerveineParser(PrintWriter outWriter, PrintWriter errWriter,	boolean systemExitWhenFinished, @SuppressWarnings("rawtypes")Map customDefaultOptions, CompilationProgress compilationProgress) {
-		super(outWriter, errWriter, systemExitWhenFinished,	customDefaultOptions, compilationProgress);
 	}
 
 	/**

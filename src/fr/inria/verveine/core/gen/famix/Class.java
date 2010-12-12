@@ -11,11 +11,11 @@ import ch.akuhn.fame.FamePackage;
 public class Class extends Type {
 
 
-
+	// Apparently, we should not use getIsAbstract() (from NamedEntity) here ?!?!?
     @FameProperty(name = "isAbstract", derived = true)
     public Boolean getIsAbstract() {
         // TODO: this is a derived property, implement this method manually.
-        return super.getIsAbstract() || this.getModifiers().contains("abstract");
+        return this.getModifiers().contains("abstract");
     }
     
     private Boolean isInterface;
