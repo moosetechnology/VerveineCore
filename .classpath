@@ -5,6 +5,5 @@
 	<classpathentry kind="lib" path="lib/fame.jar"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.junit_4.8.1.v4_8_1_v20100427-1100/junit.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core_3.6.0.v_A58.jar"/>
-	<classpathentry kind="lib" path="lib/akuhn-util-r28011.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

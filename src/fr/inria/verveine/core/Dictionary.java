@@ -8,6 +8,7 @@ import java.util.Map;
 import ch.akuhn.fame.Repository;
 
 import fr.inria.verveine.core.gen.famix.Access;
+import fr.inria.verveine.core.gen.famix.Association;
 import fr.inria.verveine.core.gen.famix.Attribute;
 import fr.inria.verveine.core.gen.famix.BehaviouralEntity;
 import fr.inria.verveine.core.gen.famix.CaughtException;
@@ -383,21 +384,19 @@ public class Dictionary<B> {
 	 * @return the Reference
 	 */
 	public Reference ensureFamixReference(ContainerEntity src, ContainerEntity tgt) {
-		/* We want to keep multiple references between the same entities...
-		   for (Reference r : src.getOutgoingReferences()) {
-			if (r.getTarget() == tgt) {
-				return r;
-			}
-		}
-		*/
-
+		return ensureFamixReference(src, tgt, null);
+	}
+	
+	public Reference ensureFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
 		Reference ref = new Reference();
 		ref.setTarget(tgt);
 		ref.setSource(src);
+		chainPrevNext(prev,ref);
 		famixRepoAdd(ref);
 		
 		return ref;
 	}
+
 
 	/**
 	 * Returns a Famix Invocation between two Famix Entities creating it if needed
@@ -407,41 +406,47 @@ public class Dictionary<B> {
 	 * @return the Invocation
 	 */
 	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver) {
-		/* We keep multiple invocations from one method to another
-		   for (Invocation i : sender.getOutgoingInvocations()) {
-			if  (i.getReceiver() == receiver) {
-				if (i.getCandidates().contains(invoked)) {
-					return i;
-				}				
-			}
-		}
-		*/
-		
+		return ensureFamixInvocation(sender, invoked, receiver, null);
+	}
+
+	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
 		Invocation invok = new Invocation();
 		invok.setReceiver(receiver);
 		invok.setSender(sender);
 		invok.setSignature(invoked.getSignature());
 		invok.addCandidates(invoked);
+		chainPrevNext(prev,invok);
 		famixRepoAdd(invok);
 		
 		return invok;
 	}
-	
-	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite) {
+
+	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite, Association prev) {
 		/* We keep multiple accesses from one method to a field */
 		Access acc = new Access();
 		acc.setAccessor(accessor);
 		acc.setVariable(var);
 		acc.setIsWrite(new Boolean(isWrite));
+		chainPrevNext(prev, acc);
 		famixRepoAdd(acc);
 		
 		return acc;
 	}
+
+	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite) {
+		return ensureFamixAccess(accessor, var, isWrite, null);
+	}
 	
 	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var) {
-		return ensureFamixAccess(accessor, var, false);  // must be some default and this one seems safer than the opposite
+		return ensureFamixAccess(accessor, var, false, null);  // must set some default for isWrite and this one seems safer than the opposite
 	}
 
+	private void chainPrevNext(Association prev, Association next) {
+		if (prev != null) {
+			// next.setPrevious(prev);  // not yet implemented in importer
+		}
+	}
+	
 	/**
 	 * Returns a Famix DeclaredException between a method and an Exception that it declares to throw
 	 * @param meth -- the method throwing the exception

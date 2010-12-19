@@ -2,6 +2,7 @@ package fr.inria.verveine.core;
 
 import java.util.Stack;
 
+import fr.inria.verveine.core.gen.famix.Association;
 import fr.inria.verveine.core.gen.famix.ContainerEntity;
 import fr.inria.verveine.core.gen.famix.Method;
 import fr.inria.verveine.core.gen.famix.Namespace;
@@ -113,6 +114,19 @@ public class EntityStack {
 
 	}
 	
+	/**
+	 * last Association registered to set the previous/next
+	 */
+	Association lastAssoc = null;
+	
+	public Association getLastAssoc() {
+		return lastAssoc;
+	}
+
+	public void setLastAssoc(Association lastAssoc) {
+		this.lastAssoc = lastAssoc;
+	}
+
 	public EntityStack() {
 		clearPckg();  // initializes (to empty) Pckgs, classes and methods
 	}
@@ -162,6 +176,7 @@ public class EntityStack {
 			System.out.println("TRACE: pushPckg "+e.getName());
 		}
 		clearClasses();
+		setLastAssoc(null);
 		fmxPckg = e;
 	}
 
