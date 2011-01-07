@@ -409,7 +409,7 @@ public class Dictionary<B> {
 		return ensureFamixInvocation(sender, invoked, receiver, null);
 	}
 
-	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
+	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Invocation prev) {
 		Invocation invok = new Invocation();
 		invok.setReceiver(receiver);
 		invok.setSender(sender);
@@ -443,7 +443,7 @@ public class Dictionary<B> {
 
 	private void chainPrevNext(Association prev, Association next) {
 		if (prev != null) {
-			// next.setPrevious(prev);  // not yet implemented in importer
+			next.setPrevious(prev);  // not yet implemented in importer
 		}
 	}
 	

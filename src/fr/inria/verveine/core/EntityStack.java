@@ -2,10 +2,14 @@ package fr.inria.verveine.core;
 
 import java.util.Stack;
 
+import fr.inria.verveine.core.gen.famix.Access;
 import fr.inria.verveine.core.gen.famix.Association;
 import fr.inria.verveine.core.gen.famix.ContainerEntity;
+import fr.inria.verveine.core.gen.famix.Inheritance;
+import fr.inria.verveine.core.gen.famix.Invocation;
 import fr.inria.verveine.core.gen.famix.Method;
 import fr.inria.verveine.core.gen.famix.Namespace;
+import fr.inria.verveine.core.gen.famix.Reference;
 
 /** A stack of FAMIX Entities so that we know in what container each new Entity is declared
  * @author anquetil
@@ -28,6 +32,7 @@ public class EntityStack {
 		private Method fmxMethod;
 		private int metric_cyclo = EMPTY_CYCLO;  // Cyclomatic Complexity
 		private int metric_nos = EMPTY_NOS;    // Number Of Statements
+		
 		
  		public ClassStack(fr.inria.verveine.core.gen.famix.Class e) {
 			fmxClass = e;
@@ -110,21 +115,61 @@ public class EntityStack {
 			fmxMethod = null;
 			metric_cyclo = EMPTY_CYCLO;
 			metric_nos = EMPTY_NOS;
+			setLastInvocation(null);
 		}
 
 	}
 	
 	/**
-	 * last Association registered to set the previous/next
+	 * last Invocation registered to set the previous/next
 	 */
-	Association lastAssoc = null;
+	Invocation lastInvocation = null;
 	
-	public Association getLastAssoc() {
-		return lastAssoc;
+	/**
+	 * last Access registered to set the previous/next
+	 */
+	Access lastAccess = null;
+	
+	/**
+	 * last Inheritance registered to set the previous/next
+	 */
+	Inheritance lastInheritance = null;
+	
+	/**
+	 * last Reference registered to set the previous/next
+	 */
+	Reference lastReference = null;
+	
+	public Access getLastAccess() {
+		return lastAccess;
 	}
 
-	public void setLastAssoc(Association lastAssoc) {
-		this.lastAssoc = lastAssoc;
+	public void setLastAccess(Access lastAccess) {
+		this.lastAccess = lastAccess;
+	}
+
+	public Inheritance getLastInheritance() {
+		return lastInheritance;
+	}
+
+	public void setLastInheritance(Inheritance lastInheritance) {
+		this.lastInheritance = lastInheritance;
+	}
+
+	public Reference getLastReference() {
+		return lastReference;
+	}
+
+	public void setLastReference(Reference lastReference) {
+		this.lastReference = lastReference;
+	}
+
+	public Invocation getLastInvocation() {
+		return lastInvocation;
+	}
+
+	public void setLastInvocation(Invocation lastInvocation) {
+		this.lastInvocation = lastInvocation;
 	}
 
 	public EntityStack() {
@@ -176,7 +221,7 @@ public class EntityStack {
 			System.out.println("TRACE: pushPckg "+e.getName());
 		}
 		clearClasses();
-		setLastAssoc(null);
+		//setLastAssoc(null);
 		fmxPckg = e;
 	}
 
@@ -200,6 +245,7 @@ public class EntityStack {
 			System.out.println("TRACE: pushMethod "+e.getName());
 		}
 		getTopClass().setFmxMethod(e);
+		
 	}
 
 	/**
