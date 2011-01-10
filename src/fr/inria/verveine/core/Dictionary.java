@@ -365,6 +365,10 @@ public class Dictionary<B> {
 	 * @return the Inheritance relationship
 	 */
 	public Inheritance ensureFamixInheritance(fr.inria.verveine.core.gen.famix.Class sup, fr.inria.verveine.core.gen.famix.Class sub) {
+		return ensureFamixInheritance(sup, sub, null);
+	}
+	
+	public Inheritance ensureFamixInheritance(fr.inria.verveine.core.gen.famix.Class sup, fr.inria.verveine.core.gen.famix.Class sub, Inheritance prev) {
 		for (Inheritance i : sup.getSubInheritances()) {
 			if (i.getSubclass() == sub) {
 				return i;
@@ -373,6 +377,7 @@ public class Dictionary<B> {
 		Inheritance inh = new Inheritance();
 		inh.setSuperclass(sup);
 		inh.setSubclass(sub);
+		chainPrevNext(prev,inh);
 		famixRepoAdd(inh);
 		return inh;
 	}
