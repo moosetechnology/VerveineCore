@@ -116,6 +116,7 @@ public class EntityStack {
 			metric_cyclo = EMPTY_CYCLO;
 			metric_nos = EMPTY_NOS;
 			setLastInvocation(null);
+			setLastAccess(null);
 		}
 
 	}
@@ -131,11 +132,6 @@ public class EntityStack {
 	Access lastAccess = null;
 	
 	/**
-	 * last Inheritance registered to set the previous/next
-	 */
-	Inheritance lastInheritance = null;
-	
-	/**
 	 * last Reference registered to set the previous/next
 	 */
 	Reference lastReference = null;
@@ -146,14 +142,6 @@ public class EntityStack {
 
 	public void setLastAccess(Access lastAccess) {
 		this.lastAccess = lastAccess;
-	}
-
-	public Inheritance getLastInheritance() {
-		return lastInheritance;
-	}
-
-	public void setLastInheritance(Inheritance lastInheritance) {
-		this.lastInheritance = lastInheritance;
 	}
 
 	public Reference getLastReference() {
