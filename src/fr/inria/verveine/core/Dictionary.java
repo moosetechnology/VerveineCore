@@ -368,7 +368,7 @@ public class Dictionary<B> {
 		return ensureFamixInheritance(sup, sub, null);
 	}
 	
-	public Inheritance ensureFamixInheritance(fr.inria.verveine.core.gen.famix.Class sup, fr.inria.verveine.core.gen.famix.Class sub, Inheritance prev) {
+	public Inheritance ensureFamixInheritance(fr.inria.verveine.core.gen.famix.Class sup, fr.inria.verveine.core.gen.famix.Class sub, Association prev) {
 		for (Inheritance i : sup.getSubInheritances()) {
 			if (i.getSubclass() == sub) {
 				return i;
@@ -402,7 +402,6 @@ public class Dictionary<B> {
 		return ref;
 	}
 
-
 	/**
 	 * Returns a Famix Invocation between two Famix Entities creating it if needed
 	 * @param sender of the invocation
@@ -414,7 +413,7 @@ public class Dictionary<B> {
 		return ensureFamixInvocation(sender, invoked, receiver, null);
 	}
 
-	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Invocation prev) {
+	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
 		Invocation invok = new Invocation();
 		invok.setReceiver(receiver);
 		invok.setSender(sender);
