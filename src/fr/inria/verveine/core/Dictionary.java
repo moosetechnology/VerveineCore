@@ -23,6 +23,7 @@ import fr.inria.verveine.core.gen.famix.LocalVariable;
 import fr.inria.verveine.core.gen.famix.Method;
 import fr.inria.verveine.core.gen.famix.NamedEntity;
 import fr.inria.verveine.core.gen.famix.Namespace;
+import fr.inria.verveine.core.gen.famix.Parameter;
 import fr.inria.verveine.core.gen.famix.PrimitiveType;
 import fr.inria.verveine.core.gen.famix.Reference;
 import fr.inria.verveine.core.gen.famix.SourcedEntity;
@@ -351,6 +352,23 @@ public class Dictionary<B> {
 		Comment fmx = new Comment();
 		fmx.setContent(cmt);
 		fmx.setContainer(owner);
+		this.famixRepo.add(fmx);
+		
+		return fmx;
+	}
+	
+	/**
+	 * Creates and returns a FAMIX Parameter and associates it with an BehaviouralEntity
+	 * @param identifier -- the name of the parameter
+	 * @param owner -- the entity concerned by this parameter
+	 * @param type -- the type of the parameter
+	 * @return the FAMIX parameter
+	 */
+	public Parameter createFamixParameter(String identifier, BehaviouralEntity owner, String type) {
+		Parameter fmx = new Parameter();
+		fmx.setName(identifier);
+		fmx.setParentBehaviouralEntity(owner);
+		fmx.setDeclaredType(ensureFamixUniqEntity(fr.inria.verveine.core.gen.famix.Class.class, null, type));
 		this.famixRepo.add(fmx);
 		
 		return fmx;
