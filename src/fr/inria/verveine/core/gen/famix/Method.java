@@ -3,6 +3,7 @@ package fr.inria.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
 import java.util.*;
+
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -215,7 +216,14 @@ public class Method extends BehaviouralEntity {
         parentType.getMethods().add(this);
     }
     
+    private Collection<Type> declaredArgumentTypes;
+    
+    @FameProperty(name = "declaredArgumentTypes")
+    public Collection<Type> getDeclaredArgumentTypes() {
+        return declaredArgumentTypes;
+    }
 
-
+    public void setDeclaredArgumentTypes(Collection<Type> declaredArgumentTypes) {
+        this.declaredArgumentTypes = declaredArgumentTypes;
+    }
 }
-
