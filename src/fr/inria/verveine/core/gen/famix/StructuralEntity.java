@@ -25,17 +25,6 @@ public class StructuralEntity extends LeafEntity {
         this.declaredType = declaredType;
     }
     
-    private Collection<Type> declaredArgumentTypes;
-    
-    @FameProperty(name = "declaredArgumentTypes")
-    public Collection<Type> getDeclaredArgumentTypes() {
-        return declaredArgumentTypes;
-    }
-
-    public void setDeclaredArgumentTypes(Collection<Type> declaredArgumentTypes) {
-        this.declaredArgumentTypes = declaredArgumentTypes;
-    }
-    
     private Collection<Access> incomingAccesses; 
 
     @FameProperty(name = "incomingAccesses", opposite = "variable", derived = true)

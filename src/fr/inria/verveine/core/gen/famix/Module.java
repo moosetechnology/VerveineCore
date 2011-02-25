@@ -3,12 +3,11 @@ package fr.inria.verveine.core.gen.famix;
 
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
-import fr.inria.verveine.core.gen.moose.Group;
 
 
 @FamePackage("FAMIX")
-@FameDescription("MethodGroup")
-public class MethodGroup extends Group {
+@FameDescription("Module")
+public class Module extends ScopingEntity {
 
 
 

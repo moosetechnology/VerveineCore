@@ -1,8 +1,6 @@
 // Automagically generated code, please do not change
 package fr.inria.verveine.core.gen.famix;
 
-import java.util.Collection;
-
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -13,7 +11,7 @@ import ch.akuhn.fame.FamePackage;
 public class Class extends Type {
 
 
-	// Apparently, we should not use getIsAbstract() (from NamedEntity) here ?!?!?
+
     @FameProperty(name = "isAbstract", derived = true)
     public Boolean getIsAbstract() {
         // TODO: this is a derived property, implement this method manually.
@@ -31,14 +29,7 @@ public class Class extends Type {
         this.isInterface = isInterface;
     }
     
-    private Collection<Type> parameterTypes;
-    
-    @FameProperty(name = "parameterTypes")
-    public Collection<Type> getParameterTypes() {
-    	return parameterTypes;
-    }
-    
-    public void setParameterTypes(Collection<Type> parameterTypes) {
-    	this.parameterTypes = parameterTypes;
-    }
+
+
 }
+

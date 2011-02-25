@@ -6,8 +6,8 @@ import ch.akuhn.fame.FamePackage;
 
 
 @FamePackage("Moose")
-@FameDescription("MooseAbsractGroup")
-public class MooseAbsractGroup extends MooseEntity {
+@FameDescription("Entity")
+public class Entity  {
 
 
 

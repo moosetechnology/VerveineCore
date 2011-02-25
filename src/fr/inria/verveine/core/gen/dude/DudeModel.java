@@ -12,11 +12,11 @@ public class DudeModel {
     }
     
     public static void importInto(MetaRepository metamodel) {
-		metamodel.with(fr.inria.verveine.core.gen.dude.Duplication.class);
-		metamodel.with(fr.inria.verveine.core.gen.dude.DuplicationGroup.class);
-		metamodel.with(fr.inria.verveine.core.gen.dude.MultiplicationGroup.class);
 		metamodel.with(fr.inria.verveine.core.gen.dude.CodeFragment.class);
 		metamodel.with(fr.inria.verveine.core.gen.dude.Multiplication.class);
+		metamodel.with(fr.inria.verveine.core.gen.dude.DuplicationGroup.class);
+		metamodel.with(fr.inria.verveine.core.gen.dude.MultiplicationGroup.class);
+		metamodel.with(fr.inria.verveine.core.gen.dude.Duplication.class);
 		metamodel.with(fr.inria.verveine.core.gen.dude.CodeLine.class);
 
     }

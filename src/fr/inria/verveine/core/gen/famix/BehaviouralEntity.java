@@ -324,7 +324,7 @@ public class BehaviouralEntity extends ContainerEntity {
 
 	public void setNOS(int nos) {
 		this.nos = nos;
-	}
+    }
     
 
 

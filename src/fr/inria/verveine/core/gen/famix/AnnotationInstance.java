@@ -1,6 +1,7 @@
 // Automagically generated code, please do not change
 package fr.inria.verveine.core.gen.famix;
 
+import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -46,6 +47,12 @@ public class AnnotationInstance extends Entity {
         annotationType.getInstances().add(this);
     }
     
+    @FameProperty(name = "attributes", derived = true)
+    public Collection<AnnotationInstanceAttribute> getAttributes() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+        
 
 
 }

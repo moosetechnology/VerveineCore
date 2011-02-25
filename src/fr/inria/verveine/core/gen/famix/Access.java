@@ -72,8 +72,6 @@ public class Access extends Association {
 	public NamedEntity getFrom() {
 		return this.getAccessor();
 	}
-    
-
 
 }
 

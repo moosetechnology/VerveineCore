@@ -3,11 +3,12 @@ package fr.inria.verveine.core.gen.famix;
 
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
+import fr.inria.verveine.core.gen.moose.Group;
 
 
 @FamePackage("FAMIX")
 @FameDescription("ClassGroup")
-public class ClassGroup  {
+public class ClassGroup extends Group {
 
 
 

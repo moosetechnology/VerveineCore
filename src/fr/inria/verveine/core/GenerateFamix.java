@@ -12,7 +12,7 @@ public class GenerateFamix {
 	}
 	
 	public static void generateCode() {
-		InputSource input = InputSource.fromFilename("mse/famix30_famix.mse");
+		InputSource input = InputSource.fromFilename("mse/famix30_complete.mse");
         Tower t = new Tower();
         t.getMetamodel().importMSE(input);
 		CodeGeneration gen = new CodeGeneration("fr.inria.verveine.core.gen", "src", "");
