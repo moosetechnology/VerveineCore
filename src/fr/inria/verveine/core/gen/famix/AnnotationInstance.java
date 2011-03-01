@@ -50,7 +50,7 @@ public class AnnotationInstance extends Entity {
     @FameProperty(name = "attributes", derived = true)
     public Collection<AnnotationInstanceAttribute> getAttributes() {
         // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+    	return null;
     }
         
 

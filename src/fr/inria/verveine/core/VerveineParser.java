@@ -42,12 +42,12 @@ public class VerveineParser extends Main {
 
 	public boolean linkToExisting() {
 		File existingMSE = new File(OUTPUT_FILE);
-		if (! existingMSE.exists()) {
-			return false;
-		}
-		else {
+		if (existingMSE.exists()) {
 			this.getFamixRepo().importMSEFile(OUTPUT_FILE);
 			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	

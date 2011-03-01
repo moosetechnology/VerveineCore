@@ -11,12 +11,18 @@ import ch.akuhn.fame.FamePackage;
 @FameDescription("ParameterizableClass")
 public class ParameterizableClass extends Class {
 
-
-
     @FameProperty(name = "parameters", derived = true)
     public Collection<ParameterType> getParameters() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+        // this is a derived property, implement this method manually.
+    	Collection<ParameterType> ret = new LinkedList<ParameterType>();
+    	
+        for (Type inner : getTypes()) {
+        	if (inner instanceof ParameterType) {
+        		ret.add((ParameterType) inner);
+        	}
+        }
+        
+        return ret;
     }
         
 

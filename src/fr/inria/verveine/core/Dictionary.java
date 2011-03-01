@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.eclipse.jdt.core.dom.ITypeBinding;
+
 import ch.akuhn.fame.Repository;
 
 import fr.inria.verveine.core.gen.famix.Access;
@@ -24,11 +26,14 @@ import fr.inria.verveine.core.gen.famix.Method;
 import fr.inria.verveine.core.gen.famix.NamedEntity;
 import fr.inria.verveine.core.gen.famix.Namespace;
 import fr.inria.verveine.core.gen.famix.Parameter;
+import fr.inria.verveine.core.gen.famix.ParameterType;
+import fr.inria.verveine.core.gen.famix.ParameterizableClass;
 import fr.inria.verveine.core.gen.famix.PrimitiveType;
 import fr.inria.verveine.core.gen.famix.Reference;
 import fr.inria.verveine.core.gen.famix.SourcedEntity;
 import fr.inria.verveine.core.gen.famix.StructuralEntity;
 import fr.inria.verveine.core.gen.famix.ThrownException;
+import fr.inria.verveine.core.gen.famix.Type;
 
 /**
  * A dictionnary of Famix entities to help create them and find them back
@@ -208,7 +213,7 @@ public class Dictionary<B> {
 	 */
 	protected <T extends NamedEntity> T createFamixEntity(Class<T> fmxClass, String name) {
 		T fmx = null;
-
+//System.out.println("creating FMX Entity:"+ name +"   type: "+ fmxClass.getCanonicalName());
 		try {
 			fmx = fmxClass.newInstance();
 		} catch (Exception e) {
@@ -243,7 +248,7 @@ public class Dictionary<B> {
 	@SuppressWarnings("unchecked")
 	protected <T extends NamedEntity> T ensureFamixEntity(Class<T> fmxClass, B bnd, String name) {
 		T fmx = null;
-		
+
 		if (ImplicitVariable.class.isAssignableFrom(fmxClass)) {
 			return null;
 		}
@@ -282,23 +287,62 @@ public class Dictionary<B> {
 	}
 
 	///// ensure Famix Entities /////
-	
-	/**
-	 * Returns a FAMIX Class with the given <b>name</b>, creating it if it does not exist yet
-	 * @param name -- the name of the FAMIX Class
-	 * @return the FAMIX Class or null in case of a FAMIX error
-	 */
-	public fr.inria.verveine.core.gen.famix.Class ensureFamixClass(String name) {
-		fr.inria.verveine.core.gen.famix.Class fmx = ensureFamixEntity(fr.inria.verveine.core.gen.famix.Class.class, null, name);
+
+	protected <T extends fr.inria.verveine.core.gen.famix.Type> T ensureFamixType(Class<T> fmxClass, String name) {
+		T fmx = ensureFamixEntity(fmxClass, null, name);
 		if (fmx != null) {
 			fmx.setIsAbstract(Boolean.FALSE);
 			fmx.setIsFinal(Boolean.FALSE);
-			fmx.setIsInterface(Boolean.FALSE);
 			fmx.setIsPrivate(Boolean.FALSE);
 			fmx.setIsProtected(Boolean.FALSE);
 			fmx.setIsPublic(Boolean.FALSE);
 		}
 
+		return fmx;
+	}
+	
+	/**
+	 * Returns a FAMIX Type with the given <b>name</b>, creating it if it does not exist yet.
+	 * In the second case, sets some default properties: not Abstract, not Final, not Private, not Protected, not Public, not Interface
+	 * @param name -- the name of the FAMIX Class
+	 * @return the FAMIX Class or null in case of a FAMIX error
+	 */
+	public Type ensureFamixType(String name) {
+		return ensureFamixType(Type.class, name);
+	}
+
+	/**
+	 * Returns a FAMIX Class with the given <b>name</b>, creating it if it does not exist yet.
+	 * In the second case, sets some default properties: not Abstract, not Final, not Private, not Protected, not Public, not Interface
+	 * @param name -- the name of the FAMIX Class
+	 * @return the FAMIX Class or null in case of a FAMIX error
+	 */
+	public fr.inria.verveine.core.gen.famix.Class ensureFamixClass(String name) {
+		fr.inria.verveine.core.gen.famix.Class fmx = ensureFamixType(fr.inria.verveine.core.gen.famix.Class.class, name);
+		fmx.setIsInterface(Boolean.FALSE);
+		return fmx;
+	}
+
+	/**
+	 * Returns a FAMIX Class with the given <b>name</b>, creating it if it does not exist yet
+	 * In the second case, sets some default properties: not Abstract, not Final, not Private, not Protected, not Public, not Interface
+	 * @param name -- the name of the FAMIX Class
+	 * @return the FAMIX Class or null in case of a FAMIX error
+	 */
+	public ParameterizableClass ensureFamixParameterizableClass(String name) {
+		ParameterizableClass fmx = ensureFamixType(ParameterizableClass.class, name);
+		fmx.setIsInterface(Boolean.FALSE);
+		return fmx;
+	}
+
+	/**
+	 * Returns a FAMIX ParameterType (created by a FAMIX ParameterizableClass) with the given <b>name</b>, creating it if it does not exist yet
+	 * In the second case, sets some default properties: not Abstract, not Final, not Private, not Protected, not Public
+	 * @param name -- the name of the FAMIX ParameterType
+	 * @return the FAMIX ParameterType or null in case of a FAMIX error
+	 */
+	public ParameterType ensureFamixParameterType(String name) {
+		ParameterType fmx = ensureFamixType(ParameterType.class, name);
 		return fmx;
 	}
 
@@ -307,6 +351,7 @@ public class Dictionary<B> {
 	 * @param name -- the name of the FAMIX Method
 	 * @return the FAMIX Method or null in case of a FAMIX error
 	 */
+
 	public Method ensureFamixMethod(String name) {
 		return (Method) ensureFamixEntity(Method.class, null, name);
 	}
@@ -358,17 +403,17 @@ public class Dictionary<B> {
 	}
 	
 	/**
-	 * Creates and returns a FAMIX Parameter and associates it with an BehaviouralEntity
+	 * Creates and returns a FAMIX Parameter and associates it with a BehaviouralEntity
 	 * @param identifier -- the name of the parameter
 	 * @param owner -- the entity concerned by this parameter
 	 * @param type -- the type of the parameter
 	 * @return the FAMIX parameter
 	 */
-	public Parameter createFamixParameter(String identifier, BehaviouralEntity owner, String type) {
+	public Parameter createFamixParameter(String identifier, BehaviouralEntity owner, Type type) {
 		Parameter fmx = new Parameter();
 		fmx.setName(identifier);
 		fmx.setParentBehaviouralEntity(owner);
-		fmx.setDeclaredType(ensureFamixUniqEntity(fr.inria.verveine.core.gen.famix.Class.class, null, type));
+		fmx.setDeclaredType(type);
 		this.famixRepo.add(fmx);
 		
 		return fmx;
@@ -382,11 +427,11 @@ public class Dictionary<B> {
 	 * @param sub -- the sub class
 	 * @return the Inheritance relationship
 	 */
-	public Inheritance ensureFamixInheritance(fr.inria.verveine.core.gen.famix.Class sup, fr.inria.verveine.core.gen.famix.Class sub) {
+	public Inheritance ensureFamixInheritance(Type sup, Type sub) {
 		return ensureFamixInheritance(sup, sub, null);
 	}
 	
-	public Inheritance ensureFamixInheritance(fr.inria.verveine.core.gen.famix.Class sup, fr.inria.verveine.core.gen.famix.Class sub, Association prev) {
+	public Inheritance ensureFamixInheritance(Type sup, Type sub, Association prev) {
 		for (Inheritance i : sup.getSubInheritances()) {
 			if (i.getSubclass() == sub) {
 				return i;
@@ -671,5 +716,6 @@ public class Dictionary<B> {
 
 		return fmx;
 	}
+
 	
 }
