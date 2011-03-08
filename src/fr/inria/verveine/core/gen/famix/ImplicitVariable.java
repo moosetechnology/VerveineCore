@@ -19,6 +19,11 @@ public class ImplicitVariable extends StructuralEntity {
         return container;
     }
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getContainer();
+	}
+
     public void setContainer(Type container) {
         this.container = container;
     }

@@ -19,6 +19,11 @@ public class GlobalVariable extends StructuralEntity {
         return parentScope;
     }
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentScope();
+	}
+
     public void setParentScope(ScopingEntity parentScope) {
         if (this.parentScope != null) {
             if (this.parentScope.equals(parentScope)) return;

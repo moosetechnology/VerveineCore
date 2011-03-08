@@ -13,8 +13,7 @@ import ch.akuhn.fame.FamePackage;
 public class Type extends ContainerEntity {
 
 
-
-    private Collection<Method> methods; 
+	private Collection<Method> methods; 
 
     @FameProperty(name = "methods", opposite = "parentType", derived = true)
     public Collection<Method> getMethods() {
@@ -128,6 +127,11 @@ public class Type extends ContainerEntity {
     public ContainerEntity getContainer() {
         return container;
     }
+
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getContainer();
+	}
 
     public void setContainer(ContainerEntity container) {
         if (this.container != null) {

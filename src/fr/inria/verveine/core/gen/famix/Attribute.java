@@ -30,6 +30,11 @@ public class Attribute extends StructuralEntity {
         return parentType;
     }
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentType();
+	}
+
     public void setParentType(Type parentType) {
         if (this.parentType != null) {
             if (this.parentType.equals(parentType)) return;

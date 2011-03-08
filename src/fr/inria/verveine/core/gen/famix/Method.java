@@ -194,7 +194,12 @@ public class Method extends BehaviouralEntity {
         return parentType;
     }
 
-    public void setParentType(Type parentType) {
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentType();
+	}
+
+	public void setParentType(Type parentType) {
         if (this.parentType != null) {
             if (this.parentType.equals(parentType)) return;
             this.parentType.getMethods().remove(this);

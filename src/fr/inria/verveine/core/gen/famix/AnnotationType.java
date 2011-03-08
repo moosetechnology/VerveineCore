@@ -21,6 +21,11 @@ public class AnnotationType extends NamedEntity {
         return container;
     }
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getContainer();
+	}
+
     public void setContainer(ContainerEntity container) {
         if (this.container != null) {
             if (this.container.equals(container)) return;

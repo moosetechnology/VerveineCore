@@ -14,7 +14,16 @@ public class NamedEntity extends SourcedEntity {
 
 
 
-    private Boolean isAbstract;
+    public NamedEntity() {
+		super();
+		this.setIsFinal(Boolean.FALSE);
+		this.setIsPrivate(Boolean.FALSE);
+		this.setIsProtected(Boolean.FALSE);
+		this.setIsPublic(Boolean.FALSE);
+		this.setIsAbstract(Boolean.FALSE);
+	}
+
+	private Boolean isAbstract;
     
     @FameProperty(name = "isAbstract")
     public Boolean getIsAbstract() {
@@ -202,12 +211,11 @@ public class NamedEntity extends SourcedEntity {
     public boolean hasModifiers() {
         return !getModifiers().isEmpty();
     }
-    
-                
+            
     @FameProperty(name = "belongsTo", derived = true)
     public ContainerEntity getBelongsTo() {
         // TODO: this is a derived property, implement this method manually.
-    	return null;
+        throw new UnsupportedOperationException("NamedEntity.getBelongsTo() Not implemented in this class, use the proper subclass!"); 
     }
     
     private Boolean isFinal;
@@ -222,6 +230,11 @@ public class NamedEntity extends SourcedEntity {
     }
     
 
+	@Override
+	public String toString() {
+		return "a " + this.getClass().getCanonicalName() + " named: " + this.getName();
+	}
+    
 
 }
 

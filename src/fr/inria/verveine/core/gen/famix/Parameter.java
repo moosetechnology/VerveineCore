@@ -19,6 +19,11 @@ public class Parameter extends StructuralEntity {
         return parentBehaviouralEntity;
     }
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentBehaviouralEntity();
+	}
+
     public void setParentBehaviouralEntity(BehaviouralEntity parentBehaviouralEntity) {
         if (this.parentBehaviouralEntity != null) {
             if (this.parentBehaviouralEntity.equals(parentBehaviouralEntity)) return;
