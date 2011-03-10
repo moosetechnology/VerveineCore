@@ -8,8 +8,8 @@ import java.util.Map;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
 import ch.akuhn.fame.Repository;
-
 import fr.inria.verveine.core.gen.famix.Access;
+import fr.inria.verveine.core.gen.famix.AnnotationType;
 import fr.inria.verveine.core.gen.famix.Association;
 import fr.inria.verveine.core.gen.famix.Attribute;
 import fr.inria.verveine.core.gen.famix.BehaviouralEntity;
@@ -17,7 +17,8 @@ import fr.inria.verveine.core.gen.famix.CaughtException;
 import fr.inria.verveine.core.gen.famix.Comment;
 import fr.inria.verveine.core.gen.famix.ContainerEntity;
 import fr.inria.verveine.core.gen.famix.DeclaredException;
-import fr.inria.verveine.core.gen.famix.Entity;
+import fr.inria.verveine.core.gen.famix.Enum;
+import fr.inria.verveine.core.gen.famix.EnumValue;
 import fr.inria.verveine.core.gen.famix.ImplicitVariable;
 import fr.inria.verveine.core.gen.famix.Inheritance;
 import fr.inria.verveine.core.gen.famix.Invocation;
@@ -30,12 +31,11 @@ import fr.inria.verveine.core.gen.famix.ParameterType;
 import fr.inria.verveine.core.gen.famix.ParameterizableClass;
 import fr.inria.verveine.core.gen.famix.PrimitiveType;
 import fr.inria.verveine.core.gen.famix.Reference;
+import fr.inria.verveine.core.gen.famix.SourceLanguage;
 import fr.inria.verveine.core.gen.famix.SourcedEntity;
 import fr.inria.verveine.core.gen.famix.StructuralEntity;
 import fr.inria.verveine.core.gen.famix.ThrownException;
 import fr.inria.verveine.core.gen.famix.Type;
-
-enum Colors { Black,	Blue, Red };
 
 /**
  * A dictionnary of Famix entities to help create them and find them back
@@ -46,13 +46,13 @@ enum Colors { Black,	Blue, Red };
  */
 public class Dictionary<B> {
 
-	Colors toto;
-	
 	public static final String DEFAULT_PCKG_NAME = "<Default Package>";
 	public static final String STUB_METHOD_CONTAINER_NAME = "<StubMethodContainer>";
 	public static final String SELF_NAME = "self";
 	public static final String SUPER_NAME = "super";
 
+	private SourceLanguage myLgge = null;
+	
 	/**
 	 * The FAMIX repository where all FAMIX entities are created and stored
 	 */
@@ -66,14 +66,14 @@ public class Dictionary<B> {
 	/**
 	 * Another dictionary to map a name to FAMIX Entities with this name
 	 */
-	protected Map<String,Collection<NamedEntity>> mapName;
+	private Map<String,Collection<NamedEntity>> mapName;
 
 	/**
 	 * Yet another dictionary for implicit variables ('self' and 'super')
 	 * Because they are implicit, they may not have a binding provided by the parser,
 	 * or may have the same binding than their associated class so they can't be kept easily in {@link Dictionary#mapToKey}
 	 */
-	protected Map<fr.inria.verveine.core.gen.famix.Class,ImplicitVars> mapImpVar;
+	private Map<fr.inria.verveine.core.gen.famix.Class,ImplicitVars> mapImpVar;
 
 	/**
 	 * Used to keep the two possible ImplicitVariable for a given Class binding
@@ -87,9 +87,10 @@ public class Dictionary<B> {
 	/** Constructor taking a FAMIX repository
 	 * @param famixRepo
 	 */
-	public Dictionary(Repository famixRepo) {
+	public Dictionary(Repository famixRepo, SourceLanguage lgge) {
 		this.famixRepo = famixRepo;
-		
+		this.myLgge = lgge;
+
 		this.mapToKey = new Hashtable<B,NamedEntity>();
 		this.mapName = new Hashtable<String,Collection<NamedEntity>>();
 		this.mapImpVar = new Hashtable<fr.inria.verveine.core.gen.famix.Class,ImplicitVars>();
@@ -99,7 +100,7 @@ public class Dictionary<B> {
 		}
 	}
 
-	protected void recoverExistingRepository() {
+	private void recoverExistingRepository() {
 		for (Object obj : famixRepo.getElements()) {
 			if (obj instanceof NamedEntity) {
 				mapEntityToName( ((NamedEntity)obj).getName(), (NamedEntity) obj);
@@ -127,7 +128,7 @@ public class Dictionary<B> {
 
 	}
 	
-	protected void mapEntityToName(String name, NamedEntity ent) {
+	private void mapEntityToName(String name, NamedEntity ent) {
 		Collection<NamedEntity> l_ent = mapName.get(name);
 		if (l_ent == null) {
 			l_ent = new LinkedList<NamedEntity>();
@@ -162,7 +163,7 @@ public class Dictionary<B> {
 	 * Returns the Famix Entity associated to the given binding.
 	 * <b>Note</b>: Be careful than ImplicitVariables share the same binding than their associated Class and cannot be retrieved with this method.
 	 * In such a case, this method will always retrieve the Class associated to the binding.
-	 * To get an ImplicitVariable from the binding, uses {@link Dictionary#getImplicitVariableByBinding(Object, String)}
+	 * To get an ImplicitVariable from the binding, uses {@link Dictionary#getImplicitVariableByKey(Object, String)}
 	 * @param bnd -- the binding
 	 * @return the Famix Entity associated to the binding or null if not found
 	 */
@@ -177,12 +178,12 @@ public class Dictionary<B> {
 
 	/**
 	 * Creates and returns a FAMIX Entity of the type <b>fmxClass</b>.
-	 * The Entity is always created (see {@link Dictionary#ensureFamixEntity(Class, Object, String)}).
+	 * The Entity is always created (see {@link Dictionary#ensureFamixNamedEntity(Class, Object, String)}).
 	 * @param fmxClass -- the FAMIX class of the instance to create
 	 * @param name -- the name of the new instance must not be null (and this is not tested)
 	 * @return the FAMIX Entity or null in case of a FAMIX error
 	 */
-	protected <T extends NamedEntity> T createFamixEntity(Class<T> fmxClass, String name) {
+	protected <T extends NamedEntity> T createFamixNamedEntity(Class<T> fmxClass, String name) {
 		T fmx = null;
 		try {
 			fmx = fmxClass.newInstance();
@@ -194,6 +195,7 @@ public class Dictionary<B> {
 		if (fmx != null) {
 			fmx.setName(name);
 			fmx.setIsStub(Boolean.TRUE);
+			fmx.setDeclaredSourceLanguage(myLgge);
 
 			mapEntityToName(name, fmx);
 			
@@ -214,7 +216,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Entity or null if <b>bnd</b> was null or in case of a FAMIX error
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T extends NamedEntity> T ensureFamixEntity(Class<T> fmxClass, B bnd, String name) {
+	protected <T extends NamedEntity> T ensureFamixNamedEntity(Class<T> fmxClass, B bnd, String name) {
 		T fmx = null;
 
 		if (ImplicitVariable.class.isAssignableFrom(fmxClass)) {
@@ -232,21 +234,12 @@ public class Dictionary<B> {
 		// e.g. 2 parameters of 2 different methods but having the same name
 		// so we cannot recover just from the name
 
-		fmx = createFamixEntity(fmxClass, name);
+		fmx = createFamixNamedEntity(fmxClass, name);
 		if (bnd != null) {
 			mapToKey.put(bnd, fmx);
 		}
 		
 		return fmx;
-	}
-
-	/**
-	 * Adds an already created Entity to the FAMIX repository
-	 * Used mainly for non-NamedEntity, for example relationships
-	 * @param e -- the FAMIX entity to add to the repository
-	 */
-	public void famixRepoAdd(Entity e) {
-		this.famixRepo.add(e);
 	}
 
 	///// ensure Famix Entities /////
@@ -260,7 +253,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public Type ensureFamixType(B key, String name, ContainerEntity owner) {
-		Type fmx = ensureFamixEntity(Type.class, key, name);
+		Type fmx = ensureFamixNamedEntity(Type.class, key, name);
 		fmx.setContainer(owner);
 		return fmx;
 	}
@@ -273,7 +266,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public fr.inria.verveine.core.gen.famix.Class ensureFamixClass(B key, String name, ContainerEntity owner) {
-		fr.inria.verveine.core.gen.famix.Class fmx = ensureFamixEntity(fr.inria.verveine.core.gen.famix.Class.class, key, name);
+		fr.inria.verveine.core.gen.famix.Class fmx = ensureFamixNamedEntity(fr.inria.verveine.core.gen.famix.Class.class, key, name);
 		fmx.setContainer(owner);
 		return fmx;
 	}
@@ -285,7 +278,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public ParameterizableClass ensureFamixParameterizableClass(String name) {
-		ParameterizableClass fmx = ensureFamixEntity(ParameterizableClass.class, null, name);
+		ParameterizableClass fmx = ensureFamixNamedEntity(ParameterizableClass.class, null, name);
 		fmx.setIsInterface(Boolean.FALSE);
 		return fmx;
 	}
@@ -297,7 +290,25 @@ public class Dictionary<B> {
 	 * @return the FAMIX ParameterType or null in case of a FAMIX error
 	 */
 	public ParameterType ensureFamixParameterType(String name) {
-		ParameterType fmx = ensureFamixEntity(ParameterType.class, null, name);
+		return ensureFamixNamedEntity(ParameterType.class, null, name);
+	}
+
+	public fr.inria.verveine.core.gen.famix.Enum ensureFamixEnum(B key, String name, ContainerEntity owner) {
+		fr.inria.verveine.core.gen.famix.Enum fmx = ensureFamixNamedEntity(fr.inria.verveine.core.gen.famix.Enum.class, key, name);
+		fmx.setContainer(owner);
+		return fmx;
+	}
+
+	public EnumValue ensureFamixEnumValue(B key, String name, Enum owner) {
+		EnumValue fmx = ensureFamixNamedEntity(EnumValue.class, key, name);
+		fmx.setParentEnum(owner);
+		return fmx;
+
+	}
+
+	public AnnotationType ensureFamixAnnotationType(B key, String name, ContainerEntity owner) {
+		AnnotationType fmx = ensureFamixNamedEntity(AnnotationType.class, key, name);
+		fmx.setContainer(owner);
 		return fmx;
 	}
 
@@ -311,7 +322,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Method or null in case of a FAMIX error
 	 */
 	public Method ensureFamixMethod(B key, String name, String sig, Type ret, Type owner) {
-		Method fmx = (Method) ensureFamixEntity(Method.class, key, name);
+		Method fmx = (Method) ensureFamixNamedEntity(Method.class, key, name);
 		fmx.setSignature(sig);
 		fmx.setDeclaredType(ret);
 		fmx.setParentType(owner);
@@ -324,10 +335,10 @@ public class Dictionary<B> {
 	 * @param name -- the name of the Famix Attribute (MUST NOT be null, but this is not checked)
 	 * @param type -- Famix Type of the Famix Attribute (should not be null, but it will work if it is)
 	 * @param owner -- Class defining the Famix Attribute (should not be null, but it will work if it is)
-	 * @return the FAMIX Attribute or null in case of a FAMIX error
+	 * @return the FAMIX Attribute or null in case of a Famix error
 	 */
 	public Attribute ensureFamixAttribute(B key, String name, Type type, Type owner) {
-		Attribute fmx = ensureFamixEntity(Attribute.class, key, name);
+		Attribute fmx = ensureFamixNamedEntity(Attribute.class, key, name);
 		fmx.setParentType(owner);
 		fmx.setDeclaredType(type);
 		return fmx;
@@ -342,22 +353,9 @@ public class Dictionary<B> {
 	 * @return the FAMIX LocalVariable or null in case of a FAMIX error
 	 */
 	public LocalVariable ensureFamixLocalVariable(B key, String name, Type type, BehaviouralEntity owner) {
-		LocalVariable fmx = ensureFamixEntity(LocalVariable.class, key, name);
+		LocalVariable fmx = ensureFamixNamedEntity(LocalVariable.class, key, name);
 		fmx.setParentBehaviouralEntity(owner);
 		fmx.setDeclaredType(type);
-		return fmx;
-	}
-
-	/**
-	 * Creates and returns a FAMIX Comment
-	 * @param cmt -- the content (String) of the comment 
-	 * @return the FAMIX Comment
-	 */
-	public Comment createFamixComment(String cmt) {
-		Comment fmx = new Comment();
-		fmx.setContent(cmt);
-		this.famixRepo.add(fmx);
-		
 		return fmx;
 	}
 
@@ -377,18 +375,17 @@ public class Dictionary<B> {
 	}
 	
 	/**
-	 * Creates and returns a FAMIX Parameter and associates it with a BehaviouralEntity
-	 * @param identifier -- the name of the parameter
-	 * @param owner -- the entity concerned by this parameter
-	 * @param type -- the type of the parameter
-	 * @return the FAMIX parameter
+	 * Creates and returns a Famix Parameter and associates it with a BehaviouralEntity
+	 * @param key to which the entity will be mapped (may be null, but then it will be difficult to recover the entity)
+	 * @param name -- the name of the Famix Parameter (MUST NOT be null, but this is not checked)
+	 * @param type -- Famix Type of the Famix Parameter (should not be null, but it will work if it is)
+	 * @param owner -- Class defining the Famix Parameter (should not be null, but it will work if it is)
+	 * @return the Famix parameter or null in case of a Famix error
 	 */
-	public Parameter createFamixParameter(String identifier, BehaviouralEntity owner, Type type) {
-		Parameter fmx = new Parameter();
-		fmx.setName(identifier);
+	public Parameter ensureFamixParameter(B key, String name, Type type, BehaviouralEntity owner) {
+		Parameter fmx = ensureFamixNamedEntity(Parameter.class, key, name);
 		fmx.setParentBehaviouralEntity(owner);
 		fmx.setDeclaredType(type);
-		this.famixRepo.add(fmx);
 		
 		return fmx;
 	}
@@ -396,15 +393,13 @@ public class Dictionary<B> {
 	///// ensure Famix Relationships /////
 
 	/**
-	 * Returns a Famix Inheritance relationship between two Famix Classes creating it if needed
+	 * Returns a Famix Inheritance relationship between two Famix Classes (or Interfaces) creating it if needed.
+	 * All References in a context are linked one to the other
 	 * @param sup -- the super class
 	 * @param sub -- the sub class
+	 * @param prev -- previous Inheritance link in the same context or null if it is the first
 	 * @return the Inheritance relationship
 	 */
-	public Inheritance ensureFamixInheritance(Type sup, Type sub) {
-		return ensureFamixInheritance(sup, sub, null);
-	}
-	
 	public Inheritance ensureFamixInheritance(Type sup, Type sub, Association prev) {
 		for (Inheritance i : sup.getSubInheritances()) {
 			if (i.getSubclass() == sub) {
@@ -415,121 +410,115 @@ public class Dictionary<B> {
 		inh.setSuperclass(sup);
 		inh.setSubclass(sub);
 		chainPrevNext(prev,inh);
-		famixRepoAdd(inh);
+		this.famixRepo.add(inh);
+
 		return inh;
 	}
 
 	/**
-	 * Returns a Famix Reference between two Famix Entities creating it if needed
+	 * Creates a Famix Reference between two Famix Entities. All References in a context are linked one to the other
 	 * @param src -- source of the reference
 	 * @param tgt -- target of the reference
+	 * @param prev -- previous Reference in the same context or null if it is the first
 	 * @return the Reference
 	 */
-	public Reference ensureFamixReference(ContainerEntity src, ContainerEntity tgt) {
-		return ensureFamixReference(src, tgt, null);
-	}
-	
-	public Reference ensureFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
+	public Reference createFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
 		Reference ref = new Reference();
 		ref.setTarget(tgt);
 		ref.setSource(src);
 		chainPrevNext(prev,ref);
-		famixRepoAdd(ref);
+		this.famixRepo.add(ref);
 		
 		return ref;
 	}
 
 	/**
-	 * Returns a Famix Invocation between two Famix Entities creating it if needed
+	 * Creates a Famix Invocation between two Famix Entities.  All Invocations in a context are linked one to the other
 	 * @param sender of the invocation
 	 * @param invoked -- method invoked
 	 * @param receiver of the invocation
+	 * @param prev -- previous Invocation in the same context or null if it is the first
 	 * @return the Invocation
 	 */
-	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver) {
-		return ensureFamixInvocation(sender, invoked, receiver, null);
-	}
-
-	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
+	public Invocation createFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
 		Invocation invok = new Invocation();
 		invok.setReceiver(receiver);
 		invok.setSender(sender);
 		invok.setSignature(invoked.getSignature());
 		invok.addCandidates(invoked);
 		chainPrevNext(prev,invok);
-		famixRepoAdd(invok);
+		this.famixRepo.add(invok);
 		
 		return invok;
 	}
 
-	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite, Association prev) {
-		/* We keep multiple accesses from one method to a field */
+	/**
+	 * Creates a Famix Access between two Famix Entities. All Accesses in a context are linked one to the other
+	 * @param accessor
+	 * @param var -- variable accessed
+	 * @param isWrite -- whether the variable is written or read
+	 * @param prev -- previous Access in the same context or null if it is the first
+	 * @return the Access
+	 */
+	public Access createFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite, Association prev) {
 		Access acc = new Access();
 		acc.setAccessor(accessor);
 		acc.setVariable(var);
 		acc.setIsWrite(new Boolean(isWrite));
 		chainPrevNext(prev, acc);
-		famixRepoAdd(acc);
+		this.famixRepo.add(acc);
 		
 		return acc;
 	}
 
-	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite) {
-		return ensureFamixAccess(accessor, var, isWrite, null);
-	}
-	
-	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var) {
-		return ensureFamixAccess(accessor, var, false, null);  // must set some default for isWrite and this one seems safer than the opposite
-	}
-
 	private void chainPrevNext(Association prev, Association next) {
 		if (prev != null) {
-			next.setPrevious(prev);  // not yet implemented in importer
+			next.setPrevious(prev);
 		}
 	}
 	
 	/**
-	 * Returns a Famix DeclaredException between a method and an Exception that it declares to throw
+	 * Creates a Famix DeclaredException between a method and an Exception that it declares to throw
 	 * @param meth -- the method throwing the exception
 	 * @param excep -- the exception declared to be thrown
 	 * @return the DeclaredException
 	 */
-	public DeclaredException ensureFamixDeclaredException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
-		DeclaredException decl = new DeclaredException();
-		decl.setExceptionClass(excep);
-		decl.setDefiningMethod(meth);
-		famixRepoAdd(decl);
-		return decl;
+	public DeclaredException createFamixDeclaredException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		DeclaredException fmx = new DeclaredException();
+		fmx.setExceptionClass(excep);
+		fmx.setDefiningMethod(meth);
+		this.famixRepo.add(fmx);
+		return fmx;
 	}
 
 	/**
-	 * Returns a Famix CaughtException between a method and an Exception that is caught
+	 * CReates a Famix CaughtException between a method and an Exception that is caught
 	 * @param meth -- the method catching the exception
 	 * @param excep -- the exception caught
 	 * @return the CaughtException
 	 */
-	public CaughtException ensureFamixCaughtException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
-		CaughtException decl = new CaughtException();
-		decl.setExceptionClass(excep);
-		decl.setDefiningMethod(meth);
-		famixRepoAdd(decl);
-		return decl;
+	public CaughtException createFamixCaughtException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		CaughtException fmx = new CaughtException();
+		fmx.setExceptionClass(excep);
+		fmx.setDefiningMethod(meth);
+		this.famixRepo.add(fmx);
+		return fmx;
 	}
 
 	/**
-	 * Returns a Famix ThrownException between a method and an Exception that it (actually) throws.
-	 * Note: DeclaredException indicates that the method declares it can throw the exception,
-	 * here we state that the exception is actually thrown
+	 * Creates a Famix ThrownException between a method and an Exception that it (actually) throws.
+	 * Note: DeclaredException indicates only that the method <em>declares</em> it can throw the exception,
+	 * here we state that the exception is <em>actually thrown</em>
 	 * @param meth -- the method throwing the exception
 	 * @param excep -- the exception thrown
 	 * @return the ThrownException
 	 */
-	public ThrownException ensureFamixThrownException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
-		ThrownException decl = new ThrownException();
-		decl.setExceptionClass(excep);
-		decl.setDefiningMethod(meth);
-		famixRepoAdd(decl);
-		return decl;
+	public ThrownException createFamixThrownException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		ThrownException fmx = new ThrownException();
+		fmx.setExceptionClass(excep);
+		fmx.setDefiningMethod(meth);
+		this.famixRepo.add(fmx);
+		return fmx;
 	}
 
 	///// Special Case: ImplicitVariables /////
@@ -540,7 +529,7 @@ public class Dictionary<B> {
 	 * @param bnd -- the binding
 	 * @return the Famix Entity associated to the binding or null if not found
 	 */
-	public ImplicitVariable getImplicitVariableByBinding(B bnd, String iv_name) {
+	public ImplicitVariable getImplicitVariableByKey(B bnd, String iv_name) {
 		return getImplicitVariableByClass((fr.inria.verveine.core.gen.famix.Class)getEntityByKey(bnd), iv_name);
 	}
 	
@@ -579,7 +568,7 @@ public class Dictionary<B> {
 		ImplicitVariable fmx = getImplicitVariableByClass(clazz, name);
 		
 		if (fmx == null) {
-			fmx = (ImplicitVariable) createFamixEntity(ImplicitVariable.class, name);
+			fmx = (ImplicitVariable) createFamixNamedEntity(ImplicitVariable.class, name);
 			if (fmx!=null) {
 				fmx.setContainer(clazz);
 
@@ -626,7 +615,7 @@ public class Dictionary<B> {
 				fmx = l.iterator().next();
 			}
 			else {
-				fmx = createFamixEntity(fmxClass, name);
+				fmx = createFamixNamedEntity(fmxClass, name);
 			}
 			
 			if (key != null) {
@@ -667,7 +656,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX PrimitiveType or null in case of a FAMIX error
 	 */
 	public PrimitiveType ensureFamixPrimitiveType(B key, String name) {
-		return ensureFamixEntity(PrimitiveType.class, key, name);
+		return ensureFamixNamedEntity(PrimitiveType.class, key, name);
 	}
 	
 	/**
@@ -682,5 +671,6 @@ public class Dictionary<B> {
 
 		return fmx;
 	}
+
 	
 }

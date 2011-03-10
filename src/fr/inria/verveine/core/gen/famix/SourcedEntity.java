@@ -14,7 +14,7 @@ public class SourcedEntity extends Entity {
 
 
 
-    private SourceLanguage declaredSourceLanguage;
+    private SourceLanguage declaredSourceLanguage = null;
     
     @FameProperty(name = "declaredSourceLanguage", opposite = "sourcedEntities")
     public SourceLanguage getDeclaredSourceLanguage() {
