@@ -216,7 +216,7 @@ public class NamedEntity extends SourcedEntity {
     @FameProperty(name = "belongsTo", derived = true)
     public ContainerEntity getBelongsTo() {
         // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("NamedEntity.getBelongsTo() Not implemented in this class, use the proper subclass!"); 
+        throw new UnsupportedOperationException("NamedEntity.getBelongsTo() Not implemented in this class, use the proper subclass ("+this.getClass().getName()+")"); 
     }
     
     private Boolean isFinal;

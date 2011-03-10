@@ -14,12 +14,15 @@ import org.eclipse.jdt.internal.compiler.batch.Main;
 import ch.akuhn.fame.Repository;
 import fr.inria.verveine.core.gen.famix.Entity;
 import fr.inria.verveine.core.gen.famix.FAMIXModel;
+import fr.inria.verveine.core.gen.famix.SourceLanguage;
 
 public class VerveineParser extends Main {
 
 	public final static String OUTPUT_FILE = "output.mse";
 	
 	private Repository famixRepo;
+
+	SourceLanguage myLgge = null;
 
 	public VerveineParser() {
 		this(new PrintWriter(System.out),
@@ -37,7 +40,11 @@ public class VerveineParser extends Main {
 				customDefaultOptions,
 				compilationProgress);
 		
-		setFamixRepo(new Repository(FAMIXModel.metamodel()));
+		Repository repo = new Repository(FAMIXModel.metamodel());
+		setFamixRepo(repo);
+		if (myLgge != null) {
+			repo.add( myLgge);
+		}
 	}
 
 	public boolean linkToExisting() {

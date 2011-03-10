@@ -5,11 +5,12 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.ITypeBinding;
-
 import ch.akuhn.fame.Repository;
 import fr.inria.verveine.core.gen.famix.Access;
+import fr.inria.verveine.core.gen.famix.AnnotationInstance;
+import fr.inria.verveine.core.gen.famix.AnnotationInstanceAttribute;
 import fr.inria.verveine.core.gen.famix.AnnotationType;
+import fr.inria.verveine.core.gen.famix.AnnotationTypeAttribute;
 import fr.inria.verveine.core.gen.famix.Association;
 import fr.inria.verveine.core.gen.famix.Attribute;
 import fr.inria.verveine.core.gen.famix.BehaviouralEntity;
@@ -31,7 +32,6 @@ import fr.inria.verveine.core.gen.famix.ParameterType;
 import fr.inria.verveine.core.gen.famix.ParameterizableClass;
 import fr.inria.verveine.core.gen.famix.PrimitiveType;
 import fr.inria.verveine.core.gen.famix.Reference;
-import fr.inria.verveine.core.gen.famix.SourceLanguage;
 import fr.inria.verveine.core.gen.famix.SourcedEntity;
 import fr.inria.verveine.core.gen.famix.StructuralEntity;
 import fr.inria.verveine.core.gen.famix.ThrownException;
@@ -51,8 +51,6 @@ public class Dictionary<B> {
 	public static final String SELF_NAME = "self";
 	public static final String SUPER_NAME = "super";
 
-	private SourceLanguage myLgge = null;
-	
 	/**
 	 * The FAMIX repository where all FAMIX entities are created and stored
 	 */
@@ -87,9 +85,8 @@ public class Dictionary<B> {
 	/** Constructor taking a FAMIX repository
 	 * @param famixRepo
 	 */
-	public Dictionary(Repository famixRepo, SourceLanguage lgge) {
+	public Dictionary(Repository famixRepo) {
 		this.famixRepo = famixRepo;
-		this.myLgge = lgge;
 
 		this.mapToKey = new Hashtable<B,NamedEntity>();
 		this.mapName = new Hashtable<String,Collection<NamedEntity>>();
@@ -195,7 +192,6 @@ public class Dictionary<B> {
 		if (fmx != null) {
 			fmx.setName(name);
 			fmx.setIsStub(Boolean.TRUE);
-			fmx.setDeclaredSourceLanguage(myLgge);
 
 			mapEntityToName(name, fmx);
 			
@@ -309,6 +305,35 @@ public class Dictionary<B> {
 	public AnnotationType ensureFamixAnnotationType(B key, String name, ContainerEntity owner) {
 		AnnotationType fmx = ensureFamixNamedEntity(AnnotationType.class, key, name);
 		fmx.setContainer(owner);
+		return fmx;
+	}
+
+	public AnnotationTypeAttribute ensureFamixAnnotationTypeAttribute(B key, String name, AnnotationType owner) {
+		AnnotationTypeAttribute fmx = ensureFamixNamedEntity(AnnotationTypeAttribute.class, key, name);
+		fmx.setParentAnnotationType(owner);
+		return fmx;
+	}
+
+	public AnnotationInstance createFamixAnnotationInstance(AnnotationType annType) {
+		AnnotationInstance fmx = new AnnotationInstance();
+		fmx.setAnnotationType(annType);
+		famixRepo.add(fmx);
+		return fmx;
+	}
+
+	public void addFamixAnnotationInstance(NamedEntity fmx, AnnotationType annType, Collection<AnnotationInstanceAttribute> annAtts) {
+		AnnotationInstance annInst = createFamixAnnotationInstance(annType);
+		if (annAtts != null) {
+			annInst.addAttributes(annAtts);
+		}
+		fmx.addAnnotationInstances( annInst);
+	}
+	
+	public AnnotationInstanceAttribute createFamixAnnotationInstanceAttribute(AnnotationTypeAttribute att, String val) {
+		AnnotationInstanceAttribute fmx = new AnnotationInstanceAttribute();
+		fmx.setAnnotationTypeAttribute(att);
+		fmx.setValue(val);
+		famixRepo.add(fmx);
 		return fmx;
 	}
 

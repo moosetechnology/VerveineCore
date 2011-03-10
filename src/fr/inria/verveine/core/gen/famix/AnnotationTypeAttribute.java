@@ -32,6 +32,11 @@ public class AnnotationTypeAttribute extends NamedEntity {
         return parentAnnotationType;
     }
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return null;
+	}
+
     public void setParentAnnotationType(AnnotationType parentAnnotationType) {
         if (this.parentAnnotationType != null) {
             if (this.parentAnnotationType.equals(parentAnnotationType)) return;

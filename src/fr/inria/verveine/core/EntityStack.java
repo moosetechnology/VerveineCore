@@ -3,11 +3,13 @@ package fr.inria.verveine.core;
 import java.util.Stack;
 
 import fr.inria.verveine.core.gen.famix.Access;
-import fr.inria.verveine.core.gen.famix.Association;
+import fr.inria.verveine.core.gen.famix.AnnotationType;
+import fr.inria.verveine.core.gen.famix.AnnotationTypeAttribute;
+import fr.inria.verveine.core.gen.famix.Class;
 import fr.inria.verveine.core.gen.famix.ContainerEntity;
-import fr.inria.verveine.core.gen.famix.Inheritance;
 import fr.inria.verveine.core.gen.famix.Invocation;
 import fr.inria.verveine.core.gen.famix.Method;
+import fr.inria.verveine.core.gen.famix.NamedEntity;
 import fr.inria.verveine.core.gen.famix.Namespace;
 import fr.inria.verveine.core.gen.famix.Reference;
 
@@ -19,35 +21,60 @@ public class EntityStack {
 	public static final int EMPTY_NOS = 0;
 	
 	private Namespace fmxPckg;
-	private Stack<ClassStack> fmxClass;
-	
-	// for debugging
-	private boolean tracing = false;;
+	private Stack<ClassStack> fmxType;
 
 	/**
 	 * A structure to hold a Famix class and its current method
 	 */
 	public class ClassStack {
-		private fr.inria.verveine.core.gen.famix.Class fmxClass;
-		private Method fmxMethod;
+		private NamedEntity fmxType;  // can be a FamixClass or a FamixAnnotationType
+		private NamedEntity fmxMember; // can be a FamixMethod or a FamixAnnotationAttribute
 		private int metric_cyclo = EMPTY_CYCLO;  // Cyclomatic Complexity
-		private int metric_nos = EMPTY_NOS;    // Number Of Statements
+		private int metric_nos = EMPTY_NOS;      // Number Of Statements
 		
 		
- 		public ClassStack(fr.inria.verveine.core.gen.famix.Class e) {
-			fmxClass = e;
-			clearFmxMethod();
+ 		public ClassStack(NamedEntity e) {
+			fmxType = e;
+			clearFmxMember();
 		}
 
 		public fr.inria.verveine.core.gen.famix.Class getFmxClass() {
-			return fmxClass;
+			if (fmxType instanceof fr.inria.verveine.core.gen.famix.Class) {
+				return (fr.inria.verveine.core.gen.famix.Class) fmxType;
+			}
+			else {
+				return null;
+			}
+		}
+
+		public AnnotationType getFmxAnnotationType() {
+			if (fmxType instanceof AnnotationType) {
+				return (AnnotationType) fmxType;
+			}
+			else {
+				return null;
+			}
 		}
 
 		/**
 		 * Returns the Famix  Method on top of the context stack
 		 */
 		public Method getFmxMethod() {
-			return fmxMethod;
+			if (fmxMember instanceof Method) {
+				return (Method) fmxMember;
+			}
+			else {
+				return null;
+			}
+		}
+
+		public AnnotationTypeAttribute getFmxAnnotationAttribute() {
+			if (fmxMember instanceof AnnotationTypeAttribute) {
+				return (AnnotationTypeAttribute) fmxMember;
+			}
+			else {
+				return null;
+			}
 		}
 
 		/**
@@ -68,8 +95,13 @@ public class EntityStack {
 		 * Reset the Famix Method on top of the context stack
 		 */
 		public void setFmxMethod(Method fmxMethod) {
-			clearFmxMethod();
-			this.fmxMethod = fmxMethod;
+			clearFmxMember();
+			this.fmxMember = fmxMethod;
+		}
+
+		public void setFmxAnnotationAttribute(AnnotationTypeAttribute fmxAtt) {
+			clearFmxMember();
+			this.fmxMember = fmxAtt;
 		}
 
 		/**
@@ -103,16 +135,16 @@ public class EntityStack {
 		/**
 		 * Empties the context stack of Famix classes
 		 */
-		public void clearFmxClass() {
-			fmxClass = null;
-			clearFmxMethod();
+		public void clearFmxType() {
+			fmxType = null;
+			clearFmxMember();
 		}
 		
 		/**
 		 * Empties the Famix Method on top of the context stack
 		 */
-		public void clearFmxMethod() {
-			fmxMethod = null;
+		public void clearFmxMember() {
+			fmxMember = null;
 			metric_cyclo = EMPTY_CYCLO;
 			metric_nos = EMPTY_NOS;
 			setLastInvocation(null);
@@ -164,20 +196,12 @@ public class EntityStack {
 		clearPckg();  // initializes (to empty) Pckgs, classes and methods
 	}
 
-	public boolean isTracing() {
-		return tracing;
-	}
-
-	public void setTracing(boolean tracing) {
-		this.tracing = tracing;
-	}
-
-	private ClassStack getTopClass() {
-		if (fmxClass.isEmpty()) {
+	private ClassStack getTopType() {
+		if (fmxType.isEmpty()) {
 			return null;
 		}
 		else {
-			return fmxClass.peek();
+			return fmxType.peek();
 		}
 	}
 
@@ -187,12 +211,18 @@ public class EntityStack {
 	 * Pushes an entity on top of the "context stack"
 	 * @param e -- the entity
 	 */
-	public void push(ContainerEntity e) {
+	public void push(NamedEntity e) {
 		if (e instanceof Method) {
 			pushMethod((Method) e);
 		}
 		else if (e instanceof fr.inria.verveine.core.gen.famix.Class) {
 			pushClass((fr.inria.verveine.core.gen.famix.Class) e);
+		}
+		else if (e instanceof AnnotationTypeAttribute) {
+			pushAnnotationMember((AnnotationTypeAttribute) e);
+		}
+		else if (e instanceof AnnotationType) {
+			pushAnnotationType((AnnotationType) e);
 		}
 		else if (e instanceof Namespace) {
 			pushPckg((Namespace) e);
@@ -205,11 +235,7 @@ public class EntityStack {
 	 * @param e -- the Famix method
 	 */
 	public void pushPckg(Namespace e) {
-		if (this.tracing) {
-			System.out.println("TRACE: pushPckg "+e.getName());
-		}
-		clearClasses();
-		//setLastAssoc(null);
+		clearTypes();
 		fmxPckg = e;
 	}
 
@@ -218,10 +244,11 @@ public class EntityStack {
 	 * @param e -- the Famix class
 	 */
 	public void pushClass(fr.inria.verveine.core.gen.famix.Class e) {
-		if (this.tracing) {
-			System.out.println("TRACE: pushClass "+e.getName());
-		}
-		fmxClass.push(new ClassStack(e));
+		fmxType.push(new ClassStack(e));
+	}
+
+	public void pushAnnotationType(AnnotationType e) {
+		fmxType.push(new ClassStack(e));
 	}
 
 	/**
@@ -229,26 +256,26 @@ public class EntityStack {
 	 * @param e -- the Famix method
 	 */
 	public void pushMethod(Method e) {
-		if (this.tracing) {
-			System.out.println("TRACE: pushMethod "+e.getName());
-		}
-		getTopClass().setFmxMethod(e);
-		
+		getTopType().setFmxMethod(e);
 	}
 
+	public void pushAnnotationMember(AnnotationTypeAttribute fmx) {
+		getTopType().setFmxAnnotationAttribute(fmx);	
+	}
+	
 	/**
 	 * Empties the context stack of package and associated classes
 	 */
 	public void clearPckg() {
-		clearClasses();
+		clearTypes();
 		fmxPckg = null;
 	}
 
 	/**
 	 * Empties the context stack of Famix classes
 	 */
-	public void clearClasses() {
-		fmxClass = new Stack<ClassStack>();
+	public void clearTypes() {
+		fmxType = new Stack<ClassStack>();
 	}
 	
 	// READ FROM THE STACK
@@ -262,9 +289,6 @@ public class EntityStack {
 	public Namespace popPckg() {
 		Namespace ret = fmxPckg;
 		clearPckg();
-		if (this.tracing) {
-			System.out.println("TRACE: popPckg "+ret.getName());
-		}
 		return ret;
 	}
 
@@ -274,11 +298,13 @@ public class EntityStack {
 	 * @return the Famix class
 	 */
 	public fr.inria.verveine.core.gen.famix.Class popClass() {
-		ClassStack tmp = fmxClass.pop();
-		if (this.tracing) {
-			System.out.println("TRACE: popClass "+tmp.getFmxClass().getName());
-		}
+		ClassStack tmp = fmxType.pop();
 		return tmp.getFmxClass();
+	}
+	
+	public AnnotationType popAnnotationType() {
+		ClassStack tmp = fmxType.pop();
+		return tmp.getFmxAnnotationType();
 	}
 
 	/**
@@ -287,13 +313,16 @@ public class EntityStack {
 	 * @return the Famix method
 	 */
 	public Method popMethod() {
-		ClassStack tmp = getTopClass();
+		ClassStack tmp = getTopType();
 		Method ret = tmp.getFmxMethod();
-		tmp.clearFmxMethod();
-		
-		if (this.tracing) {
-			System.out.println("TRACE: popMethod "+ret.getName());
-		}
+		tmp.clearFmxMember();
+		return ret;
+	}
+	
+	public AnnotationTypeAttribute popAnnotationMember() {
+		ClassStack tmp = getTopType();
+		AnnotationTypeAttribute ret = tmp.getFmxAnnotationAttribute();
+		tmp.clearFmxMember();
 		return ret;
 	}
 
@@ -304,7 +333,7 @@ public class EntityStack {
 	 */
 	public ContainerEntity top() {
 		ContainerEntity ret = null;
-		ClassStack topc = getTopClass();
+		ClassStack topc = getTopType();
 		if (topc != null) {
 			ret = topc.getFmxMethod();
 			if (ret == null) {
@@ -333,7 +362,11 @@ public class EntityStack {
 	 * @return the Famix class
 	 */
 	public fr.inria.verveine.core.gen.famix.Class topClass() {
-		return getTopClass().getFmxClass();
+		return getTopType().getFmxClass();
+	}
+
+	public AnnotationType topAnnotationType() {
+		return getTopType().getFmxAnnotationType();
 	}
 	
 	/**
@@ -342,7 +375,11 @@ public class EntityStack {
 	 * @return the Famix method
 	 */
 	public Method topMethod() {
-		return getTopClass().getFmxMethod();
+		return getTopType().getFmxMethod();
+	}
+
+	public AnnotationTypeAttribute topAnnotationMember() {
+		return getTopType().getFmxAnnotationAttribute();
 	}
 
 	// PROPERTIES OF THE TOP METHOD
@@ -351,8 +388,8 @@ public class EntityStack {
 	 * Returns the Cyclomatic complexity of the Famix Method on top of the context stack
 	 */
 	public int getTopMethodCyclo() {
-		if (getTopClass() != null) {
-			return getTopClass().getFmxMethodCyclo();
+		if (getTopType() != null) {
+			return getTopType().getFmxMethodCyclo();
 		}
 		else {
 			return EMPTY_CYCLO;
@@ -363,8 +400,8 @@ public class EntityStack {
 	 * Returns the Number of Statements of the Famix Method on top of the context stack
 	 */
 	public int getTopMethodNOS() {
-		if (getTopClass() != null) {
-			return getTopClass().getFmxMethodNOS();
+		if (getTopType() != null) {
+			return getTopType().getFmxMethodNOS();
 		}
 		else {
 			return EMPTY_NOS;
@@ -375,8 +412,8 @@ public class EntityStack {
 	 * Sets the Cyclomatic complexity of the Famix Method on top of the context stack
 	 */
 	public void setTopMethodCyclo(int c) {
-		if (getTopClass() != null) {
-			getTopClass().setFmxMethodCyclo(c);
+		if (getTopType() != null) {
+			getTopType().setFmxMethodCyclo(c);
 		}
 	}
 
@@ -384,8 +421,8 @@ public class EntityStack {
 	 * Sets to the Number of Statements of the Famix Method on top of the context stack
 	 */
 	public void setTopMethodNOS(int n) {
-		if (getTopClass() != null) {
-			getTopClass().setFmxMethodNOS(n);
+		if (getTopType() != null) {
+			getTopType().setFmxMethodNOS(n);
 		}
 	}
 	
@@ -393,8 +430,8 @@ public class EntityStack {
 	 * Adds to the Cyclomatic complexity of the Famix Method on top of the context stack
 	 */
 	public void addTopMethodCyclo(int c) {
-		if (getTopClass() != null) {
-			getTopClass().addFmxMethodCyclo(c);
+		if (getTopType() != null) {
+			getTopType().addFmxMethodCyclo(c);
 		}
 	}
 
@@ -402,10 +439,10 @@ public class EntityStack {
 	 * Adds to the Number of Statements of the Famix Method on top of the context stack
 	 */
 	public void addTopMethodNOS(int n) {
-		if (getTopClass() != null) {
-			getTopClass().addFmxMethodNOS(n);
+		if (getTopType() != null) {
+			getTopType().addFmxMethodNOS(n);
 		}
 	}
-	
+
 }
 
