@@ -14,13 +14,19 @@ public class EnumValue extends NamedEntity {
 
     private Enum parentEnum;
     
-    @FameProperty(name = "parentEnum")
+    @FameProperty(name = "parentEnum", opposite = "values")
     public Enum getParentEnum() {
         return parentEnum;
     }
 
     public void setParentEnum(Enum parentEnum) {
+        if (this.parentEnum != null) {
+            if (this.parentEnum.equals(parentEnum)) return;
+            this.parentEnum.getValues().remove(this);
+        }
         this.parentEnum = parentEnum;
+        if (parentEnum == null) return;
+        parentEnum.getValues().add(this);
     }
     
 

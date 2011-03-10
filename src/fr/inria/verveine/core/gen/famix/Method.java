@@ -219,17 +219,6 @@ public class Method extends BehaviouralEntity {
     public void setKind(String kind) {
         this.kind = kind;
     }
-   
-    private Collection<Type> declaredArgumentTypes;
-    
-    @FameProperty(name = "declaredArgumentTypes")
-    public Collection<Type> getDeclaredArgumentTypes() {
-        return declaredArgumentTypes;
-    }
-
-    public void setDeclaredArgumentTypes(Collection<Type> declaredArgumentTypes) {
-        this.declaredArgumentTypes = declaredArgumentTypes;
-    }
     
 
 

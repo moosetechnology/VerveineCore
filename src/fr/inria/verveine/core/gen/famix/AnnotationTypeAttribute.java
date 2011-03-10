@@ -1,6 +1,7 @@
 // Automagically generated code, please do not change
 package fr.inria.verveine.core.gen.famix;
 
+import ch.akuhn.fame.internal.MultivalueSet;
 import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
@@ -41,12 +42,60 @@ public class AnnotationTypeAttribute extends NamedEntity {
         parentAnnotationType.getAttributes().add(this);
     }
     
-    @FameProperty(name = "annotationAttributeInstances", derived = true)
+    private Collection<AnnotationInstanceAttribute> annotationAttributeInstances; 
+
+    @FameProperty(name = "annotationAttributeInstances", opposite = "annotationTypeAttribute", derived = true)
     public Collection<AnnotationInstanceAttribute> getAnnotationAttributeInstances() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+        if (annotationAttributeInstances == null) {
+            annotationAttributeInstances = new MultivalueSet<AnnotationInstanceAttribute>() {
+                @Override
+                protected void clearOpposite(AnnotationInstanceAttribute e) {
+                    e.setAnnotationTypeAttribute(null);
+                }
+                @Override
+                protected void setOpposite(AnnotationInstanceAttribute e) {
+                    e.setAnnotationTypeAttribute(AnnotationTypeAttribute.this);
+                }
+            };
+        }
+        return annotationAttributeInstances;
     }
+    
+    public void setAnnotationAttributeInstances(Collection<? extends AnnotationInstanceAttribute> annotationAttributeInstances) {
+        this.getAnnotationAttributeInstances().clear();
+        this.getAnnotationAttributeInstances().addAll(annotationAttributeInstances);
+    }                    
+    
         
+    public void addAnnotationAttributeInstances(AnnotationInstanceAttribute one) {
+        this.getAnnotationAttributeInstances().add(one);
+    }   
+    
+    public void addAnnotationAttributeInstances(AnnotationInstanceAttribute one, AnnotationInstanceAttribute... many) {
+        this.getAnnotationAttributeInstances().add(one);
+        for (AnnotationInstanceAttribute each : many)
+            this.getAnnotationAttributeInstances().add(each);
+    }   
+    
+    public void addAnnotationAttributeInstances(Iterable<? extends AnnotationInstanceAttribute> many) {
+        for (AnnotationInstanceAttribute each : many)
+            this.getAnnotationAttributeInstances().add(each);
+    }   
+                
+    public void addAnnotationAttributeInstances(AnnotationInstanceAttribute[] many) {
+        for (AnnotationInstanceAttribute each : many)
+            this.getAnnotationAttributeInstances().add(each);
+    }
+    
+    public int numberOfAnnotationAttributeInstances() {
+        return getAnnotationAttributeInstances().size();
+    }
+
+    public boolean hasAnnotationAttributeInstances() {
+        return !getAnnotationAttributeInstances().isEmpty();
+    }
+    
+                
 
 
 }

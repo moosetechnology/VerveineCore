@@ -14,23 +14,6 @@ public class SourcedEntity extends Entity {
 
 
 
-    private SourceLanguage declaredSourceLanguage = null;
-    
-    @FameProperty(name = "declaredSourceLanguage", opposite = "sourcedEntities")
-    public SourceLanguage getDeclaredSourceLanguage() {
-        return declaredSourceLanguage;
-    }
-
-    public void setDeclaredSourceLanguage(SourceLanguage declaredSourceLanguage) {
-        if (this.declaredSourceLanguage != null) {
-            if (this.declaredSourceLanguage.equals(declaredSourceLanguage)) return;
-            this.declaredSourceLanguage.getSourcedEntities().remove(this);
-        }
-        this.declaredSourceLanguage = declaredSourceLanguage;
-        if (declaredSourceLanguage == null) return;
-        declaredSourceLanguage.getSourcedEntities().add(this);
-    }
-    
     private SourceAnchor sourceAnchor;
     
     @FameProperty(name = "sourceAnchor", opposite = "element")
@@ -45,6 +28,23 @@ public class SourcedEntity extends Entity {
             if (old_sourceAnchor != null) old_sourceAnchor.setElement(null);
             if (sourceAnchor != null) sourceAnchor.setElement(this);
         }
+    }
+    
+    private SourceLanguage declaredSourceLanguage;
+    
+    @FameProperty(name = "declaredSourceLanguage", opposite = "sourcedEntities")
+    public SourceLanguage getDeclaredSourceLanguage() {
+        return declaredSourceLanguage;
+    }
+
+    public void setDeclaredSourceLanguage(SourceLanguage declaredSourceLanguage) {
+        if (this.declaredSourceLanguage != null) {
+            if (this.declaredSourceLanguage.equals(declaredSourceLanguage)) return;
+            this.declaredSourceLanguage.getSourcedEntities().remove(this);
+        }
+        this.declaredSourceLanguage = declaredSourceLanguage;
+        if (declaredSourceLanguage == null) return;
+        declaredSourceLanguage.getSourcedEntities().add(this);
     }
     
     private Collection<Comment> comments; 

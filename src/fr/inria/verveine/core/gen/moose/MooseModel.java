@@ -12,10 +12,10 @@ public class MooseModel {
     }
     
     public static void importInto(MetaRepository metamodel) {
-		metamodel.with(fr.inria.verveine.core.gen.moose.AbsractGroup.class);
+		metamodel.with(fr.inria.verveine.core.gen.moose.Group.class);
 		metamodel.with(fr.inria.verveine.core.gen.moose.Model.class);
 		metamodel.with(fr.inria.verveine.core.gen.moose.Entity.class);
-		metamodel.with(fr.inria.verveine.core.gen.moose.Group.class);
+		metamodel.with(fr.inria.verveine.core.gen.moose.AbsractGroup.class);
 
     }
 

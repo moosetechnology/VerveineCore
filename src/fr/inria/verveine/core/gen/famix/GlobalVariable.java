@@ -14,35 +14,30 @@ public class GlobalVariable extends StructuralEntity {
 
     private ScopingEntity parentScope;
     
-    @FameProperty(name = "parentScope", opposite = "globalVariables")
+    @FameProperty(name = "parentScope")
     public ScopingEntity getParentScope() {
         return parentScope;
     }
 
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getParentScope();
-	}
-
     public void setParentScope(ScopingEntity parentScope) {
-        if (this.parentScope != null) {
-            if (this.parentScope.equals(parentScope)) return;
-            this.parentScope.getGlobalVariables().remove(this);
-        }
         this.parentScope = parentScope;
-        if (parentScope == null) return;
-        parentScope.getGlobalVariables().add(this);
     }
     
     private Module parentModule;
     
-    @FameProperty(name = "parentModule")
+    @FameProperty(name = "parentModule", opposite = "globalVariables")
     public Module getParentModule() {
         return parentModule;
     }
 
     public void setParentModule(Module parentModule) {
+        if (this.parentModule != null) {
+            if (this.parentModule.equals(parentModule)) return;
+            this.parentModule.getGlobalVariables().remove(this);
+        }
         this.parentModule = parentModule;
+        if (parentModule == null) return;
+        parentModule.getGlobalVariables().add(this);
     }
     
 

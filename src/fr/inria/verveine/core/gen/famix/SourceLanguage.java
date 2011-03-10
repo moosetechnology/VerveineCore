@@ -14,12 +14,6 @@ public class SourceLanguage extends Entity {
 
 
 
-    @FameProperty(name = "name", derived = true)
-    public String getName() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
-    }
-    
     private Collection<SourcedEntity> sourcedEntities; 
 
     @FameProperty(name = "sourcedEntities", opposite = "declaredSourceLanguage", derived = true)
@@ -74,6 +68,14 @@ public class SourceLanguage extends Entity {
     }
     
                 
+    @FameProperty(name = "name", derived = true)
+    public String getName() {
+        // TODO: this is a derived property, implement this method manually.
+        //throw new UnsupportedOperationException("Not yet implemented!");
+    	String fullname = this.getClass().getName();
+    	return fullname.substring(0, fullname.indexOf("SourceLanguage"));
+    }
+    
 
 
 }

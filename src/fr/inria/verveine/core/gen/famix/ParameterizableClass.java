@@ -11,6 +11,8 @@ import ch.akuhn.fame.FamePackage;
 @FameDescription("ParameterizableClass")
 public class ParameterizableClass extends Class {
 
+
+
     @FameProperty(name = "parameters", derived = true)
     public Collection<ParameterType> getParameters() {
         // this is a derived property, implement this method manually.

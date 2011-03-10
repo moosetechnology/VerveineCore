@@ -12,10 +12,11 @@ public class Class extends Type {
 
     public Class() {
 		super();
-		this.setIsInterface(Boolean.FALSE);
+		this.setIsInterface(Boolean.FALSE);  // by default assume a real class
 	}
 
-	@FameProperty(name = "isAbstract", derived = true)
+
+    @FameProperty(name = "isAbstract", derived = true)
     public Boolean getIsAbstract() {
         // TODO: this is a derived property, implement this method manually.
         return this.getModifiers().contains("abstract");
