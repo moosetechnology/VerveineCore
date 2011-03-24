@@ -12,10 +12,10 @@ public class ImplicitVariable extends StructuralEntity {
 
 
 
-    private Type container;
+    private ContainerEntity container;
     
     @FameProperty(name = "container")
-    public Type getContainer() {
+    public ContainerEntity getContainer() {
         return container;
     }
 
@@ -24,7 +24,7 @@ public class ImplicitVariable extends StructuralEntity {
 		return getContainer();
 	}
 
-    public void setContainer(Type container) {
+    public void setContainer(ContainerEntity container) {
         this.container = container;
     }
     

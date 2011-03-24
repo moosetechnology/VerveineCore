@@ -8,15 +8,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Vector;
 
-import org.eclipse.jdt.core.compiler.CompilationProgress;
-import org.eclipse.jdt.internal.compiler.batch.Main;
-
 import ch.akuhn.fame.Repository;
 import fr.inria.verveine.core.gen.famix.Entity;
 import fr.inria.verveine.core.gen.famix.FAMIXModel;
 import fr.inria.verveine.core.gen.famix.SourceLanguage;
 
-public class VerveineParser extends Main {
+public class VerveineParser {
 
 	public final static String OUTPUT_FILE = "output.mse";
 	
@@ -25,21 +22,6 @@ public class VerveineParser extends Main {
 	SourceLanguage myLgge = null;
 
 	public VerveineParser() {
-		this(new PrintWriter(System.out),
-				new PrintWriter(System.err),
-				false/*systemExitWhenFinished*/,
-				null/*customDefaultOptions*/,
-				null/*compilationProgress*/);
-		
-	}
-
-	public VerveineParser(PrintWriter outWriter, PrintWriter errWriter,	boolean systemExitWhenFinished, @SuppressWarnings("rawtypes")Map customDefaultOptions, CompilationProgress compilationProgress) {
-		super(outWriter,
-				errWriter,
-				systemExitWhenFinished,
-				customDefaultOptions,
-				compilationProgress);
-		
 		Repository repo = new Repository(FAMIXModel.metamodel());
 		setFamixRepo(repo);
 		if (myLgge != null) {
