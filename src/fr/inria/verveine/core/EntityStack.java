@@ -362,11 +362,11 @@ public class EntityStack {
 	 * @return the Famix class
 	 */
 	public fr.inria.verveine.core.gen.famix.Class topClass() {
-		return getTopType().getFmxClass();
+		return ( getTopType() == null) ? null : getTopType().getFmxClass();
 	}
 
 	public AnnotationType topAnnotationType() {
-		return getTopType().getFmxAnnotationType();
+		return ( getTopType() == null) ? null : getTopType().getFmxAnnotationType();
 	}
 	
 	/**
@@ -375,11 +375,11 @@ public class EntityStack {
 	 * @return the Famix method
 	 */
 	public Method topMethod() {
-		return getTopType().getFmxMethod();
+		return ( getTopType() == null) ? null : getTopType().getFmxMethod();
 	}
 
 	public AnnotationTypeAttribute topAnnotationMember() {
-		return getTopType().getFmxAnnotationAttribute();
+		return ( getTopType() == null) ? null : getTopType().getFmxAnnotationAttribute();
 	}
 
 	// PROPERTIES OF THE TOP METHOD

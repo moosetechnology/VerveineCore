@@ -456,7 +456,7 @@ public class Dictionary<B> {
 	 * @param prev -- previous reference relationship in the same context
 	 * @return the Reference
 	 */
-	public Reference ensureFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
+	public Reference addFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
 		Reference ref = new Reference();
 		ref.setTarget(tgt);
 		ref.setSource(src);
@@ -474,7 +474,7 @@ public class Dictionary<B> {
 	 * @param prev -- previous invocation relationship in the same context
 	 * @return the Invocation
 	 */
-	public Invocation ensureFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
+	public Invocation addFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
 		Invocation invok = new Invocation();
 		invok.setReceiver(receiver);
 		invok.setSender(sender);
@@ -494,7 +494,7 @@ public class Dictionary<B> {
 	 * @param prev -- previous access relationship in the same context
 	 * @return the Invocation
 	 */
-	public Access ensureFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite, Association prev) {
+	public Access addFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite, Association prev) {
 		/* We keep multiple accesses from one method to a field */
 		Access acc = new Access();
 		acc.setAccessor(accessor);
