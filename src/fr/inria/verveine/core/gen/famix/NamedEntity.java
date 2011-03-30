@@ -234,7 +234,7 @@ public class NamedEntity extends SourcedEntity {
 	@Override
 	public String toString() {
 	// mainly for debugging purposes (in Eclipse debugger)
-		return "a " + this.getClass().getCanonicalName() + " named: " + this.getName();
+		return "a " + this.getClass().getSimpleName() + " named: " + this.getName();
 	}
     
 
