@@ -178,6 +178,11 @@ public class Dictionary<B> {
 	 */
 	protected <T extends NamedEntity> T createFamixEntity(Class<T> fmxClass, String name) {
 		T fmx = null;
+
+		if (name == null) {
+			return null;
+		}
+		
 		try {
 			fmx = fmxClass.newInstance();
 		} catch (Exception e) {
@@ -227,7 +232,7 @@ public class Dictionary<B> {
 		// so we cannot recover just from the name
 
 		fmx = createFamixEntity(fmxClass, name);
-		if (bnd != null) {
+		if ( (bnd != null) && (fmx != null) ) {
 			mapToKey.put(bnd, fmx);
 		}
 		
@@ -326,19 +331,25 @@ public class Dictionary<B> {
 	}
 
 	public AnnotationInstanceAttribute createFamixAnnotationInstanceAttribute(AnnotationTypeAttribute att, String value) {
-		AnnotationInstanceAttribute fmx = new AnnotationInstanceAttribute();
-		fmx.setAnnotationTypeAttribute(att);
-		fmx.setValue(value);
-		this.famixRepo.add(fmx);
+		AnnotationInstanceAttribute fmx = null;
+		if ( (att != null) && (value != null) ) {
+			fmx = new AnnotationInstanceAttribute();
+			fmx.setAnnotationTypeAttribute(att);
+			fmx.setValue(value);
+			this.famixRepo.add(fmx);
+		}
 		return fmx;
 	}
 
 	public AnnotationInstance addFamixAnnotationInstance(NamedEntity fmx, AnnotationType annType, Collection<AnnotationInstanceAttribute> annAtts) {
-		AnnotationInstance inst = new AnnotationInstance();
-		inst.setAnnotationType(annType);
-		inst.setAnnotatedEntity(fmx);
-		inst.addAttributes(annAtts);
-		this.famixRepo.add(inst);
+		AnnotationInstance inst = null;
+		if ( (fmx != null) && (annType != null) ) {
+			inst = new AnnotationInstance();
+			inst.setAnnotationType(annType);
+			inst.setAnnotatedEntity(fmx);
+			inst.addAttributes(annAtts);
+			this.famixRepo.add(inst);
+		}
 		return inst;
 	}
 
@@ -403,11 +414,14 @@ public class Dictionary<B> {
 	 * @return the FAMIX Comment
 	 */
 	public Comment createFamixComment(String cmt, SourcedEntity owner) {
-		Comment fmx = new Comment();
-		fmx.setContent(cmt);
-		fmx.setContainer(owner);
-		this.famixRepo.add(fmx);
+		Comment fmx = null;
 		
+		if ( (cmt != null) && (owner != null) ) {
+			fmx = new Comment();
+			fmx.setContent(cmt);
+			fmx.setContainer(owner);
+			this.famixRepo.add(fmx);
+		}
 		return fmx;
 	}
 	
@@ -436,6 +450,10 @@ public class Dictionary<B> {
 	 * @return the Inheritance relationship
 	 */
 	public Inheritance ensureFamixInheritance(Type sup, Type sub, Association prev) {
+		if ( (sup == null) || (sub == null) ) {
+			return null;
+		}
+			
 		for (Inheritance i : sup.getSubInheritances()) {
 			if (i.getSubclass() == sub) {
 				return i;
@@ -457,6 +475,9 @@ public class Dictionary<B> {
 	 * @return the Reference
 	 */
 	public Reference addFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
+		if ( (src == null) || (tgt == null) ) {
+			return null;
+		}
 		Reference ref = new Reference();
 		ref.setTarget(tgt);
 		ref.setSource(src);
@@ -475,6 +496,9 @@ public class Dictionary<B> {
 	 * @return the Invocation
 	 */
 	public Invocation addFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
+		if ( (sender == null) || (invoked == null) || (receiver == null) ) {
+			return null;
+		}
 		Invocation invok = new Invocation();
 		invok.setReceiver(receiver);
 		invok.setSender(sender);
@@ -495,7 +519,9 @@ public class Dictionary<B> {
 	 * @return the Invocation
 	 */
 	public Access addFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite, Association prev) {
-		/* We keep multiple accesses from one method to a field */
+		if ( (accessor == null) || (var == null) ) {
+			return null;
+		}
 		Access acc = new Access();
 		acc.setAccessor(accessor);
 		acc.setVariable(var);
@@ -518,7 +544,10 @@ public class Dictionary<B> {
 	 * @param excep -- the exception declared to be thrown
 	 * @return the DeclaredException
 	 */
-	public DeclaredException ensureFamixDeclaredException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+	public DeclaredException createFamixDeclaredException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		if ( (meth == null) || (excep == null) ) {
+			return null;
+		}
 		DeclaredException decl = new DeclaredException();
 		decl.setExceptionClass(excep);
 		decl.setDefiningMethod(meth);
@@ -532,7 +561,10 @@ public class Dictionary<B> {
 	 * @param excep -- the exception caught
 	 * @return the CaughtException
 	 */
-	public CaughtException ensureFamixCaughtException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+	public CaughtException createFamixCaughtException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		if ( (meth == null) || (excep == null) ) {
+			return null;
+		}
 		CaughtException decl = new CaughtException();
 		decl.setExceptionClass(excep);
 		decl.setDefiningMethod(meth);
@@ -548,7 +580,10 @@ public class Dictionary<B> {
 	 * @param excep -- the exception thrown
 	 * @return the ThrownException
 	 */
-	public ThrownException ensureFamixThrownException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+	public ThrownException createFamixThrownException(Method meth, fr.inria.verveine.core.gen.famix.Class excep) {
+		if ( (meth == null) || (excep == null) ) {
+			return null;
+		}
 		ThrownException decl = new ThrownException();
 		decl.setExceptionClass(excep);
 		decl.setDefiningMethod(meth);
@@ -642,6 +677,11 @@ public class Dictionary<B> {
 	@SuppressWarnings("unchecked")
 	public <T extends NamedEntity> T ensureFamixUniqEntity(Class<T> fmxClass, B key, String name) {
 		T fmx = null;
+		
+		if (name == null) {
+			return null;
+		}
+		
 		if (key != null) {
 			fmx = (T) getEntityByKey(key);
 		}
