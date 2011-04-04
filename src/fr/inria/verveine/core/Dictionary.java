@@ -345,8 +345,8 @@ public class Dictionary<B> {
 		AnnotationInstance inst = null;
 		if ( (fmx != null) && (annType != null) ) {
 			inst = new AnnotationInstance();
-			inst.setAnnotationType(annType);
 			inst.setAnnotatedEntity(fmx);
+			inst.setAnnotationType(annType);
 			inst.addAttributes(annAtts);
 			this.famixRepo.add(inst);
 		}

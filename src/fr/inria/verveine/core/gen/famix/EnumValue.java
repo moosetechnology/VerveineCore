@@ -19,6 +19,11 @@ public class EnumValue extends NamedEntity {
         return parentEnum;
     }
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentEnum();
+	}
+
     public void setParentEnum(Enum parentEnum) {
         if (this.parentEnum != null) {
             if (this.parentEnum.equals(parentEnum)) return;
