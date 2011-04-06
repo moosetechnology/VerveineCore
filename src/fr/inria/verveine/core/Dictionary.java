@@ -496,7 +496,7 @@ public class Dictionary<B> {
 	 * @return the Invocation
 	 */
 	public Invocation addFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
-		if ( (sender == null) || (invoked == null) || (receiver == null) ) {
+		if ( (sender == null) || (invoked == null) ) {
 			return null;
 		}
 		Invocation invok = new Invocation();
