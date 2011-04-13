@@ -10,7 +10,7 @@ import ch.akuhn.fame.FamePackage;
 
 @FamePackage("FAMIX")
 @FameDescription("AnnotationTypeAttribute")
-public class AnnotationTypeAttribute extends NamedEntity {
+public class AnnotationTypeAttribute extends Attribute {
 
 
 
@@ -24,27 +24,14 @@ public class AnnotationTypeAttribute extends NamedEntity {
     public void setDeclaredType(Type declaredType) {
         this.declaredType = declaredType;
     }
-    
-    private AnnotationType parentAnnotationType;
-    
-    @FameProperty(name = "parentAnnotationType", opposite = "attributes")
+
+    @FameProperty(name = "parentAnnotationType")
     public AnnotationType getParentAnnotationType() {
-        return parentAnnotationType;
+        return (AnnotationType)parentType;
     }
 
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return null;
-	}
-
     public void setParentAnnotationType(AnnotationType parentAnnotationType) {
-        if (this.parentAnnotationType != null) {
-            if (this.parentAnnotationType.equals(parentAnnotationType)) return;
-            this.parentAnnotationType.getAttributes().remove(this);
-        }
-        this.parentAnnotationType = parentAnnotationType;
-        if (parentAnnotationType == null) return;
-        parentAnnotationType.getAttributes().add(this);
+        this.setParentType( parentAnnotationType);
     }
     
     private Collection<AnnotationInstanceAttribute> annotationAttributeInstances; 

@@ -23,7 +23,7 @@ public class Attribute extends StructuralEntity {
         this.hasClassScope = hasClassScope;
     }
     
-    private Type parentType;
+    protected Type parentType;
     
     @FameProperty(name = "parentType", opposite = "attributes")
     public Type getParentType() {

@@ -106,6 +106,17 @@ public class NamedEntity extends SourcedEntity {
         this.isPublic = isPublic;
     }
     
+    private Boolean isProtected;
+    
+    @FameProperty(name = "isProtected")
+    public Boolean getIsProtected() {
+        return isProtected;
+    }
+
+    public void setIsProtected(Boolean isProtected) {
+        this.isProtected = isProtected;
+    }
+    
     private Collection<String> modifiers; 
 
     @FameProperty(name = "modifiers")
@@ -148,17 +159,6 @@ public class NamedEntity extends SourcedEntity {
     }
     
                 
-    private Boolean isProtected;
-    
-    @FameProperty(name = "isProtected")
-    public Boolean getIsProtected() {
-        return isProtected;
-    }
-
-    public void setIsProtected(Boolean isProtected) {
-        this.isProtected = isProtected;
-    }
-    
     private Collection<Invocation> receivingInvocations; 
 
     @FameProperty(name = "receivingInvocations", opposite = "receiver", derived = true)
@@ -233,7 +233,7 @@ public class NamedEntity extends SourcedEntity {
 
 	@Override
 	public String toString() {
-	// mainly for debugging purposes (in Eclipse debugger)
+		// mainly for debugging purposes (in Eclipse debugger)
 		return "a " + this.getClass().getSimpleName() + " named: " + this.getName();
 	}
     

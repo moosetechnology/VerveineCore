@@ -10,7 +10,7 @@ import ch.akuhn.fame.FamePackage;
 
 @FamePackage("FAMIX")
 @FameDescription("AnnotationType")
-public class AnnotationType extends NamedEntity {
+public class AnnotationType extends Type {
 
 
 
@@ -20,11 +20,6 @@ public class AnnotationType extends NamedEntity {
     public ContainerEntity getContainer() {
         return container;
     }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getContainer();
-	}
 
     public void setContainer(ContainerEntity container) {
         if (this.container != null) {
@@ -36,60 +31,6 @@ public class AnnotationType extends NamedEntity {
         container.getDefinedAnnotationTypes().add(this);
     }
     
-    private Collection<AnnotationTypeAttribute> attributes; 
-
-    @FameProperty(name = "attributes", opposite = "parentAnnotationType", derived = true)
-    public Collection<AnnotationTypeAttribute> getAttributes() {
-        if (attributes == null) {
-            attributes = new MultivalueSet<AnnotationTypeAttribute>() {
-                @Override
-                protected void clearOpposite(AnnotationTypeAttribute e) {
-                    e.setParentAnnotationType(null);
-                }
-                @Override
-                protected void setOpposite(AnnotationTypeAttribute e) {
-                    e.setParentAnnotationType(AnnotationType.this);
-                }
-            };
-        }
-        return attributes;
-    }
-    
-    public void setAttributes(Collection<? extends AnnotationTypeAttribute> attributes) {
-        this.getAttributes().clear();
-        this.getAttributes().addAll(attributes);
-    }                    
-    
-        
-    public void addAttributes(AnnotationTypeAttribute one) {
-        this.getAttributes().add(one);
-    }   
-    
-    public void addAttributes(AnnotationTypeAttribute one, AnnotationTypeAttribute... many) {
-        this.getAttributes().add(one);
-        for (AnnotationTypeAttribute each : many)
-            this.getAttributes().add(each);
-    }   
-    
-    public void addAttributes(Iterable<? extends AnnotationTypeAttribute> many) {
-        for (AnnotationTypeAttribute each : many)
-            this.getAttributes().add(each);
-    }   
-                
-    public void addAttributes(AnnotationTypeAttribute[] many) {
-        for (AnnotationTypeAttribute each : many)
-            this.getAttributes().add(each);
-    }
-    
-    public int numberOfAttributes() {
-        return getAttributes().size();
-    }
-
-    public boolean hasAttributes() {
-        return !getAttributes().isEmpty();
-    }
-    
-                
     private Collection<AnnotationInstance> instances; 
 
     @FameProperty(name = "instances", opposite = "annotationType", derived = true)

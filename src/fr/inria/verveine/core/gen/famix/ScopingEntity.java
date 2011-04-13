@@ -14,28 +14,6 @@ public class ScopingEntity extends ContainerEntity {
 
 
 
-    private ScopingEntity parentScope;
-    
-    @FameProperty(name = "parentScope", opposite = "childScopes")
-    public ScopingEntity getParentScope() {
-        return parentScope;
-    }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getParentScope();
-	}
-
-    public void setParentScope(ScopingEntity parentScope) {
-        if (this.parentScope != null) {
-            if (this.parentScope.equals(parentScope)) return;
-            this.parentScope.getChildScopes().remove(this);
-        }
-        this.parentScope = parentScope;
-        if (parentScope == null) return;
-        parentScope.getChildScopes().add(this);
-    }
-    
     private Collection<Function> functions; 
 
     @FameProperty(name = "functions", opposite = "parentScope", derived = true)
@@ -90,6 +68,28 @@ public class ScopingEntity extends ContainerEntity {
     }
     
                 
+    private ScopingEntity parentScope;
+    
+    @FameProperty(name = "parentScope", opposite = "childScopes")
+    public ScopingEntity getParentScope() {
+        return parentScope;
+    }
+
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentScope();
+	}
+
+    public void setParentScope(ScopingEntity parentScope) {
+        if (this.parentScope != null) {
+            if (this.parentScope.equals(parentScope)) return;
+            this.parentScope.getChildScopes().remove(this);
+        }
+        this.parentScope = parentScope;
+        if (parentScope == null) return;
+        parentScope.getChildScopes().add(this);
+    }
+    
     private Collection<ScopingEntity> childScopes; 
 
     @FameProperty(name = "childScopes", opposite = "parentScope", derived = true)
