@@ -635,13 +635,13 @@ public class Dictionary<B> {
 	 * @param owner -- the ContainerEntity where the implicit variable appears (usually a method inside <b>clazz</b>)
 	 * @return the FAMIX ImplicitVariable or null in case of a FAMIX error
 	 */
-	public ImplicitVariable ensureFamixImplicitVariable(String name, fr.inria.verveine.core.gen.famix.Class clazz, ContainerEntity owner) {
+	public ImplicitVariable ensureFamixImplicitVariable(String name, fr.inria.verveine.core.gen.famix.Class clazz, BehaviouralEntity owner) {
 		ImplicitVariable fmx = getImplicitVariableByClass(clazz, name);
 		
 		if (fmx == null) {
 			fmx = (ImplicitVariable) createFamixEntity(ImplicitVariable.class, name);
 			if (fmx!=null) {
-				fmx.setContainer(owner);
+				fmx.setParentBehaviouralEntity(owner);
 				fmx.setIsStub(Boolean.FALSE);
 
 				ImplicitVars iv = mapImpVar.get(clazz);				

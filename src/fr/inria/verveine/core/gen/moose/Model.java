@@ -1,6 +1,7 @@
 // Automagically generated code, please do not change
 package fr.inria.verveine.core.gen.moose;
 
+import fr.inria.verveine.core.gen.famix.SourceLanguage;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -12,14 +13,14 @@ public class Model extends AbsractGroup {
 
 
 
-    private String sourceLanguage;
+    private SourceLanguage sourceLanguage;
     
     @FameProperty(name = "sourceLanguage")
-    public String getSourceLanguage() {
+    public SourceLanguage getSourceLanguage() {
         return sourceLanguage;
     }
 
-    public void setSourceLanguage(String sourceLanguage) {
+    public void setSourceLanguage(SourceLanguage sourceLanguage) {
         this.sourceLanguage = sourceLanguage;
     }
     

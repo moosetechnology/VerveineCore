@@ -62,6 +62,7 @@ public class Access extends Association {
         // TODO: this is a derived property, implement this method manually.
     	return ! getIsWrite(); 
     }
+    
 
 	@Override
 	public NamedEntity getTo() {

@@ -11,6 +11,10 @@ public class GenerateFamix {
 		generateCode();
 	}
 	
+	/**
+	 * Generates Java code from Famix Model in mse
+	 * The mse file may be generated in Pharo from the meta model: 'MooseModel meta exportString'
+	 */
 	public static void generateCode() {
 		InputSource input = InputSource.fromFilename("mse/famix30_complete.mse");
         Tower t = new Tower();

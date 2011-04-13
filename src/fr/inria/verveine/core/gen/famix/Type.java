@@ -144,60 +144,6 @@ public class Type extends ContainerEntity {
         container.getTypes().add(this);
     }
     
-    private Collection<Attribute> attributes; 
-
-    @FameProperty(name = "attributes", opposite = "parentType", derived = true)
-    public Collection<Attribute> getAttributes() {
-        if (attributes == null) {
-            attributes = new MultivalueSet<Attribute>() {
-                @Override
-                protected void clearOpposite(Attribute e) {
-                    e.setParentType(null);
-                }
-                @Override
-                protected void setOpposite(Attribute e) {
-                    e.setParentType(Type.this);
-                }
-            };
-        }
-        return attributes;
-    }
-    
-    public void setAttributes(Collection<? extends Attribute> attributes) {
-        this.getAttributes().clear();
-        this.getAttributes().addAll(attributes);
-    }                    
-    
-        
-    public void addAttributes(Attribute one) {
-        this.getAttributes().add(one);
-    }   
-    
-    public void addAttributes(Attribute one, Attribute... many) {
-        this.getAttributes().add(one);
-        for (Attribute each : many)
-            this.getAttributes().add(each);
-    }   
-    
-    public void addAttributes(Iterable<? extends Attribute> many) {
-        for (Attribute each : many)
-            this.getAttributes().add(each);
-    }   
-                
-    public void addAttributes(Attribute[] many) {
-        for (Attribute each : many)
-            this.getAttributes().add(each);
-    }
-    
-    public int numberOfAttributes() {
-        return getAttributes().size();
-    }
-
-    public boolean hasAttributes() {
-        return !getAttributes().isEmpty();
-    }
-    
-                
     private Collection<Inheritance> subInheritances; 
 
     @FameProperty(name = "subInheritances", opposite = "superclass", derived = true)
@@ -249,6 +195,60 @@ public class Type extends ContainerEntity {
 
     public boolean hasSubInheritances() {
         return !getSubInheritances().isEmpty();
+    }
+    
+                
+    private Collection<Attribute> attributes; 
+
+    @FameProperty(name = "attributes", opposite = "parentType", derived = true)
+    public Collection<Attribute> getAttributes() {
+        if (attributes == null) {
+            attributes = new MultivalueSet<Attribute>() {
+                @Override
+                protected void clearOpposite(Attribute e) {
+                    e.setParentType(null);
+                }
+                @Override
+                protected void setOpposite(Attribute e) {
+                    e.setParentType(Type.this);
+                }
+            };
+        }
+        return attributes;
+    }
+    
+    public void setAttributes(Collection<? extends Attribute> attributes) {
+        this.getAttributes().clear();
+        this.getAttributes().addAll(attributes);
+    }                    
+    
+        
+    public void addAttributes(Attribute one) {
+        this.getAttributes().add(one);
+    }   
+    
+    public void addAttributes(Attribute one, Attribute... many) {
+        this.getAttributes().add(one);
+        for (Attribute each : many)
+            this.getAttributes().add(each);
+    }   
+    
+    public void addAttributes(Iterable<? extends Attribute> many) {
+        for (Attribute each : many)
+            this.getAttributes().add(each);
+    }   
+                
+    public void addAttributes(Attribute[] many) {
+        for (Attribute each : many)
+            this.getAttributes().add(each);
+    }
+    
+    public int numberOfAttributes() {
+        return getAttributes().size();
+    }
+
+    public boolean hasAttributes() {
+        return !getAttributes().isEmpty();
     }
     
                 

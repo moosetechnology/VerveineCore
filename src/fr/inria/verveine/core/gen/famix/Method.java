@@ -199,7 +199,7 @@ public class Method extends BehaviouralEntity {
 		return getParentType();
 	}
 
-	public void setParentType(Type parentType) {
+    public void setParentType(Type parentType) {
         if (this.parentType != null) {
             if (this.parentType.equals(parentType)) return;
             this.parentType.getMethods().remove(this);

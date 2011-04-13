@@ -12,20 +12,20 @@ public class ImplicitVariable extends StructuralEntity {
 
 
 
-    private ContainerEntity container;
+    private BehaviouralEntity parentBehaviouralEntity;
     
-    @FameProperty(name = "container")
-    public ContainerEntity getContainer() {
-        return container;
+    @FameProperty(name = "parentBehaviouralEntity")
+    public BehaviouralEntity getParentBehaviouralEntity() {
+        return parentBehaviouralEntity;
     }
 
     @Override
 	public ContainerEntity getBelongsTo() {
-		return getContainer();
+		return getParentBehaviouralEntity();
 	}
 
-    public void setContainer(ContainerEntity container) {
-        this.container = container;
+    public void setParentBehaviouralEntity(BehaviouralEntity parentBehaviouralEntity) {
+        this.parentBehaviouralEntity = parentBehaviouralEntity;
     }
     
 

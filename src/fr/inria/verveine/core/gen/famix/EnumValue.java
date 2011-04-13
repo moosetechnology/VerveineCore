@@ -8,7 +8,7 @@ import ch.akuhn.fame.FamePackage;
 
 @FamePackage("FAMIX")
 @FameDescription("EnumValue")
-public class EnumValue extends NamedEntity {
+public class EnumValue extends StructuralEntity {
 
 
 
