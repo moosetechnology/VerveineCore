@@ -12,6 +12,7 @@ import fr.inria.verveine.core.gen.famix.Method;
 import fr.inria.verveine.core.gen.famix.NamedEntity;
 import fr.inria.verveine.core.gen.famix.Namespace;
 import fr.inria.verveine.core.gen.famix.Reference;
+import fr.inria.verveine.core.gen.famix.Type;
 
 /** A stack of FAMIX Entities so that we know in what container each new Entity is declared
  * @author anquetil
@@ -21,43 +22,29 @@ public class EntityStack {
 	public static final int EMPTY_NOS = 0;
 	
 	private Namespace fmxPckg;
-	private Stack<ClassStack> fmxType;
+	private Stack<TypeStack> fmxType;
 
 	/**
 	 * A structure to hold a Famix class and its current method
 	 */
-	public class ClassStack {
-		private NamedEntity fmxType;  // can be a FamixClass or a FamixAnnotationType
+	private class TypeStack {
+		private Type fmxType;  // can be a FamixClass, or Enum, or FamixAnnotationType
 		private NamedEntity fmxMember; // can be a FamixMethod or a FamixAnnotationAttribute
 		private int metric_cyclo = EMPTY_CYCLO;  // Cyclomatic Complexity
 		private int metric_nos = EMPTY_NOS;      // Number Of Statements
 		
 		
- 		public ClassStack(NamedEntity e) {
+ 		public TypeStack(Type e) {
 			fmxType = e;
 			clearFmxMember();
 		}
 
-		public fr.inria.verveine.core.gen.famix.Class getFmxClass() {
-			if (fmxType instanceof fr.inria.verveine.core.gen.famix.Class) {
-				return (fr.inria.verveine.core.gen.famix.Class) fmxType;
-			}
-			else {
-				return null;
-			}
-		}
-
-		public AnnotationType getFmxAnnotationType() {
-			if (fmxType instanceof AnnotationType) {
-				return (AnnotationType) fmxType;
-			}
-			else {
-				return null;
-			}
+		public Type getFmxType() {
+			return (Type) fmxType;
 		}
 
 		/**
-		 * Returns the Famix  Method on top of the context stack
+		 * Returns the Famix Method on top of the context stack
 		 */
 		public Method getFmxMethod() {
 			if (fmxMember instanceof Method) {
@@ -133,7 +120,7 @@ public class EntityStack {
 		}
 		
 		/**
-		 * Empties the context stack of Famix classes
+		 * Empties the context stack of Famix types
 		 */
 		public void clearFmxType() {
 			fmxType = null;
@@ -196,7 +183,7 @@ public class EntityStack {
 		clearPckg();  // initializes (to empty) Pckgs, classes and methods
 	}
 
-	private ClassStack getTopType() {
+	private TypeStack getTopType() {
 		if (fmxType.isEmpty()) {
 			return null;
 		}
@@ -215,14 +202,11 @@ public class EntityStack {
 		if (e instanceof Method) {
 			pushMethod((Method) e);
 		}
-		else if (e instanceof fr.inria.verveine.core.gen.famix.Class) {
-			pushClass((fr.inria.verveine.core.gen.famix.Class) e);
+		else if (e instanceof fr.inria.verveine.core.gen.famix.Type) {
+			pushType((fr.inria.verveine.core.gen.famix.Type) e);
 		}
 		else if (e instanceof AnnotationTypeAttribute) {
 			pushAnnotationMember((AnnotationTypeAttribute) e);
-		}
-		else if (e instanceof AnnotationType) {
-			pushAnnotationType((AnnotationType) e);
 		}
 		else if (e instanceof Namespace) {
 			pushPckg((Namespace) e);
@@ -240,19 +224,15 @@ public class EntityStack {
 	}
 
 	/**
-	 * Pushes a Famix class on top of the "context class stack"
-	 * @param e -- the Famix class
+	 * Pushes a Famix Type on top of the "context type stack"
+	 * @param t -- the FamixType
 	 */
-	public void pushClass(fr.inria.verveine.core.gen.famix.Class e) {
-		fmxType.push(new ClassStack(e));
-	}
-
-	public void pushAnnotationType(AnnotationType e) {
-		fmxType.push(new ClassStack(e));
+	public void pushType(fr.inria.verveine.core.gen.famix.Type t) {
+		fmxType.push(new TypeStack(t));
 	}
 
 	/**
-	 * Pushes a Famix method on top of the "context stack" for the current Famix class
+	 * Pushes a Famix method on top of the "context stack" for the current Famix Type
 	 * @param e -- the Famix method
 	 */
 	public void pushMethod(Method e) {
@@ -275,7 +255,7 @@ public class EntityStack {
 	 * Empties the context stack of Famix classes
 	 */
 	public void clearTypes() {
-		fmxType = new Stack<ClassStack>();
+		fmxType = new Stack<TypeStack>();
 	}
 	
 	// READ FROM THE STACK
@@ -293,18 +273,13 @@ public class EntityStack {
 	}
 
 	/**
-	 * Pops the top Famix class from the "context stack"
-	 * Note: does not check that there is such a class, so could possibly throw an EmptyStackException
+	 * Pops the top Famix type from the "context stack"<BR>
+	 * Note: does not check that there is such a type, so could possibly throw an EmptyStackException
 	 * @return the Famix class
 	 */
-	public fr.inria.verveine.core.gen.famix.Class popClass() {
-		ClassStack tmp = fmxType.pop();
-		return tmp.getFmxClass();
-	}
-	
-	public AnnotationType popAnnotationType() {
-		ClassStack tmp = fmxType.pop();
-		return tmp.getFmxAnnotationType();
+	public fr.inria.verveine.core.gen.famix.Type popType() {
+		TypeStack tmp = fmxType.pop();
+		return tmp.getFmxType();
 	}
 
 	/**
@@ -313,14 +288,14 @@ public class EntityStack {
 	 * @return the Famix method
 	 */
 	public Method popMethod() {
-		ClassStack tmp = getTopType();
+		TypeStack tmp = getTopType();
 		Method ret = tmp.getFmxMethod();
 		tmp.clearFmxMember();
 		return ret;
 	}
 	
 	public AnnotationTypeAttribute popAnnotationMember() {
-		ClassStack tmp = getTopType();
+		TypeStack tmp = getTopType();
 		AnnotationTypeAttribute ret = tmp.getFmxAnnotationAttribute();
 		tmp.clearFmxMember();
 		return ret;
@@ -333,11 +308,11 @@ public class EntityStack {
 	 */
 	public ContainerEntity top() {
 		ContainerEntity ret = null;
-		ClassStack topc = getTopType();
+		TypeStack topc = getTopType();
 		if (topc != null) {
 			ret = topc.getFmxMethod();
 			if (ret == null) {
-				ret = topc.getFmxClass();
+				ret = topc.getFmxType();
 			}
 		}
 		else {
@@ -357,18 +332,14 @@ public class EntityStack {
 	}
 
 	/**
-	 * Returns the Famix class on top of the "context stack"
+	 * Returns the Famix type on top of the "context stack"
 	 * Note: does not check that there is such a class, so could possibly throw an EmptyStackException
 	 * @return the Famix class
 	 */
-	public fr.inria.verveine.core.gen.famix.Class topClass() {
-		return ( getTopType() == null) ? null : getTopType().getFmxClass();
+	public fr.inria.verveine.core.gen.famix.Type topType() {
+		return ( getTopType() == null) ? null : getTopType().getFmxType();
 	}
 
-	public AnnotationType topAnnotationType() {
-		return ( getTopType() == null) ? null : getTopType().getFmxAnnotationType();
-	}
-	
 	/**
 	 * Returns the Famix method  of the Famix class on top of the "context stack"
 	 * Note: does not check that there is such a class or method, so could possibly throw an EmptyStackException

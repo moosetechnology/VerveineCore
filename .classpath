@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/akuhn-util-r28011.jar"/>
 	<classpathentry kind="lib" path="lib/fame.jar" sourcepath="/Fame/src"/>
-	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core_3.6.0.v_A58.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jdt.core_3.6.0.v_A58.jar" sourcepath="/org.eclipse.jdt.core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

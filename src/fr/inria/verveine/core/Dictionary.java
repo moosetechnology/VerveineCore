@@ -71,9 +71,9 @@ public class Dictionary<B> {
 	/**
 	 * Yet another dictionary for implicit variables ('self' and 'super')
 	 * Because they are implicit, they may not have a binding provided by the parser,
-	 * or may have the same binding than their associated class so they can't be kept easily in {@link Dictionary#mapToKey}
+	 * or may have the same binding than their associated type so they can't be kept easily in {@link Dictionary#mapToKey}
 	 */
-	protected Map<fr.inria.verveine.core.gen.famix.Class,ImplicitVars> mapImpVar;
+	protected Map<Type,ImplicitVars> mapImpVar;
 
 	/**
 	 * Used to keep the two possible ImplicitVariable for a given Class binding
@@ -92,7 +92,7 @@ public class Dictionary<B> {
 		
 		this.mapToKey = new Hashtable<B,NamedEntity>();
 		this.mapName = new Hashtable<String,Collection<NamedEntity>>();
-		this.mapImpVar = new Hashtable<fr.inria.verveine.core.gen.famix.Class,ImplicitVars>();
+		this.mapImpVar = new Hashtable<Type,ImplicitVars>();
 		
 		if (! this.famixRepo.isEmpty()) {
 			recoverExistingRepository();
@@ -600,17 +600,17 @@ public class Dictionary<B> {
 	 * @return the Famix Entity associated to the binding or null if not found
 	 */
 	public ImplicitVariable getImplicitVariableByBinding(B bnd, String iv_name) {
-		return getImplicitVariableByClass((fr.inria.verveine.core.gen.famix.Class)getEntityByKey(bnd), iv_name);
+		return getImplicitVariableByType((fr.inria.verveine.core.gen.famix.Class)getEntityByKey(bnd), iv_name);
 	}
 	
 	/**
-	 * Returns the Famix ImplicitVariable associated to the given Famix Class.
-	 * @param clazz -- the FamixClass
+	 * Returns the Famix ImplicitVariable associated to the given FamixType.
+	 * @param type -- the FamixType
 	 * @param name -- name of the ImplicitVariable (should be Dictionary.SELF_NAME or Dictionary.SUPER_NAME)
-	 * @return the Famix ImplicitVariable associated to the Class or null if not found
+	 * @return the Famix ImplicitVariable associated to the Type or null if not found
 	 */
-	public ImplicitVariable getImplicitVariableByClass(fr.inria.verveine.core.gen.famix.Class clazz, String name) {
-		ImplicitVars iv = mapImpVar.get(clazz);
+	public ImplicitVariable getImplicitVariableByType(Type type, String name) {
+		ImplicitVars iv = mapImpVar.get(type);
 		ImplicitVariable ret = null;
 		
 		if (iv == null) {
@@ -628,15 +628,15 @@ public class Dictionary<B> {
 	}
 
 	/**
-	 * Returns a FAMIX ImplicitVariable with the given <b>name</b> (self or super) and corresponding to the <b>clazz</b>.
+	 * Returns a FAMIX ImplicitVariable with the given <b>name</b> ("self" or "super") and corresponding to the <b>type</b>.
 	 * If this ImplicitVariable does not exist yet, it is created
 	 * @param name -- the name of the FAMIX ImplicitVariable (should be Dictionary.SELF_NAME or Dictionary.SUPER_NAME)
-	 * @param clazz -- the Famix Class for this ImplicitVariable (should not be null)
-	 * @param owner -- the ContainerEntity where the implicit variable appears (usually a method inside <b>clazz</b>)
+	 * @param type -- the Famix Type for this ImplicitVariable (should not be null)
+	 * @param owner -- the ContainerEntity where the implicit variable appears (usually a method inside <b>type</b>)
 	 * @return the FAMIX ImplicitVariable or null in case of a FAMIX error
 	 */
-	public ImplicitVariable ensureFamixImplicitVariable(String name, fr.inria.verveine.core.gen.famix.Class clazz, BehaviouralEntity owner) {
-		ImplicitVariable fmx = getImplicitVariableByClass(clazz, name);
+	public ImplicitVariable ensureFamixImplicitVariable(String name, Type type, BehaviouralEntity owner) {
+		ImplicitVariable fmx = getImplicitVariableByType(type, name);
 		
 		if (fmx == null) {
 			fmx = (ImplicitVariable) createFamixEntity(ImplicitVariable.class, name);
@@ -644,7 +644,7 @@ public class Dictionary<B> {
 				fmx.setParentBehaviouralEntity(owner);
 				fmx.setIsStub(Boolean.FALSE);
 
-				ImplicitVars iv = mapImpVar.get(clazz);				
+				ImplicitVars iv = mapImpVar.get(type);				
 				if (iv == null) {
 					iv = new ImplicitVars();
 				}
@@ -656,7 +656,7 @@ public class Dictionary<B> {
 					iv.super_iv = fmx;
 				}
 				
-				mapImpVar.put(clazz, iv);
+				mapImpVar.put(type, iv);
 			}
 		}
 
