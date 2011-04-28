@@ -61,19 +61,23 @@ public class Dictionary<B> {
 	/**
 	 * A dictionary to map a key (provided by the user) to FAMIX Entity
 	 */
-	protected Map<B,NamedEntity> mapToKey;
+	protected Map<B,NamedEntity> keyToEntity;
+	/**
+	 * A reverse dictionary (see {@link Dictionary#keyToEntity}) to find the key of an entity.
+	 */
+	protected Map<NamedEntity,B> entityToKey;
 
 	/**
 	 * Another dictionary to map a name to FAMIX Entities with this name
 	 */
-	protected Map<String,Collection<NamedEntity>> mapName;
+	protected Map<String,Collection<NamedEntity>> nameToEntity;
 
 	/**
 	 * Yet another dictionary for implicit variables ('self' and 'super')
 	 * Because they are implicit, they may not have a binding provided by the parser,
-	 * or may have the same binding than their associated type so they can't be kept easily in {@link Dictionary#mapToKey}
+	 * or may have the same binding than their associated type so they can't be kept easily in {@link Dictionary#keyToEntity}
 	 */
-	protected Map<Type,ImplicitVars> mapImpVar;
+	protected Map<Type,ImplicitVars> typeToImpVar;
 
 	/**
 	 * Used to keep the two possible ImplicitVariable for a given Class binding
@@ -90,9 +94,10 @@ public class Dictionary<B> {
 	public Dictionary(Repository famixRepo) {
 		this.famixRepo = famixRepo;
 		
-		this.mapToKey = new Hashtable<B,NamedEntity>();
-		this.mapName = new Hashtable<String,Collection<NamedEntity>>();
-		this.mapImpVar = new Hashtable<Type,ImplicitVars>();
+		this.keyToEntity = new Hashtable<B,NamedEntity>();
+		this.entityToKey = new Hashtable<NamedEntity,B>();
+		this.nameToEntity = new Hashtable<String,Collection<NamedEntity>>();
+		this.typeToImpVar = new Hashtable<Type,ImplicitVars>();
 		
 		if (! this.famixRepo.isEmpty()) {
 			recoverExistingRepository();
@@ -122,12 +127,21 @@ public class Dictionary<B> {
 	}
 	
 	protected void mapEntityToName(String name, NamedEntity ent) {
-		Collection<NamedEntity> l_ent = mapName.get(name);
+		Collection<NamedEntity> l_ent = nameToEntity.get(name);
 		if (l_ent == null) {
 			l_ent = new LinkedList<NamedEntity>();
 		}
 		l_ent.add(ent);
-		mapName.put(name, l_ent);
+		nameToEntity.put(name, l_ent);
+	}
+	
+	protected void mapEntityToKey(B key, NamedEntity ent) {
+		NamedEntity old = keyToEntity.get(key);
+		if (old != null) {
+			entityToKey.remove(old);
+		}
+		keyToEntity.put(key, ent);
+		entityToKey.put(ent, key);
 	}
 	
 	/**
@@ -139,7 +153,7 @@ public class Dictionary<B> {
 	@SuppressWarnings("unchecked")
 	public <T extends NamedEntity> Collection<T> getEntityByName(Class<T> fmxClass, String name) {
 		Collection<T> ret = new LinkedList<T>();
-		Collection<NamedEntity> l_name = mapName.get(name);
+		Collection<NamedEntity> l_name = nameToEntity.get(name);
 		
 		if (l_name != null ) {
 			for (NamedEntity obj : l_name) {
@@ -153,20 +167,29 @@ public class Dictionary<B> {
 	}
 
 	/**
-	 * Returns the Famix Entity associated to the given binding.
+	 * Returns the Famix Entity associated to the given key.
 	 * <b>Note</b>: Be careful than ImplicitVariables share the same binding than their associated Class and cannot be retrieved with this method.
-	 * In such a case, this method will always retrieve the Class associated to the binding.
-	 * To get an ImplicitVariable from the binding, use {@link Dictionary#getImplicitVariableByBinding(Object, String)}
-	 * @param bnd -- the binding
+	 * In such a case, this method will always retrieve the Class associated to the key.
+	 * To get an ImplicitVariable from the key, use {@link Dictionary#getImplicitVariableByBinding(Object, String)}
+	 * @param key -- the key
 	 * @return the Famix Entity associated to the binding or null if not found
 	 */
-	public NamedEntity getEntityByKey(B bnd) {
-		if (bnd == null) {
+	public NamedEntity getEntityByKey(B key) {
+		if (key == null) {
 			return null;
 		}
 		else {
-			return mapToKey.get(bnd);
+			return keyToEntity.get(key);
 		}
+	}
+
+	/**
+	 * Returns the key associated to a Famix Entity.
+	 * @param ent -- the Named entity
+	 * @return the key associated to this entity or null if none
+	 */
+	public B getEntityKey(NamedEntity e) {
+		return entityToKey.get(e);
 	}
 
 	/**
@@ -233,7 +256,8 @@ public class Dictionary<B> {
 
 		fmx = createFamixEntity(fmxClass, name);
 		if ( (bnd != null) && (fmx != null) ) {
-			mapToKey.put(bnd, fmx);
+			keyToEntity.put(bnd, fmx);
+			entityToKey.put(fmx, bnd);
 		}
 		
 		return fmx;
@@ -610,7 +634,7 @@ public class Dictionary<B> {
 	 * @return the Famix ImplicitVariable associated to the Type or null if not found
 	 */
 	public ImplicitVariable getImplicitVariableByType(Type type, String name) {
-		ImplicitVars iv = mapImpVar.get(type);
+		ImplicitVars iv = typeToImpVar.get(type);
 		ImplicitVariable ret = null;
 		
 		if (iv == null) {
@@ -644,7 +668,7 @@ public class Dictionary<B> {
 				fmx.setParentBehaviouralEntity(owner);
 				fmx.setIsStub(Boolean.FALSE);
 
-				ImplicitVars iv = mapImpVar.get(type);				
+				ImplicitVars iv = typeToImpVar.get(type);				
 				if (iv == null) {
 					iv = new ImplicitVars();
 				}
@@ -656,7 +680,7 @@ public class Dictionary<B> {
 					iv.super_iv = fmx;
 				}
 				
-				mapImpVar.put(type, iv);
+				typeToImpVar.put(type, iv);
 			}
 		}
 
@@ -698,7 +722,7 @@ public class Dictionary<B> {
 			if (key != null) {
 				// may happen for example if the entity was first created without binding
 				// and we find a binding for it later
-				mapToKey.put(key, fmx);
+				keyToEntity.put(key, fmx);
 			}
 		}
 
