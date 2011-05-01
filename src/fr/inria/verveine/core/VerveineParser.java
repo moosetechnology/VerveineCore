@@ -1,8 +1,11 @@
 package fr.inria.verveine.core;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Map;
@@ -46,7 +49,8 @@ public class VerveineParser {
 	public void outputMSE() {
 		// * --- Outputting to a file -----------------------------------------------
 		try {
-			famixRepo.exportMSE(new FileWriter(OUTPUT_FILE));
+			//famixRepo.exportMSE(new FileWriter(OUTPUT_FILE));
+			famixRepo.exportMSE(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(OUTPUT_FILE),"UTF8")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
