@@ -2,13 +2,12 @@ package fr.inria.verveine.core;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Vector;
 
 import ch.akuhn.fame.Repository;
@@ -16,20 +15,15 @@ import fr.inria.verveine.core.gen.famix.Entity;
 import fr.inria.verveine.core.gen.famix.FAMIXModel;
 import fr.inria.verveine.core.gen.famix.SourceLanguage;
 
-public class VerveineParser {
+public abstract class VerveineParser {
 
 	public final static String OUTPUT_FILE = "output.mse";
 	
 	private Repository famixRepo;
 
-	SourceLanguage myLgge = null;
-
 	public VerveineParser() {
 		Repository repo = new Repository(FAMIXModel.metamodel());
 		setFamixRepo(repo);
-		if (myLgge != null) {
-			repo.add( myLgge);
-		}
 	}
 
 	public boolean linkToExisting() {
@@ -43,14 +37,31 @@ public class VerveineParser {
 		}
 	}
 	
+	abstract protected SourceLanguage getMyLgge();
+
 	/**
-	 * Outputting repository to a file
+	 * "closes" the repository, by adding to it a SourceLanguage entity if their is none.
+	 * The SourceLanguage entity is the one return by getMyLgge().
+	 * Also outputs repository to a MSE file
 	 */
-	public void outputMSE() {
-		// * --- Outputting to a file -----------------------------------------------
+	public void emitMSE(String outputFile) {
+		try {
+			emitMSE(new FileOutputStream(outputFile));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void emitMSE(OutputStream output) {
+		// Adds default SourceLanguage for the repository
+		if ( (listAll(SourceLanguage.class).size() == 0) && (getMyLgge() != null) ) {
+			getFamixRepo().add( getMyLgge());
+		}
+
+		// Outputting to a file
 		try {
 			//famixRepo.exportMSE(new FileWriter(OUTPUT_FILE));
-			famixRepo.exportMSE(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(OUTPUT_FILE),"UTF8")));
+			famixRepo.exportMSE(new BufferedWriter(new OutputStreamWriter(output,"UTF8")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
