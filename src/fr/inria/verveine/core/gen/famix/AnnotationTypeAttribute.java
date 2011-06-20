@@ -14,18 +14,7 @@ public class AnnotationTypeAttribute extends Attribute {
 
 
 
-    private Type declaredType;
-    
-    @FameProperty(name = "declaredType")
-    public Type getDeclaredType() {
-        return declaredType;
-    }
-
-    public void setDeclaredType(Type declaredType) {
-        this.declaredType = declaredType;
-    }
-
-    @FameProperty(name = "parentAnnotationType")
+    @FameProperty(name = "parentAnnotationType", derived = true)
     public AnnotationType getParentAnnotationType() {
         return (AnnotationType)parentType;
     }

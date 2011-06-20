@@ -105,8 +105,8 @@ public class NamedEntity extends SourcedEntity {
     public void setIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
     }
-    
-    private Boolean isProtected;
+
+      private Boolean isProtected;
     
     @FameProperty(name = "isProtected")
     public Boolean getIsProtected() {
@@ -158,7 +158,7 @@ public class NamedEntity extends SourcedEntity {
         return !getModifiers().isEmpty();
     }
     
-                
+                    
     private Collection<Invocation> receivingInvocations; 
 
     @FameProperty(name = "receivingInvocations", opposite = "receiver", derived = true)
@@ -215,7 +215,7 @@ public class NamedEntity extends SourcedEntity {
                 
     @FameProperty(name = "belongsTo", derived = true)
     public ContainerEntity getBelongsTo() {
-        // TODO: this is a derived property, implement this method manually.
+        // this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("NamedEntity.getBelongsTo() Not implemented in this class, use the proper subclass ("+this.getClass().getName()+")"); 
     }
     

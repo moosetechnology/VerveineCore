@@ -70,8 +70,7 @@ public class SourceLanguage extends Entity {
                 
     @FameProperty(name = "name", derived = true)
     public String getName() {
-        // TODO: this is a derived property, implement this method manually.
-        //throw new UnsupportedOperationException("Not yet implemented!");
+        // this is a derived property, implement this method manually.
     	String fullname = this.getClass().getName();
     	return fullname.substring(0, fullname.indexOf("SourceLanguage"));
     }

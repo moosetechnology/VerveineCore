@@ -3,9 +3,7 @@ package fr.inria.verveine.core;
 import java.util.Stack;
 
 import fr.inria.verveine.core.gen.famix.Access;
-import fr.inria.verveine.core.gen.famix.AnnotationType;
 import fr.inria.verveine.core.gen.famix.AnnotationTypeAttribute;
-import fr.inria.verveine.core.gen.famix.Class;
 import fr.inria.verveine.core.gen.famix.ContainerEntity;
 import fr.inria.verveine.core.gen.famix.Invocation;
 import fr.inria.verveine.core.gen.famix.Method;

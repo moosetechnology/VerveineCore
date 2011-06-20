@@ -46,7 +46,7 @@ public class SourcedEntity extends Entity {
             if (sourceAnchor != null) sourceAnchor.setElement(this);
         }
     }
-    
+
     private Collection<Comment> comments; 
 
     @FameProperty(name = "comments", opposite = "container", derived = true)

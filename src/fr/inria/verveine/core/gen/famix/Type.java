@@ -122,6 +122,23 @@ public class Type extends ContainerEntity {
     }
     
                 
+    private Plugin parentPlugin;
+    
+    @FameProperty(name = "parentPlugin", opposite = "childNamedEntities")
+    public Plugin getParentPlugin() {
+        return parentPlugin;
+    }
+
+    public void setParentPlugin(Plugin parentPlugin) {
+        if (this.parentPlugin != null) {
+            if (this.parentPlugin.equals(parentPlugin)) return;
+            this.parentPlugin.getChildNamedEntities().remove(this);
+        }
+        this.parentPlugin = parentPlugin;
+        if (parentPlugin == null) return;
+        parentPlugin.getChildNamedEntities().add(this);
+    }
+    
     private ContainerEntity container;
     
     @FameProperty(name = "container", opposite = "types")

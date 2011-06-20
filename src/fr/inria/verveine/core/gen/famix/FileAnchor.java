@@ -34,6 +34,17 @@ public class FileAnchor extends SourceAnchor {
         this.endLine = endLine;
     }
     
+    private Number startColumn;
+    
+    @FameProperty(name = "startColumn")
+    public Number getStartColumn() {
+        return startColumn;
+    }
+
+    public void setStartColumn(Number startColumn) {
+        this.startColumn = startColumn;
+    }
+    
     private String fileName;
     
     @FameProperty(name = "fileName")
@@ -43,6 +54,17 @@ public class FileAnchor extends SourceAnchor {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+    
+    private Number endColumn;
+    
+    @FameProperty(name = "endColumn")
+    public Number getEndColumn() {
+        return endColumn;
+    }
+
+    public void setEndColumn(Number endColumn) {
+        this.endColumn = endColumn;
     }
     
 
