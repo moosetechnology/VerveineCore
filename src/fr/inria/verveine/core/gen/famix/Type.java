@@ -122,21 +122,21 @@ public class Type extends ContainerEntity {
     }
     
                 
-    private Plugin parentPlugin;
+    private EclipsePlugin parentEclipsePlugin;
     
-    @FameProperty(name = "parentPlugin", opposite = "childNamedEntities")
-    public Plugin getParentPlugin() {
-        return parentPlugin;
+    @FameProperty(name = "parentEclipsePlugin", opposite = "types")
+    public EclipsePlugin getParentEclipsePlugin() {
+        return parentEclipsePlugin;
     }
 
-    public void setParentPlugin(Plugin parentPlugin) {
-        if (this.parentPlugin != null) {
-            if (this.parentPlugin.equals(parentPlugin)) return;
-            this.parentPlugin.getChildNamedEntities().remove(this);
+    public void setParentEclipsePlugin(EclipsePlugin parentEclipsePlugin) {
+        if (this.parentEclipsePlugin != null) {
+            if (this.parentEclipsePlugin.equals(parentEclipsePlugin)) return;
+            this.parentEclipsePlugin.getTypes().remove(this);
         }
-        this.parentPlugin = parentPlugin;
-        if (parentPlugin == null) return;
-        parentPlugin.getChildNamedEntities().add(this);
+        this.parentEclipsePlugin = parentEclipsePlugin;
+        if (parentEclipsePlugin == null) return;
+        parentEclipsePlugin.getTypes().add(this);
     }
     
     private ContainerEntity container;

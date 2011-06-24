@@ -7,8 +7,8 @@ import fr.inria.verveine.core.gen.moose.Group;
 
 
 @FamePackage("FAMIX")
-@FameDescription("PluginGroup")
-public class PluginGroup extends Group {
+@FameDescription("EclipsePluginGroup")
+public class EclipsePluginGroup extends Group {
 
 
 

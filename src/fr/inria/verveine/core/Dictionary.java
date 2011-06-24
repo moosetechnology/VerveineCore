@@ -661,7 +661,7 @@ public class Dictionary<B> {
 	 */
 	public ImplicitVariable ensureFamixImplicitVariable(String name, Type type, BehaviouralEntity owner) {
 		ImplicitVariable fmx = getImplicitVariableByType(type, name);
-		
+if (owner==null) { System.err.println("--- empty owner in ensureFamixImplicitVariable");}		
 		if (fmx == null) {
 			fmx = (ImplicitVariable) createFamixEntity(ImplicitVariable.class, name);
 			if (fmx!=null) {
