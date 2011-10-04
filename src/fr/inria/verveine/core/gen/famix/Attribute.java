@@ -12,6 +12,17 @@ public class Attribute extends StructuralEntity {
 
 
 
+    private Number hierarchyNestingLevel;
+    
+    @FameProperty(name = "hierarchyNestingLevel")
+    public Number getHierarchyNestingLevel() {
+        return hierarchyNestingLevel;
+    }
+
+    public void setHierarchyNestingLevel(Number hierarchyNestingLevel) {
+        this.hierarchyNestingLevel = hierarchyNestingLevel;
+    }
+    
     private Boolean hasClassScope;
     
     @FameProperty(name = "hasClassScope")

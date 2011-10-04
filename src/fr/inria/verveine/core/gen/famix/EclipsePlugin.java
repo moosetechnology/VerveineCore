@@ -24,7 +24,114 @@ public class EclipsePlugin extends Entity {
     public void setName(String name) {
         this.name = name;
     }
+    
+    private Collection<EclipsePluginImport> incomingFAMIXEclipsePluginImport; 
 
+    @FameProperty(name = "incomingFAMIXEclipsePluginImport", opposite = "target", derived = true)
+    public Collection<EclipsePluginImport> getIncomingFAMIXEclipsePluginImport() {
+        if (incomingFAMIXEclipsePluginImport == null) {
+            incomingFAMIXEclipsePluginImport = new MultivalueSet<EclipsePluginImport>() {
+                @Override
+                protected void clearOpposite(EclipsePluginImport e) {
+                    e.setTarget(null);
+                }
+                @Override
+                protected void setOpposite(EclipsePluginImport e) {
+                    e.setTarget(EclipsePlugin.this);
+                }
+            };
+        }
+        return incomingFAMIXEclipsePluginImport;
+    }
+    
+    public void setIncomingFAMIXEclipsePluginImport(Collection<? extends EclipsePluginImport> incomingFAMIXEclipsePluginImport) {
+        this.getIncomingFAMIXEclipsePluginImport().clear();
+        this.getIncomingFAMIXEclipsePluginImport().addAll(incomingFAMIXEclipsePluginImport);
+    }                    
+    
+        
+    public void addIncomingFAMIXEclipsePluginImport(EclipsePluginImport one) {
+        this.getIncomingFAMIXEclipsePluginImport().add(one);
+    }   
+    
+    public void addIncomingFAMIXEclipsePluginImport(EclipsePluginImport one, EclipsePluginImport... many) {
+        this.getIncomingFAMIXEclipsePluginImport().add(one);
+        for (EclipsePluginImport each : many)
+            this.getIncomingFAMIXEclipsePluginImport().add(each);
+    }   
+    
+    public void addIncomingFAMIXEclipsePluginImport(Iterable<? extends EclipsePluginImport> many) {
+        for (EclipsePluginImport each : many)
+            this.getIncomingFAMIXEclipsePluginImport().add(each);
+    }   
+                
+    public void addIncomingFAMIXEclipsePluginImport(EclipsePluginImport[] many) {
+        for (EclipsePluginImport each : many)
+            this.getIncomingFAMIXEclipsePluginImport().add(each);
+    }
+    
+    public int numberOfIncomingFAMIXEclipsePluginImport() {
+        return getIncomingFAMIXEclipsePluginImport().size();
+    }
+
+    public boolean hasIncomingFAMIXEclipsePluginImport() {
+        return !getIncomingFAMIXEclipsePluginImport().isEmpty();
+    }
+    
+                
+    private Collection<EclipsePluginImport> outgoingFAMIXEclipsePluginImport; 
+
+    @FameProperty(name = "outgoingFAMIXEclipsePluginImport", opposite = "source", derived = true)
+    public Collection<EclipsePluginImport> getOutgoingFAMIXEclipsePluginImport() {
+        if (outgoingFAMIXEclipsePluginImport == null) {
+            outgoingFAMIXEclipsePluginImport = new MultivalueSet<EclipsePluginImport>() {
+                @Override
+                protected void clearOpposite(EclipsePluginImport e) {
+                    e.setSource(null);
+                }
+                @Override
+                protected void setOpposite(EclipsePluginImport e) {
+                    e.setSource(EclipsePlugin.this);
+                }
+            };
+        }
+        return outgoingFAMIXEclipsePluginImport;
+    }
+    
+    public void setOutgoingFAMIXEclipsePluginImport(Collection<? extends EclipsePluginImport> outgoingFAMIXEclipsePluginImport) {
+        this.getOutgoingFAMIXEclipsePluginImport().clear();
+        this.getOutgoingFAMIXEclipsePluginImport().addAll(outgoingFAMIXEclipsePluginImport);
+    }                    
+    
+        
+    public void addOutgoingFAMIXEclipsePluginImport(EclipsePluginImport one) {
+        this.getOutgoingFAMIXEclipsePluginImport().add(one);
+    }   
+    
+    public void addOutgoingFAMIXEclipsePluginImport(EclipsePluginImport one, EclipsePluginImport... many) {
+        this.getOutgoingFAMIXEclipsePluginImport().add(one);
+        for (EclipsePluginImport each : many)
+            this.getOutgoingFAMIXEclipsePluginImport().add(each);
+    }   
+    
+    public void addOutgoingFAMIXEclipsePluginImport(Iterable<? extends EclipsePluginImport> many) {
+        for (EclipsePluginImport each : many)
+            this.getOutgoingFAMIXEclipsePluginImport().add(each);
+    }   
+                
+    public void addOutgoingFAMIXEclipsePluginImport(EclipsePluginImport[] many) {
+        for (EclipsePluginImport each : many)
+            this.getOutgoingFAMIXEclipsePluginImport().add(each);
+    }
+    
+    public int numberOfOutgoingFAMIXEclipsePluginImport() {
+        return getOutgoingFAMIXEclipsePluginImport().size();
+    }
+
+    public boolean hasOutgoingFAMIXEclipsePluginImport() {
+        return !getOutgoingFAMIXEclipsePluginImport().isEmpty();
+    }
+    
                 
     private Collection<Type> types; 
 
@@ -78,6 +185,9 @@ public class EclipsePlugin extends Entity {
     public boolean hasTypes() {
         return !getTypes().isEmpty();
     }
+    
+                
+
 
 }
 

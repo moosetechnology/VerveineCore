@@ -68,6 +68,17 @@ public class Method extends BehaviouralEntity {
     }
     
                 
+    private Number hierarchyNestingLevel;
+    
+    @FameProperty(name = "hierarchyNestingLevel")
+    public Number getHierarchyNestingLevel() {
+        return hierarchyNestingLevel;
+    }
+
+    public void setHierarchyNestingLevel(Number hierarchyNestingLevel) {
+        this.hierarchyNestingLevel = hierarchyNestingLevel;
+    }
+    
     private Collection<DeclaredException> declaredExceptions; 
 
     @FameProperty(name = "declaredExceptions", opposite = "definingMethod", derived = true)

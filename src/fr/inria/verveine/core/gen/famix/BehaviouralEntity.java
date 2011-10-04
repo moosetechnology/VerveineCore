@@ -13,10 +13,79 @@ import ch.akuhn.fame.FamePackage;
 public class BehaviouralEntity extends ContainerEntity {
 
 
-	private int cyclo = 0;  // metric: Cyclomatic complexity
-	private int nos = 0;    // metric Number Of Statement
 
+    private Number numberOfStatements;
+    
+    @FameProperty(name = "numberOfStatements")
+    public Number getNumberOfStatements() {
+        return numberOfStatements;
+    }
 
+    public void setNumberOfStatements(Number numberOfStatements) {
+        this.numberOfStatements = numberOfStatements;
+    }
+    
+    private Number numberOfComments;
+    
+    @FameProperty(name = "numberOfComments")
+    public Number getNumberOfComments() {
+        return numberOfComments;
+    }
+
+    public void setNumberOfComments(Number numberOfComments) {
+        this.numberOfComments = numberOfComments;
+    }
+    
+    private Type declaredType;
+    
+    @FameProperty(name = "declaredType", opposite = "behavioursWithDeclaredType")
+    public Type getDeclaredType() {
+        return declaredType;
+    }
+
+    public void setDeclaredType(Type declaredType) {
+        if (this.declaredType != null) {
+            if (this.declaredType.equals(declaredType)) return;
+            this.declaredType.getBehavioursWithDeclaredType().remove(this);
+        }
+        this.declaredType = declaredType;
+        if (declaredType == null) return;
+        declaredType.getBehavioursWithDeclaredType().add(this);
+    }
+    
+    private Number numberOfLinesOfCode;
+    
+    @FameProperty(name = "numberOfLinesOfCode")
+    public Number getNumberOfLinesOfCode() {
+        return numberOfLinesOfCode;
+    }
+
+    public void setNumberOfLinesOfCode(Number numberOfLinesOfCode) {
+        this.numberOfLinesOfCode = numberOfLinesOfCode;
+    }
+    
+    private Number numberOfConditionals;
+    
+    @FameProperty(name = "numberOfConditionals")
+    public Number getNumberOfConditionals() {
+        return numberOfConditionals;
+    }
+
+    public void setNumberOfConditionals(Number numberOfConditionals) {
+        this.numberOfConditionals = numberOfConditionals;
+    }
+    
+    private Number cyclomaticComplexity;
+    
+    @FameProperty(name = "cyclomaticComplexity")
+    public Number getCyclomaticComplexity() {
+        return cyclomaticComplexity;
+    }
+
+    public void setCyclomaticComplexity(Number cyclomaticComplexity) {
+        this.cyclomaticComplexity = cyclomaticComplexity;
+    }
+    
     private Collection<Access> accesses; 
 
     @FameProperty(name = "accesses", opposite = "accessor", derived = true)
@@ -125,17 +194,6 @@ public class BehaviouralEntity extends ContainerEntity {
     }
     
                 
-    private Type declaredType;
-    
-    @FameProperty(name = "declaredType")
-    public Type getDeclaredType() {
-        return declaredType;
-    }
-
-    public void setDeclaredType(Type declaredType) {
-        this.declaredType = declaredType;
-    }
-    
     private Collection<Invocation> incomingInvocations; 
 
     @FameProperty(name = "incomingInvocations", opposite = "candidates", derived = true)
@@ -297,6 +355,17 @@ public class BehaviouralEntity extends ContainerEntity {
     }
     
                 
+    private Number numberOfParameters;
+    
+    @FameProperty(name = "numberOfParameters")
+    public Number getNumberOfParameters() {
+        return numberOfParameters;
+    }
+
+    public void setNumberOfParameters(Number numberOfParameters) {
+        this.numberOfParameters = numberOfParameters;
+    }
+    
     private String signature;
     
     @FameProperty(name = "signature")
@@ -306,24 +375,6 @@ public class BehaviouralEntity extends ContainerEntity {
 
     public void setSignature(String signature) {
         this.signature = signature;
-    }
-
-    public void setCyclo(int cyclo) {
-		this.cyclo = cyclo;
-	}
-
-	@FameProperty(name = "CYCLO")
-	public int getCyclo() {
-		return cyclo;
-	}
-
-    @FameProperty(name = "NOS")
-	public int getNOS() {
-		return nos;
-	}
-
-	public void setNOS(int nos) {
-		this.nos = nos;
     }
     
 

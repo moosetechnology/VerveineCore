@@ -14,6 +14,22 @@ public class SourcedEntity extends Entity {
 
 
 
+    private SourceAnchor sourceAnchor;
+    
+    @FameProperty(name = "sourceAnchor", opposite = "element")
+    public SourceAnchor getSourceAnchor() {
+        return sourceAnchor;
+    }
+
+    public void setSourceAnchor(SourceAnchor sourceAnchor) {
+        if (this.sourceAnchor == null ? sourceAnchor != null : !this.sourceAnchor.equals(sourceAnchor)) {
+            SourceAnchor old_sourceAnchor = this.sourceAnchor;
+            this.sourceAnchor = sourceAnchor;
+            if (old_sourceAnchor != null) old_sourceAnchor.setElement(null);
+            if (sourceAnchor != null) sourceAnchor.setElement(this);
+        }
+    }
+    
     private SourceLanguage declaredSourceLanguage;
     
     @FameProperty(name = "declaredSourceLanguage", opposite = "sourcedEntities")
@@ -31,22 +47,6 @@ public class SourcedEntity extends Entity {
         declaredSourceLanguage.getSourcedEntities().add(this);
     }
     
-    private SourceAnchor sourceAnchor;
-    
-    @FameProperty(name = "sourceAnchor", opposite = "element")
-    public SourceAnchor getSourceAnchor() {
-        return sourceAnchor;
-    }
-
-    public void setSourceAnchor(SourceAnchor sourceAnchor) {
-        if (this.sourceAnchor == null ? sourceAnchor != null : !this.sourceAnchor.equals(sourceAnchor)) {
-            SourceAnchor old_sourceAnchor = this.sourceAnchor;
-            this.sourceAnchor = sourceAnchor;
-            if (old_sourceAnchor != null) old_sourceAnchor.setElement(null);
-            if (sourceAnchor != null) sourceAnchor.setElement(this);
-        }
-    }
-
     private Collection<Comment> comments; 
 
     @FameProperty(name = "comments", opposite = "container", derived = true)

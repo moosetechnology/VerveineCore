@@ -122,10 +122,12 @@ public class Invocation extends Association {
         return !getCandidates().isEmpty();
     }
 
+    @Override
 	public NamedEntity getFrom() {
 		return this.getSender();
 	}
 
+    @Override
 	public NamedEntity getTo() {
 		return this.getReceiver();
 	}

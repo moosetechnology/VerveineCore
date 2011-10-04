@@ -56,17 +56,6 @@ public class NamedEntity extends SourcedEntity {
         this.isPackage = isPackage;
     }
     
-    private String name;
-    
-    @FameProperty(name = "name")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
     private Package parentPackage;
     
     @FameProperty(name = "parentPackage", opposite = "childNamedEntities")
@@ -82,6 +71,17 @@ public class NamedEntity extends SourcedEntity {
         this.parentPackage = parentPackage;
         if (parentPackage == null) return;
         parentPackage.getChildNamedEntities().add(this);
+    }
+    
+    private String name;
+    
+    @FameProperty(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
     private Boolean isStub;
@@ -105,8 +105,8 @@ public class NamedEntity extends SourcedEntity {
     public void setIsPublic(Boolean isPublic) {
         this.isPublic = isPublic;
     }
-
-      private Boolean isProtected;
+    
+    private Boolean isProtected;
     
     @FameProperty(name = "isProtected")
     public Boolean getIsProtected() {
@@ -117,48 +117,6 @@ public class NamedEntity extends SourcedEntity {
         this.isProtected = isProtected;
     }
     
-    private Collection<String> modifiers; 
-
-    @FameProperty(name = "modifiers")
-    public Collection<String> getModifiers() {
-        if (modifiers == null) modifiers = new HashSet<String>();
-        return modifiers;
-    }
-    
-    public void setModifiers(Collection<? extends String> modifiers) {
-        this.getModifiers().clear();
-        this.getModifiers().addAll(modifiers);
-    }                    
-
-    public void addModifiers(String one) {
-        this.getModifiers().add(one);
-    }   
-    
-    public void addModifiers(String one, String... many) {
-        this.getModifiers().add(one);
-        for (String each : many)
-            this.getModifiers().add(each);
-    }   
-    
-    public void addModifiers(Iterable<? extends String> many) {
-        for (String each : many)
-            this.getModifiers().add(each);
-    }   
-                
-    public void addModifiers(String[] many) {
-        for (String each : many)
-            this.getModifiers().add(each);
-    }
-    
-    public int numberOfModifiers() {
-        return getModifiers().size();
-    }
-
-    public boolean hasModifiers() {
-        return !getModifiers().isEmpty();
-    }
-    
-                    
     private Collection<Invocation> receivingInvocations; 
 
     @FameProperty(name = "receivingInvocations", opposite = "receiver", derived = true)
@@ -210,6 +168,48 @@ public class NamedEntity extends SourcedEntity {
 
     public boolean hasReceivingInvocations() {
         return !getReceivingInvocations().isEmpty();
+    }
+    
+                
+    private Collection<String> modifiers; 
+
+    @FameProperty(name = "modifiers")
+    public Collection<String> getModifiers() {
+        if (modifiers == null) modifiers = new HashSet<String>();
+        return modifiers;
+    }
+    
+    public void setModifiers(Collection<? extends String> modifiers) {
+        this.getModifiers().clear();
+        this.getModifiers().addAll(modifiers);
+    }                    
+
+    public void addModifiers(String one) {
+        this.getModifiers().add(one);
+    }   
+    
+    public void addModifiers(String one, String... many) {
+        this.getModifiers().add(one);
+        for (String each : many)
+            this.getModifiers().add(each);
+    }   
+    
+    public void addModifiers(Iterable<? extends String> many) {
+        for (String each : many)
+            this.getModifiers().add(each);
+    }   
+                
+    public void addModifiers(String[] many) {
+        for (String each : many)
+            this.getModifiers().add(each);
+    }
+    
+    public int numberOfModifiers() {
+        return getModifiers().size();
+    }
+
+    public boolean hasModifiers() {
+        return !getModifiers().isEmpty();
     }
     
                 

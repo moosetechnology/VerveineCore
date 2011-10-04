@@ -16,7 +16,7 @@ public class GenerateFamix {
 	 * The mse file may be generated in Pharo from the meta model: 'MooseModel meta exportString'
 	 */
 	public static void generateCode() {
-		InputSource input = InputSource.fromFilename("mse/famix30_complete.mse");
+		InputSource input = InputSource.fromFilename("mse/famix30_plugins.mse");
         Tower t = new Tower();
         t.getMetamodel().importMSE(input);
 		CodeGeneration gen = new CodeGeneration("fr.inria.verveine.core.gen", "src", "");

@@ -1,9 +1,9 @@
 // Automagically generated code, please do not change
-package fr.inria.verveine.core.gen.moose;
+package fr.inria.verveine.core.gen.java;
 
 import ch.akuhn.fame.MetaRepository;
 
-public class MooseModel {
+public class JavaModel {
 
     public static MetaRepository metamodel() {
         MetaRepository metamodel = new MetaRepository();
@@ -12,10 +12,6 @@ public class MooseModel {
     }
     
     public static void importInto(MetaRepository metamodel) {
-		metamodel.with(fr.inria.verveine.core.gen.moose.Group.class);
-		metamodel.with(fr.inria.verveine.core.gen.moose.Model.class);
-		metamodel.with(fr.inria.verveine.core.gen.moose.AbsractGroup.class);
-		metamodel.with(fr.inria.verveine.core.gen.moose.Entity.class);
 
     }
 

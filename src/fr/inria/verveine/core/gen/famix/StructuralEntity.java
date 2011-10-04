@@ -16,13 +16,19 @@ public class StructuralEntity extends LeafEntity {
 
     private Type declaredType;
     
-    @FameProperty(name = "declaredType")
+    @FameProperty(name = "declaredType", opposite = "structuresWithDeclaredType")
     public Type getDeclaredType() {
         return declaredType;
     }
 
     public void setDeclaredType(Type declaredType) {
+        if (this.declaredType != null) {
+            if (this.declaredType.equals(declaredType)) return;
+            this.declaredType.getStructuresWithDeclaredType().remove(this);
+        }
         this.declaredType = declaredType;
+        if (declaredType == null) return;
+        declaredType.getStructuresWithDeclaredType().add(this);
     }
     
     private Collection<Access> incomingAccesses; 
