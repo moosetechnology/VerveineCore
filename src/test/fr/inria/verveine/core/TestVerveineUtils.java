@@ -32,7 +32,15 @@ public class TestVerveineUtils {
 		return null;
 	}
 
-	/** Returns a Collection of FAMIXEntities in repository of the given fmxClass and with the given name
+	/**
+	 * Returns a Collection of FAMIXEntities in repository with the given name
+	 */
+	public static Collection<NamedEntity> listElements(Repository repository, String name) {
+		return listElements(repository, NamedEntity.class, name);
+	}
+
+	/**
+	 * Returns a Collection of FAMIXEntities in repository of the given fmxClass and with the given name
 	 */
 	public static <T extends NamedEntity> Collection<T> listElements(Repository repository, Class<T> fmxClass, String name) {
 		Collection<T> selection = new Vector<T>();
