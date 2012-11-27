@@ -8,6 +8,8 @@
 	<property name="dist.dir"     location="lib" />
 	<property name="famix.jar"    location="${dist.dir}/famix.jar" />
 	<property name="verveine.jar" location="${dist.dir}/verveine.core.jar" />
+	<property name="test.dir" location="src/tests/fr/inria/verveine/core" />
+	<property name="test.report.dir" location="testrep" />
 
 	<!-- Create a classpath container which can be later used in the ant task
 	-->
@@ -58,6 +60,21 @@
 			<include name="fr/inria/verveine/core/*.class"/>
 			<include name="test/fr/inria/verveine/core/*.class"/>
 		</jar>
+	</target>
+
+	<!-- Run the JUnit Tests -->
+	<target name="junit" depends="jar">
+		<junit printsummary="on" fork="true" haltonfailure="no">
+			<classpath>
+				<pathelement path="${build.dir}"/>
+				<fileset dir="${dist.dir}">
+  				  <include name="*.jar"/>
+				</fileset>
+			</classpath>
+			<!-- Output is XML, could also be plain-->
+			<formatter type="xml" />
+			<test name="tests.fr.inria.verveine.core.VerveineTest_CommandLineArgs" todir="${test.report.dir}" />
+		</junit>
 	</target>
 
 </project>

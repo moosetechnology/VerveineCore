@@ -25,7 +25,8 @@ public abstract class VerveineParser {
 	 * Name of the file where to put the MSE model.
 	 * Defaults to {@link VerveineParser#OUTPUT_FILE}
 	 */
-	private String outputFileName;
+	private String outputFileName;   // name of the MSE file to output the model
+	private boolean incrementalParsing = false;   // if true we add the model to an existing one (found in 'outputFileName')
 
 
 	/**
@@ -44,7 +45,7 @@ public abstract class VerveineParser {
 
 	public boolean linkToExisting() {
 		File existingMSE = new File(OUTPUT_FILE);
-		if (existingMSE.exists()) {
+		if (existingMSE.exists() && this.incrementalParsing) {
 			this.getFamixRepo().importMSEFile(OUTPUT_FILE);
 			return true;
 		}
@@ -60,6 +61,10 @@ public abstract class VerveineParser {
 	 * The SourceLanguage entity is the one returned by getMyLgge().
 	 * Also outputs repository to a MSE file
 	 */
+	public void emitMSE() {
+		this.emitMSE(this.outputFileName);
+	}
+
 	public void emitMSE(String outputFile) {
 		try {
 			emitMSE(new FileOutputStream(outputFile));
@@ -83,10 +88,9 @@ public abstract class VerveineParser {
 		}
 	}
 
-	/**
-	 * Deal with option '-o' that sets the outputfile
-	 * @param i -- the indice in 'args' of the option to treat
-	 * @param args -- an array of the options
+	/** Try to deal with the "current" argument in 'args'
+	 * @param i -- the indice in 'args' of the current argument
+	 * @param args -- an array of the arguments
 	 * @return how many arguments were consumed (accepted)
 	 */
 	public int setOption(int i, String[] args) {
@@ -96,11 +100,15 @@ public abstract class VerveineParser {
 				outputFileName = args[i+1];
 				return 2;
 			} else {
-				System.err.println("-cp requires a classPath");
+				System.err.println("-o requires a filename");
 			}
 		}
+		else if (arg.equals("-i")) {
+			this.incrementalParsing = true;
+			return 1;
+		}
 
-		return 0;
+		return 0;  // no argument consumed
 	}
 
 	/**
