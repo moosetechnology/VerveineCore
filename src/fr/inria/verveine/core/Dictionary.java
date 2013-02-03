@@ -539,17 +539,18 @@ public class Dictionary<B> {
 	 * @param sender of the invocation
 	 * @param invoked -- method invoked
 	 * @param receiver of the invocation
+	 * @param signature -- i.e. actual invocation code
 	 * @param prev -- previous invocation relationship in the same context
 	 * @return the Invocation
 	 */
-	public Invocation addFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, Association prev) {
+	public Invocation addFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, String signature, Association prev) {
 		if ( (sender == null) || (invoked == null) ) {
 			return null;
 		}
 		Invocation invok = new Invocation();
 		invok.setReceiver(receiver);
 		invok.setSender(sender);
-		invok.setSignature(invoked.getSignature());
+		invok.setSignature((signature== null) ? invoked.getSignature() : signature);
 		invok.addCandidates(invoked);
 		chainPrevNext(prev,invok);
 		famixRepoAdd(invok);
