@@ -1,0 +1,29 @@
+// Automagically generated code, please do not change
+package eu.synectique.verveine.core.gen.famix;
+
+import ch.akuhn.fame.FameProperty;
+import ch.akuhn.fame.FameDescription;
+import ch.akuhn.fame.FamePackage;
+
+
+@FamePackage("FAMIX")
+@FameDescription("Exception")
+public class Exception extends Entity {
+
+
+
+    private Class exceptionClass;
+    
+    @FameProperty(name = "exceptionClass")
+    public Class getExceptionClass() {
+        return exceptionClass;
+    }
+
+    public void setExceptionClass(Class exceptionClass) {
+        this.exceptionClass = exceptionClass;
+    }
+    
+
+
+}
+

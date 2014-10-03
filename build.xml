@@ -8,7 +8,7 @@
 	<property name="dist.dir"     location="lib" />
 	<property name="famix.jar"    location="${dist.dir}/famix.jar" />
 	<property name="verveine.jar" location="${dist.dir}/verveine.core.jar" />
-	<property name="test.dir" location="src/tests/fr/inria/verveine/core" />
+	<property name="test.dir" location="src/tests/eu/synectique/verveine/core" />
 	<property name="test.report.dir" location="testrep" />
 
 	<!-- Create a classpath container which can be later used in the ant task
@@ -53,12 +53,12 @@
 	<!--Creates the deployable jar files  -->
 	<target name="jar" depends="compile">
 		<jar destfile="${famix.jar}" basedir="${build.dir}">
-			<include name="fr/inria/verveine/core/gen/famix/*.class"/>
-			<include name="fr/inria/verveine/core/gen/moose/*.class"/>
+			<include name="eu/synectique/verveine/core/gen/famix/*.class"/>
+			<include name="eu/synectique/verveine/core/gen/moose/*.class"/>
 		</jar>
 		<jar destfile="${verveine.jar}" basedir="${build.dir}">
-			<include name="fr/inria/verveine/core/*.class"/>
-			<include name="test/fr/inria/verveine/core/*.class"/>
+			<include name="eu/synectique/verveine/core/*.class"/>
+			<include name="test/eu/synectique/verveine/core/*.class"/>
 		</jar>
 	</target>
 
@@ -73,7 +73,7 @@
 			</classpath>
 			<!-- Output is XML, could also be plain-->
 			<formatter type="xml" />
-			<test name="tests.fr.inria.verveine.core.VerveineTest_CommandLineArgs" todir="${test.report.dir}" />
+			<test name="tests.eu.synectique.verveine.core.VerveineTest_CommandLineArgs" todir="${test.report.dir}" />
 		</junit>
 	</target>
 
