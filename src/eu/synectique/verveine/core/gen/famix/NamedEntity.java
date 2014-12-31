@@ -13,47 +13,20 @@ import ch.akuhn.fame.FamePackage;
 public class NamedEntity extends SourcedEntity {
 
 
-
-    public NamedEntity() {
-		super();
-		this.setIsFinal(Boolean.FALSE);
-		this.setIsPrivate(Boolean.FALSE);
-		this.setIsProtected(Boolean.FALSE);
-		this.setIsPublic(Boolean.FALSE);
-		this.setIsAbstract(Boolean.FALSE);
-	}
-
-	private Boolean isAbstract;
     
-    @FameProperty(name = "isAbstract")
+    @FameProperty(name = "isAbstract", derived = true)
     public Boolean getIsAbstract() {
-        return isAbstract;
+        return hasModifier("abstract");
     }
-
-    public void setIsAbstract(Boolean isAbstract) {
-        this.isAbstract = isAbstract;
-    }
-    
-    private Boolean isPrivate;
-    
-    @FameProperty(name = "isPrivate")
+                
+    @FameProperty(name = "isPrivate", derived = true)
     public Boolean getIsPrivate() {
-        return isPrivate;
+        return hasModifier("private");
     }
 
-    public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
-    
-    private Boolean isPackage;
-    
-    @FameProperty(name = "isPackage")
+    @FameProperty(name = "isPackage", derived = true)
     public Boolean getIsPackage() {
-        return isPackage;
-    }
-
-    public void setIsPackage(Boolean isPackage) {
-        this.isPackage = isPackage;
+        return hasModifier("package");
     }
     
     private Package parentPackage;
@@ -95,26 +68,14 @@ public class NamedEntity extends SourcedEntity {
         this.isStub = isStub;
     }
     
-    private Boolean isPublic;
-    
-    @FameProperty(name = "isPublic")
+    @FameProperty(name = "isPublic", derived = true)
     public Boolean getIsPublic() {
-        return isPublic;
+        return hasModifier("public");
     }
-
-    public void setIsPublic(Boolean isPublic) {
-        this.isPublic = isPublic;
-    }
-    
-    private Boolean isProtected;
-    
-    @FameProperty(name = "isProtected")
+                
+    @FameProperty(name = "isProtected", derived = true)
     public Boolean getIsProtected() {
-        return isProtected;
-    }
-
-    public void setIsProtected(Boolean isProtected) {
-        this.isProtected = isProtected;
+        return hasModifier("protected");
     }
     
     private Collection<Invocation> receivingInvocations; 
@@ -170,8 +131,76 @@ public class NamedEntity extends SourcedEntity {
         return !getReceivingInvocations().isEmpty();
     }
     
+/*    
+    @FameProperty(name = "nameLength", derived = true)
+    public Number getNameLength() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
+    private Collection<AnnotationInstance> annotationInstances; 
+
+    @FameProperty(name = "annotationInstances", opposite = "annotatedEntity", derived = true)
+    public Collection<AnnotationInstance> getAnnotationInstances() {
+        if (annotationInstances == null) {
+            annotationInstances = new MultivalueSet<AnnotationInstance>() {
+                @Override
+                protected void clearOpposite(AnnotationInstance e) {
+                    e.setAnnotatedEntity(null);
+                }
+                @Override
+                protected void setOpposite(AnnotationInstance e) {
+                    e.setAnnotatedEntity(NamedEntity.this);
+                }
+            };
+        }
+        return annotationInstances;
+    }
+    
+    public void setAnnotationInstances(Collection<? extends AnnotationInstance> annotationInstances) {
+        this.getAnnotationInstances().clear();
+        this.getAnnotationInstances().addAll(annotationInstances);
+    }                    
+    
+        
+    public void addAnnotationInstances(AnnotationInstance one) {
+        this.getAnnotationInstances().add(one);
+    }   
+    
+    public void addAnnotationInstances(AnnotationInstance one, AnnotationInstance... many) {
+        this.getAnnotationInstances().add(one);
+        for (AnnotationInstance each : many)
+            this.getAnnotationInstances().add(each);
+    }   
+    
+    public void addAnnotationInstances(Iterable<? extends AnnotationInstance> many) {
+        for (AnnotationInstance each : many)
+            this.getAnnotationInstances().add(each);
+    }   
                 
+    public void addAnnotationInstances(AnnotationInstance[] many) {
+        for (AnnotationInstance each : many)
+            this.getAnnotationInstances().add(each);
+    }
+    
+    public int numberOfAnnotationInstances() {
+        return getAnnotationInstances().size();
+    }
+
+    public boolean hasAnnotationInstances() {
+        return !getAnnotationInstances().isEmpty();
+    }
+    
+    
     private Collection<String> modifiers; 
+
+    protected Boolean hasModifier(String mod) {
+    	for (String m : this.getModifiers()) {
+    		if (m.equals(mod))
+    			return true;
+    	}
+    	return false;
+    }
 
     @FameProperty(name = "modifiers")
     public Collection<String> getModifiers() {
@@ -216,18 +245,12 @@ public class NamedEntity extends SourcedEntity {
     @FameProperty(name = "belongsTo", derived = true)
     public ContainerEntity getBelongsTo() {
         // this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("NamedEntity.getBelongsTo() Not implemented in this class, use the proper subclass ("+this.getClass().getName()+")"); 
+        throw new UnsupportedOperationException("NamedEntity.getBelongsTo() not implemented in class "+this.getClass().getName()); 
     }
-    
-    private Boolean isFinal;
-    
-    @FameProperty(name = "isFinal")
+                
+    @FameProperty(name = "isFinal", derived = true)
     public Boolean getIsFinal() {
-        return isFinal;
-    }
-
-    public void setIsFinal(Boolean isFinal) {
-        this.isFinal = isFinal;
+        return hasModifier("final");
     }
     
 

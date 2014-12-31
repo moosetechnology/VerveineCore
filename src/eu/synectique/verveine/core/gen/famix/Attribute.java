@@ -11,18 +11,25 @@ import ch.akuhn.fame.FamePackage;
 public class Attribute extends StructuralEntity {
 
 
-
-    private Number hierarchyNestingLevel;
+/*
+    @FameProperty(name = "numberOfLocalAccesses", derived = true)
+    public Number getNumberOfLocalAccesses() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
     
-    @FameProperty(name = "hierarchyNestingLevel")
+    @FameProperty(name = "hierarchyNestingLevel", derived = true)
     public Number getHierarchyNestingLevel() {
-        return hierarchyNestingLevel;
-    }
-
-    public void setHierarchyNestingLevel(Number hierarchyNestingLevel) {
-        this.hierarchyNestingLevel = hierarchyNestingLevel;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
     
+    @FameProperty(name = "numberOfAccessingClasses", derived = true)
+    public Number getNumberOfAccessingClasses() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
     private Boolean hasClassScope;
     
     @FameProperty(name = "hasClassScope")
@@ -33,7 +40,19 @@ public class Attribute extends StructuralEntity {
     public void setHasClassScope(Boolean hasClassScope) {
         this.hasClassScope = hasClassScope;
     }
+/*    
+    @FameProperty(name = "numberOfAccessingMethods", derived = true)
+    public Number getNumberOfAccessingMethods() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
     
+    @FameProperty(name = "numberOfAccesses", derived = true)
+    public Number getNumberOfAccesses() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
     protected Type parentType;
     
     @FameProperty(name = "parentType", opposite = "attributes")
@@ -55,7 +74,13 @@ public class Attribute extends StructuralEntity {
         if (parentType == null) return;
         parentType.getAttributes().add(this);
     }
-    
+/*    
+    @FameProperty(name = "numberOfGlobalAccesses", derived = true)
+    public Number getNumberOfGlobalAccesses() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
 
 
 }

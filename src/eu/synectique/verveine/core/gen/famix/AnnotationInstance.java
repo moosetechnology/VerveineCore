@@ -14,14 +14,14 @@ public class AnnotationInstance extends Entity {
 
 
 
-    private Entity annotatedEntity;
+    private NamedEntity annotatedEntity;
     
     @FameProperty(name = "annotatedEntity", opposite = "annotationInstances")
-    public Entity getAnnotatedEntity() {
+    public NamedEntity getAnnotatedEntity() {
         return annotatedEntity;
     }
 
-    public void setAnnotatedEntity(Entity annotatedEntity) {
+    public void setAnnotatedEntity(NamedEntity annotatedEntity) {
         if (this.annotatedEntity != null) {
             if (this.annotatedEntity.equals(annotatedEntity)) return;
             this.annotatedEntity.getAnnotationInstances().remove(this);

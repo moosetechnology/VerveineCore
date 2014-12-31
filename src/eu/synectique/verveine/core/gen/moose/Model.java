@@ -1,15 +1,15 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.moose;
 
-import eu.synectique.verveine.core.gen.famix.SourceLanguage;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
+import eu.synectique.verveine.core.gen.famix.SourceLanguage;
 import ch.akuhn.fame.FamePackage;
 
 
 @FamePackage("Moose")
 @FameDescription("Model")
-public class Model extends AbsractGroup {
+public class Model extends AbstractGroup {
 
 
 
@@ -22,6 +22,17 @@ public class Model extends AbsractGroup {
 
     public void setSourceLanguage(SourceLanguage sourceLanguage) {
         this.sourceLanguage = sourceLanguage;
+    }
+    
+    private Number numberOfPackages;
+    
+    @FameProperty(name = "numberOfPackages")
+    public Number getNumberOfPackages() {
+        return numberOfPackages;
+    }
+
+    public void setNumberOfPackages(Number numberOfPackages) {
+        this.numberOfPackages = numberOfPackages;
     }
     
 

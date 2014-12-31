@@ -84,7 +84,13 @@ public class StructuralEntity extends LeafEntity {
         return !getIncomingAccesses().isEmpty();
     }
     
-                
+/*                
+    @FameProperty(name = "accessors", derived = true)
+    public Collection<BehaviouralEntity> getAccessors() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/        
 
 
 }

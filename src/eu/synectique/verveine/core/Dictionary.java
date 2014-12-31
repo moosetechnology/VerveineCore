@@ -504,19 +504,18 @@ public class Dictionary<B> {
 	}
 
 	/**
-	 * Returns a Famix Reference between two Famix Entities creating it if needed
+	 * Returns a Famix Reference between two Famix Entities creating it if needed.<br>
+	 * If <code>prev == null</code> and a similar reference already exist (same <code>src</code>, same <code>tgt</code>), does not create a new one
 	 * @param src -- source of the reference
 	 * @param tgt -- target of the reference
 	 * @param prev -- previous reference relationship in the same context
-	 * @return the Reference
+	 * @return the FamixReference
 	 */
 	public Reference addFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
 		if ( (src == null) || (tgt == null) ) {
 			return null;
 		}
-		
-		// if prev == null and similar reference already exist,
-		// don't create a new one
+
 		if (prev == null) {
 			for (Reference ref : src.getOutgoingReferences()) {
 				if (ref.getTarget() == tgt) {
@@ -541,7 +540,7 @@ public class Dictionary<B> {
 	 * @param receiver of the invocation
 	 * @param signature -- i.e. actual invocation code
 	 * @param prev -- previous invocation relationship in the same context
-	 * @return the Invocation
+	 * @return the FamixInvocation
 	 */
 	public Invocation addFamixInvocation(BehaviouralEntity sender, BehaviouralEntity invoked, NamedEntity receiver, String signature, Association prev) {
 		if ( (sender == null) || (invoked == null) ) {
@@ -564,7 +563,7 @@ public class Dictionary<B> {
 	 * @param var -- the variable accessed
 	 * @param isWrite -- whether this is an access for reading or writing in the variable
 	 * @param prev -- previous access relationship in the same context
-	 * @return the Invocation
+	 * @return the FamixAccess
 	 */
 	public Access addFamixAccess(BehaviouralEntity accessor, StructuralEntity var, boolean isWrite, Association prev) {
 		if ( (accessor == null) || (var == null) ) {

@@ -29,17 +29,6 @@ public class GlobalVariable extends StructuralEntity {
         parentScope.getGlobalVariables().add(this);
     }
     
-    private Module parentModule;
-    
-    @FameProperty(name = "parentModule")
-    public Module getParentModule() {
-        return parentModule;
-    }
-
-    public void setParentModule(Module parentModule) {
-        this.parentModule = parentModule;
-    }
-    
 
 
 }

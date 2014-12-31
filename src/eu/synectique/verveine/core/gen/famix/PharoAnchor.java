@@ -6,8 +6,8 @@ import ch.akuhn.fame.FamePackage;
 
 
 @FamePackage("FAMIX")
-@FameDescription("UnknownVariable")
-public class UnknownVariable extends StructuralEntity {
+@FameDescription("PharoAnchor")
+public class PharoAnchor extends SourceAnchor {
 
 
 

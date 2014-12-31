@@ -12,32 +12,21 @@ public class Function extends BehaviouralEntity {
 
 
 
-    private ScopingEntity parentScope;
+    private ContainerEntity container;
     
-    @FameProperty(name = "parentScope", opposite = "functions")
-    public ScopingEntity getParentScope() {
-        return parentScope;
+    @FameProperty(name = "container", opposite = "functions")
+    public ContainerEntity getContainer() {
+        return container;
     }
 
-    public void setParentScope(ScopingEntity parentScope) {
-        if (this.parentScope != null) {
-            if (this.parentScope.equals(parentScope)) return;
-            this.parentScope.getFunctions().remove(this);
+    public void setContainer(ContainerEntity container) {
+        if (this.container != null) {
+            if (this.container.equals(container)) return;
+            this.container.getFunctions().remove(this);
         }
-        this.parentScope = parentScope;
-        if (parentScope == null) return;
-        parentScope.getFunctions().add(this);
-    }
-    
-    private Module parentModule;
-    
-    @FameProperty(name = "parentModule")
-    public Module getParentModule() {
-        return parentModule;
-    }
-
-    public void setParentModule(Module parentModule) {
-        this.parentModule = parentModule;
+        this.container = container;
+        if (container == null) return;
+        container.getFunctions().add(this);
     }
     
 

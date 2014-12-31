@@ -15,7 +15,7 @@ public class Association extends SourcedEntity {
     @FameProperty(name = "to", derived = true)
     public NamedEntity getTo() {
         // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Association.getTo() Not yet implemented!");  
+        throw new UnsupportedOperationException("Association.getTo() not implemented in " + this.getClass().getName());  
     }
     
     private Association previous;
@@ -53,7 +53,7 @@ public class Association extends SourcedEntity {
     @FameProperty(name = "from", derived = true)
     public NamedEntity getFrom() {
         // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Association.getFrom() Not yet implemented!");  
+        throw new UnsupportedOperationException("Association.getFrom() not implemented in " + this.getClass().getName());  
     }
     
 

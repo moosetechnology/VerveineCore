@@ -67,18 +67,19 @@ public class Method extends BehaviouralEntity {
         return !getCaughtExceptions().isEmpty();
     }
     
-                
-    private Number hierarchyNestingLevel;
+/*                
+    @FameProperty(name = "numberOfInvokedMethods", derived = true)
+    public Number getNumberOfInvokedMethods() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
     
-    @FameProperty(name = "hierarchyNestingLevel")
+    @FameProperty(name = "hierarchyNestingLevel", derived = true)
     public Number getHierarchyNestingLevel() {
-        return hierarchyNestingLevel;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
-
-    public void setHierarchyNestingLevel(Number hierarchyNestingLevel) {
-        this.hierarchyNestingLevel = hierarchyNestingLevel;
-    }
-    
+*/    
     private Collection<DeclaredException> declaredExceptions; 
 
     @FameProperty(name = "declaredExceptions", opposite = "definingMethod", derived = true)
@@ -132,7 +133,49 @@ public class Method extends BehaviouralEntity {
         return !getDeclaredExceptions().isEmpty();
     }
     
-                
+/*                
+    @FameProperty(name = "isOverriding", derived = true)
+    public Boolean getIsOverriding() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    @FameProperty(name = "invokedMethods", derived = true)
+    public Collection<Method> getInvokedMethods() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+        
+    @FameProperty(name = "clientTypes", derived = true)
+    public Collection<Type> getClientTypes() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+        
+    @FameProperty(name = "providerTypes", derived = true)
+    public Collection<Type> getProviderTypes() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    @FameProperty(name = "numberOfAnnotationInstances", derived = true)
+    public Number getNumberOfAnnotationInstances() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    @FameProperty(name = "invokingMethods", derived = true)
+    public Collection<Method> getInvokingMethods() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+        
+    @FameProperty(name = "isOverriden", derived = true)
+    public Boolean getIsOverriden() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
     private Boolean hasClassScope;
     
     @FameProperty(name = "hasClassScope")

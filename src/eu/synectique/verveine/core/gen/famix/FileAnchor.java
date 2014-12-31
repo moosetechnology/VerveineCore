@@ -8,7 +8,7 @@ import ch.akuhn.fame.FamePackage;
 
 @FamePackage("FAMIX")
 @FameDescription("FileAnchor")
-public class FileAnchor extends SourceAnchor {
+public class FileAnchor extends AbstractFileAnchor {
 
 
 
@@ -43,17 +43,6 @@ public class FileAnchor extends SourceAnchor {
 
     public void setStartColumn(Number startColumn) {
         this.startColumn = startColumn;
-    }
-    
-    private String fileName;
-    
-    @FameProperty(name = "fileName")
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
     
     private Number endColumn;

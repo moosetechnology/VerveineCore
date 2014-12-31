@@ -24,7 +24,13 @@ public class BehaviouralEntity extends ContainerEntity {
     public void setNumberOfStatements(Number numberOfStatements) {
         this.numberOfStatements = numberOfStatements;
     }
-    
+/*    
+    @FameProperty(name = "numberOfOutgoingInvocations", derived = true)
+    public Number getNumberOfOutgoingInvocations() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
     private Number numberOfComments;
     
     @FameProperty(name = "numberOfComments")
@@ -74,7 +80,67 @@ public class BehaviouralEntity extends ContainerEntity {
     public void setNumberOfConditionals(Number numberOfConditionals) {
         this.numberOfConditionals = numberOfConditionals;
     }
+/*    
+    @FameProperty(name = "numberOfMessageSends", derived = true)
+    public Number getNumberOfMessageSends() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
+    private Collection<ImplicitVariable> implicitVariables; 
+
+    @FameProperty(name = "implicitVariables", opposite = "parentBehaviouralEntity", derived = true)
+    public Collection<ImplicitVariable> getImplicitVariables() {
+        if (implicitVariables == null) {
+            implicitVariables = new MultivalueSet<ImplicitVariable>() {
+                @Override
+                protected void clearOpposite(ImplicitVariable e) {
+                    e.setParentBehaviouralEntity(null);
+                }
+                @Override
+                protected void setOpposite(ImplicitVariable e) {
+                    e.setParentBehaviouralEntity(BehaviouralEntity.this);
+                }
+            };
+        }
+        return implicitVariables;
+    }
     
+    public void setImplicitVariables(Collection<? extends ImplicitVariable> implicitVariables) {
+        this.getImplicitVariables().clear();
+        this.getImplicitVariables().addAll(implicitVariables);
+    }                    
+    
+        
+    public void addImplicitVariables(ImplicitVariable one) {
+        this.getImplicitVariables().add(one);
+    }   
+    
+    public void addImplicitVariables(ImplicitVariable one, ImplicitVariable... many) {
+        this.getImplicitVariables().add(one);
+        for (ImplicitVariable each : many)
+            this.getImplicitVariables().add(each);
+    }   
+    
+    public void addImplicitVariables(Iterable<? extends ImplicitVariable> many) {
+        for (ImplicitVariable each : many)
+            this.getImplicitVariables().add(each);
+    }   
+                
+    public void addImplicitVariables(ImplicitVariable[] many) {
+        for (ImplicitVariable each : many)
+            this.getImplicitVariables().add(each);
+    }
+    
+    public int numberOfImplicitVariables() {
+        return getImplicitVariables().size();
+    }
+
+    public boolean hasImplicitVariables() {
+        return !getImplicitVariables().isEmpty();
+    }
+    
+                
     private Number cyclomaticComplexity;
     
     @FameProperty(name = "cyclomaticComplexity")
@@ -139,7 +205,19 @@ public class BehaviouralEntity extends ContainerEntity {
         return !getAccesses().isEmpty();
     }
     
-                
+/*                
+    @FameProperty(name = "clientBehaviours", derived = true)
+    public Collection<BehaviouralEntity> getClientBehaviours() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+        
+    @FameProperty(name = "providerBehaviours", derived = true)
+    public Collection<BehaviouralEntity> getProviderBehaviours() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/        
     private Collection<Invocation> outgoingInvocations; 
 
     @FameProperty(name = "outgoingInvocations", opposite = "sender", derived = true)
@@ -354,7 +432,13 @@ public class BehaviouralEntity extends ContainerEntity {
         return !getParameters().isEmpty();
     }
     
-                
+/*                
+    @FameProperty(name = "numberOfAccesses", derived = true)
+    public Number getNumberOfAccesses() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+*/    
     private Number numberOfParameters;
     
     @FameProperty(name = "numberOfParameters")

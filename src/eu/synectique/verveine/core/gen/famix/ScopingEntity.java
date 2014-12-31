@@ -14,60 +14,6 @@ public class ScopingEntity extends ContainerEntity {
 
 
 
-    private Collection<Function> functions; 
-
-    @FameProperty(name = "functions", opposite = "parentScope", derived = true)
-    public Collection<Function> getFunctions() {
-        if (functions == null) {
-            functions = new MultivalueSet<Function>() {
-                @Override
-                protected void clearOpposite(Function e) {
-                    e.setParentScope(null);
-                }
-                @Override
-                protected void setOpposite(Function e) {
-                    e.setParentScope(ScopingEntity.this);
-                }
-            };
-        }
-        return functions;
-    }
-    
-    public void setFunctions(Collection<? extends Function> functions) {
-        this.getFunctions().clear();
-        this.getFunctions().addAll(functions);
-    }                    
-    
-        
-    public void addFunctions(Function one) {
-        this.getFunctions().add(one);
-    }   
-    
-    public void addFunctions(Function one, Function... many) {
-        this.getFunctions().add(one);
-        for (Function each : many)
-            this.getFunctions().add(each);
-    }   
-    
-    public void addFunctions(Iterable<? extends Function> many) {
-        for (Function each : many)
-            this.getFunctions().add(each);
-    }   
-                
-    public void addFunctions(Function[] many) {
-        for (Function each : many)
-            this.getFunctions().add(each);
-    }
-    
-    public int numberOfFunctions() {
-        return getFunctions().size();
-    }
-
-    public boolean hasFunctions() {
-        return !getFunctions().isEmpty();
-    }
-    
-                
     private ScopingEntity parentScope;
     
     @FameProperty(name = "parentScope", opposite = "childScopes")
