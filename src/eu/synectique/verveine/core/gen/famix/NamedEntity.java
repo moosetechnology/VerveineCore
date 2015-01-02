@@ -241,6 +241,59 @@ public class NamedEntity extends SourcedEntity {
         return !getModifiers().isEmpty();
     }
     
+    private Collection<eu.synectique.verveine.core.gen.fast.NamedEntity> fastNamedEntities; 
+
+    @FameProperty(name = "fastNamedEntities", opposite = "famixNamedEntity")
+    public Collection<eu.synectique.verveine.core.gen.fast.NamedEntity> getFastNamedEntities() {
+        if (fastNamedEntities == null) {
+            fastNamedEntities = new MultivalueSet<eu.synectique.verveine.core.gen.fast.NamedEntity>() {
+                @Override
+                protected void clearOpposite(eu.synectique.verveine.core.gen.fast.NamedEntity e) {
+                    e.setFamixNamedEntity(null);
+                }
+                @Override
+                protected void setOpposite(eu.synectique.verveine.core.gen.fast.NamedEntity e) {
+                    e.setFamixNamedEntity(eu.synectique.verveine.core.gen.famix.NamedEntity.this);
+                }
+            };
+        }
+        return fastNamedEntities;
+    }
+    
+    public void setFastNamedEntities(Collection<? extends eu.synectique.verveine.core.gen.fast.NamedEntity> fastNamedEntities) {
+        this.getFastNamedEntities().clear();
+        this.getFastNamedEntities().addAll(fastNamedEntities);
+    }                    
+    
+        
+    public void addFastNamedEntities(eu.synectique.verveine.core.gen.fast.NamedEntity one) {
+        this.getFastNamedEntities().add(one);
+    }   
+    
+    public void addFastNamedEntities(eu.synectique.verveine.core.gen.fast.NamedEntity one, eu.synectique.verveine.core.gen.fast.NamedEntity... many) {
+        this.getFastNamedEntities().add(one);
+        for (eu.synectique.verveine.core.gen.fast.NamedEntity each : many)
+            this.getFastNamedEntities().add(each);
+    }   
+    
+    public void addFastNamedEntities(Iterable<? extends eu.synectique.verveine.core.gen.fast.NamedEntity> many) {
+        for (eu.synectique.verveine.core.gen.fast.NamedEntity each : many)
+            this.getFastNamedEntities().add(each);
+    }   
+                
+    public void addFastNamedEntities(eu.synectique.verveine.core.gen.fast.NamedEntity[] many) {
+        for (eu.synectique.verveine.core.gen.fast.NamedEntity each : many)
+            this.getFastNamedEntities().add(each);
+    }
+    
+    public int numberOfFastNamedEntities() {
+        return getFastNamedEntities().size();
+    }
+
+    public boolean hasFastNamedEntities() {
+        return !getFastNamedEntities().isEmpty();
+    }
+    
                 
     @FameProperty(name = "belongsTo", derived = true)
     public ContainerEntity getBelongsTo() {

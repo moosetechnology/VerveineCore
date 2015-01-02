@@ -24,17 +24,6 @@ public class Model extends AbstractGroup {
         this.sourceLanguage = sourceLanguage;
     }
     
-    private Number numberOfPackages;
-    
-    @FameProperty(name = "numberOfPackages")
-    public Number getNumberOfPackages() {
-        return numberOfPackages;
-    }
-
-    public void setNumberOfPackages(Number numberOfPackages) {
-        this.numberOfPackages = numberOfPackages;
-    }
-    
 
 
 }

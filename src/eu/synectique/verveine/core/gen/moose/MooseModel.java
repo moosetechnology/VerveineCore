@@ -12,10 +12,10 @@ public class MooseModel {
     }
     
     public static void importInto(MetaRepository metamodel) {
-		metamodel.with(eu.synectique.verveine.core.gen.moose.Entity.class);
-		metamodel.with(eu.synectique.verveine.core.gen.moose.Model.class);
 		metamodel.with(eu.synectique.verveine.core.gen.moose.PropertyGroup.class);
 		metamodel.with(eu.synectique.verveine.core.gen.moose.AbstractGroup.class);
+		metamodel.with(eu.synectique.verveine.core.gen.moose.Entity.class);
+		metamodel.with(eu.synectique.verveine.core.gen.moose.Model.class);
 		metamodel.with(eu.synectique.verveine.core.gen.moose.Group.class);
 
     }
