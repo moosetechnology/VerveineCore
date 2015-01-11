@@ -13,12 +13,6 @@ public class BehaviouralEntity extends Entity {
 
 
 
-    @FameProperty(name = "statementsCount", derived = true)
-    public Number getStatementsCount() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
-    }
-    
     @FameProperty(name = "statements", derived = true)
     public Collection<Statement> getStatements() {
         // TODO: this is a derived property, implement this method manually.
@@ -27,18 +21,13 @@ public class BehaviouralEntity extends Entity {
         
     private StatementBlock statementBlock;
     
-    @FameProperty(name = "statementBlock", opposite = "parentNode")
+    @FameProperty(name = "statementBlock")
     public StatementBlock getStatementBlock() {
         return statementBlock;
     }
 
     public void setStatementBlock(StatementBlock statementBlock) {
-        if (this.statementBlock == null ? statementBlock != null : !this.statementBlock.equals(statementBlock)) {
-            StatementBlock old_statementBlock = this.statementBlock;
-            this.statementBlock = statementBlock;
-            if (old_statementBlock != null) old_statementBlock.setParentNode(null);
-            if (statementBlock != null) statementBlock.setParentNode(this);
-        }
+        this.statementBlock = statementBlock;
     }
     
     private Collection<NamedEntity> localVariables; 
@@ -125,12 +114,6 @@ public class BehaviouralEntity extends Entity {
     }
     
                 
-    @FameProperty(name = "cyclomaticComplexity", derived = true)
-    public Number getCyclomaticComplexity() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
-    }
-    
 
 
 }

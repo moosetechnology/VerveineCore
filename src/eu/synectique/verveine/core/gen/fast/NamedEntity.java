@@ -17,7 +17,7 @@ public class NamedEntity extends Entity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+
     private String name;
     
     @FameProperty(name = "name")

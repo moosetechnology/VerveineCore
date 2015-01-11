@@ -12,6 +12,22 @@ public class NamedBehaviouralEntity extends BehaviouralEntity {
 
 
 
+    private eu.synectique.verveine.core.gen.famix.BehaviouralEntity famixBehaviouralEntity;
+    
+    @FameProperty(name = "parentNode", opposite = "fastBehaviouralEntity")
+    public eu.synectique.verveine.core.gen.famix.BehaviouralEntity getFamixBehaviouralEntity() {
+        return famixBehaviouralEntity;
+    }
+
+    public void setFamixBehaviouralEntity(eu.synectique.verveine.core.gen.famix.BehaviouralEntity famixBehaviouralEntity) {
+        if (this.famixBehaviouralEntity == null ? famixBehaviouralEntity != null : !this.famixBehaviouralEntity.equals(famixBehaviouralEntity)) {
+        	eu.synectique.verveine.core.gen.famix.BehaviouralEntity old_famixBehaviouralEntity = this.famixBehaviouralEntity;
+            this.famixBehaviouralEntity = famixBehaviouralEntity;
+            if (old_famixBehaviouralEntity != null) old_famixBehaviouralEntity.setFastBehaviouralEntity(null);
+            if (famixBehaviouralEntity != null) famixBehaviouralEntity.setFastBehaviouralEntity(this);
+        }
+    }
+    
     private String name;
     
     @FameProperty(name = "name")

@@ -7,6 +7,7 @@
 	<property name="docs.dir"     location="docs" />
 	<property name="dist.dir"     location="lib" />
 	<property name="famix.jar"    location="${dist.dir}/famix.jar" />
+	<property name="fast.jar"    location="${dist.dir}/fast.jar" />
 	<property name="verveine.jar" location="${dist.dir}/verveine.core.jar" />
 	<property name="test.dir" location="src/tests/eu/synectique/verveine/core" />
 	<property name="test.report.dir" location="testrep" />
@@ -25,6 +26,7 @@
 		<delete dir="${build.dir}" />
 		<delete dir="${docs.dir}" />
 		<delete file="${famix.jar}" />
+		<delete file="${fast.jar}" />
 		<delete file="${verveine.jar}" />
 	</target>
 
@@ -34,7 +36,7 @@
 		<mkdir dir="${docs.dir}" />
 	</target>
 
-	<!-- Compiles the java code (including the usage of library for JUnit -->
+	<!-- Compiles the java code -->
 	<target name="compile" depends="clean, makedir">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
 		</javac>
@@ -55,6 +57,9 @@
 		<jar destfile="${famix.jar}" basedir="${build.dir}">
 			<include name="eu/synectique/verveine/core/gen/famix/*.class"/>
 			<include name="eu/synectique/verveine/core/gen/moose/*.class"/>
+		</jar>
+		<jar destfile="${fast.jar}" basedir="${build.dir}">
+			<include name="eu/synectique/verveine/core/gen/fast/*.class"/>
 		</jar>
 		<jar destfile="${verveine.jar}" basedir="${build.dir}">
 			<include name="eu/synectique/verveine/core/*.class"/>

@@ -6,6 +6,7 @@ import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
+import eu.synectique.verveine.core.gen.fast.NamedBehaviouralEntity;
 
 
 @FamePackage("FAMIX")
@@ -14,6 +15,22 @@ public class BehaviouralEntity extends ContainerEntity {
 
 
 
+	private NamedBehaviouralEntity fastBehaviouralEntity;
+
+	@FameProperty(name = "fastBehaviouralEntity", opposite = "famixBehaviouralEntity")
+	public NamedBehaviouralEntity getFastBehaviouralEntity() {
+		return fastBehaviouralEntity;
+	}
+
+	public void setFastBehaviouralEntity(NamedBehaviouralEntity fastBehaviouralEntity) {
+		if (this.fastBehaviouralEntity == null ? fastBehaviouralEntity != null : !this.fastBehaviouralEntity.equals(fastBehaviouralEntity)) {
+			NamedBehaviouralEntity old_fastBehaviouralEntity = this.fastBehaviouralEntity;
+			this.fastBehaviouralEntity = fastBehaviouralEntity;
+			if (old_fastBehaviouralEntity != null) old_fastBehaviouralEntity.setFamixBehaviouralEntity(null);
+			if (fastBehaviouralEntity != null) fastBehaviouralEntity.setFamixBehaviouralEntity(this);
+		}
+	}
+    	
     private Number numberOfStatements;
     
     @FameProperty(name = "numberOfStatements")

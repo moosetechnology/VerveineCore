@@ -15,13 +15,13 @@ public class Entity extends SourcedEntity {
 
     private Entity parentNode;
     
-    @FameProperty(name = "parentNode", opposite = "statementBlock")
+    @FameProperty(name = "parentNode")
     public Entity getParentNode() {
         return parentNode;
     }
 
     public void setParentNode(Entity parentNode) {
-    	this.parentNode = parentNode;
+        this.parentNode = parentNode;
     }
     
 

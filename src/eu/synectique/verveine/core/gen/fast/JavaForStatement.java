@@ -1,7 +1,9 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.fast;
 
+import ch.akuhn.fame.internal.MultivalueSet;
 import java.util.*;
+
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -13,36 +15,36 @@ public class JavaForStatement extends Statement {
 
 
 
-    private Collection<Statement> initializers; 
+    private Collection<Expression> initializers; 
 
     @FameProperty(name = "initializers")
-    public Collection<Statement> getInitializers() {
-        if (initializers == null) initializers = new HashSet<Statement>();
+    public Collection<Expression> getInitializers() {
+        if (initializers == null) initializers = new HashSet<Expression>();
         return initializers;
     }
     
-    public void setInitializers(Collection<? extends Statement> initializers) {
+    public void setInitializers(Collection<? extends Expression> initializers) {
         this.getInitializers().clear();
         this.getInitializers().addAll(initializers);
     }                    
 
-    public void addInitializers(Statement one) {
+    public void addInitializers(Expression one) {
         this.getInitializers().add(one);
     }   
     
-    public void addInitializers(Statement one, Statement... many) {
+    public void addInitializers(Expression one, Expression... many) {
         this.getInitializers().add(one);
-        for (Statement each : many)
+        for (Expression each : many)
             this.getInitializers().add(each);
     }   
     
-    public void addInitializers(Iterable<? extends Statement> many) {
-        for (Statement each : many)
+    public void addInitializers(Iterable<? extends Expression> many) {
+        for (Expression each : many)
             this.getInitializers().add(each);
     }   
                 
-    public void addInitializers(Statement[] many) {
-        for (Statement each : many)
+    public void addInitializers(Expression[] many) {
+        for (Expression each : many)
             this.getInitializers().add(each);
     }
     
@@ -55,36 +57,48 @@ public class JavaForStatement extends Statement {
     }
     
                 
-    private Collection<Statement> incrementors; 
+    private Collection<Expression> incrementors; 
 
-    @FameProperty(name = "incrementors")
-    public Collection<Statement> getIncrementors() {
-        if (incrementors == null) incrementors = new HashSet<Statement>();
+    @FameProperty(name = "incrementors", opposite = "parentNode")
+    public Collection<Expression> getIncrementors() {
+        if (incrementors == null) {
+            incrementors = new MultivalueSet<Expression>() {
+                @Override
+                protected void clearOpposite(Expression e) {
+                    e.setParentNode(null);
+                }
+                @Override
+                protected void setOpposite(Expression e) {
+                    e.setParentNode(JavaForStatement.this);
+                }
+            };
+        }
         return incrementors;
     }
     
-    public void setIncrementors(Collection<? extends Statement> incrementors) {
+    public void setIncrementors(Collection<? extends Expression> incrementors) {
         this.getIncrementors().clear();
         this.getIncrementors().addAll(incrementors);
     }                    
-
-    public void addIncrementors(Statement one) {
+    
+        
+    public void addIncrementors(Expression one) {
         this.getIncrementors().add(one);
     }   
     
-    public void addIncrementors(Statement one, Statement... many) {
+    public void addIncrementors(Expression one, Expression... many) {
         this.getIncrementors().add(one);
-        for (Statement each : many)
+        for (Expression each : many)
             this.getIncrementors().add(each);
     }   
     
-    public void addIncrementors(Iterable<? extends Statement> many) {
-        for (Statement each : many)
+    public void addIncrementors(Iterable<? extends Expression> many) {
+        for (Expression each : many)
             this.getIncrementors().add(each);
     }   
                 
-    public void addIncrementors(Statement[] many) {
-        for (Statement each : many)
+    public void addIncrementors(Expression[] many) {
+        for (Expression each : many)
             this.getIncrementors().add(each);
     }
     

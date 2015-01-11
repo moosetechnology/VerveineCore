@@ -23,17 +23,6 @@ public class JavaInfixOperation extends Expression {
         this.leftOperand = leftOperand;
     }
     
-    private Expression rightOperand;
-    
-    @FameProperty(name = "rightOperand")
-    public Expression getRightOperand() {
-        return rightOperand;
-    }
-
-    public void setRightOperand(Expression rightOperand) {
-        this.rightOperand = rightOperand;
-    }
-    
     private String operator;
     
     @FameProperty(name = "operator")
@@ -43,6 +32,17 @@ public class JavaInfixOperation extends Expression {
 
     public void setOperator(String operator) {
         this.operator = operator;
+    }
+    
+    private Expression rightOperand;
+    
+    @FameProperty(name = "rightOperand")
+    public Expression getRightOperand() {
+        return rightOperand;
+    }
+
+    public void setRightOperand(Expression rightOperand) {
+        this.rightOperand = rightOperand;
     }
     
 

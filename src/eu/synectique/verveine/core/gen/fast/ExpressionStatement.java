@@ -14,13 +14,18 @@ public class ExpressionStatement extends Statement {
 
     private Expression expression;
     
-    @FameProperty(name = "expression")
+    @FameProperty(name = "expression", opposite = "parentNode")
     public Expression getExpression() {
         return expression;
     }
 
     public void setExpression(Expression expression) {
-        this.expression = expression;
+        if (this.expression == null ? expression != null : !this.expression.equals(expression)) {
+            Expression old_expression = this.expression;
+            this.expression = expression;
+            if (old_expression != null) old_expression.setParentNode(null);
+            if (expression != null) expression.setParentNode(this);
+        }
     }
     
 

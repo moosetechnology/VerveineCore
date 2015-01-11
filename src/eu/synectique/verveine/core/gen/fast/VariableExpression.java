@@ -12,15 +12,26 @@ public class VariableExpression extends Expression {
 
 
 
-    private NamedEntity variable;
+    private Expression receiver;
     
-    @FameProperty(name = "variable")
-    public NamedEntity getVariable() {
-        return variable;
+    @FameProperty(name = "receiver")
+    public Expression getReceiver() {
+        return receiver;
     }
 
-    public void setVariable(NamedEntity variable) {
-        this.variable = variable;
+    public void setReceiver(Expression receiver) {
+        this.receiver = receiver;
+    }
+    
+    private String name;
+    
+    @FameProperty(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 

@@ -10,8 +10,5 @@ import ch.akuhn.fame.FamePackage;
 public class Expression extends Entity {
 
 
-
-
-
 }
 

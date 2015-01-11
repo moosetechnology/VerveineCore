@@ -23,7 +23,7 @@ public class VerveineUtilsForTests {
 
 	/** Returns the first FAMIXEntities in repository of the given fmxClass and with the given name
 	 */
-	public static <T extends NamedEntity> T detectElement(Repository repository, Class<T> fmxClass, String name) {
+	public static <T extends NamedEntity> T detectFamixElement(Repository repository, Class<T> fmxClass, String name) {
 		for (T ent : selectElementsOfType(repository, fmxClass)) {
 			if (ent.getName().equals(name) ) {
 				return ent;
@@ -35,14 +35,14 @@ public class VerveineUtilsForTests {
 	/**
 	 * Returns a Collection of FAMIXEntities in repository with the given name
 	 */
-	public static Collection<NamedEntity> listElements(Repository repository, String name) {
-		return listElements(repository, NamedEntity.class, name);
+	public static Collection<NamedEntity> listFamixElements(Repository repository, String name) {
+		return listFamixElements(repository, NamedEntity.class, name);
 	}
 
 	/**
 	 * Returns a Collection of FAMIXEntities in repository of the given fmxClass and with the given name
 	 */
-	public static <T extends NamedEntity> Collection<T> listElements(Repository repository, Class<T> fmxClass, String name) {
+	public static <T extends NamedEntity> Collection<T> listFamixElements(Repository repository, Class<T> fmxClass, String name) {
 		Collection<T> selection = new Vector<T>();
 		for (T ent : selectElementsOfType(repository, fmxClass)) {
 			if ( ent.getName().equals(name) ) {

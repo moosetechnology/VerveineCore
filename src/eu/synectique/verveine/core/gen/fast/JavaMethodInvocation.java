@@ -55,10 +55,26 @@ public class JavaMethodInvocation extends Expression {
     }
     
                 
-    @FameProperty(name = "receiver", derived = true)
+    private Expression receiver;
+    
+    @FameProperty(name = "receiver")
     public Expression getReceiver() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+        return receiver;
+    }
+
+    public void setReceiver(Expression receiver) {
+        this.receiver = receiver;
+    }
+    
+    private String name;
+    
+    @FameProperty(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 

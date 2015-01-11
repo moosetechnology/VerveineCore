@@ -7,8 +7,8 @@ import ch.akuhn.fame.FamePackage;
 
 
 @FamePackage("FAST")
-@FameDescription("JavaVariableDeclarator")
-public class JavaVariableDeclarator extends Entity {
+@FameDescription("JavaFieldAccess")
+public class JavaFieldAccess extends Expression {
 
 
 
@@ -22,16 +22,16 @@ public class JavaVariableDeclarator extends Entity {
     public void setExpression(Expression expression) {
         this.expression = expression;
     }
-
-    private NamedEntity variable;
     
-    @FameProperty(name = "variable")
-    public NamedEntity getVariable() {
-        return variable;
+    private String fieldName;
+    
+    @FameProperty(name = "fieldName")
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setVariable(NamedEntity variable) {
-        this.variable = variable;
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
     
 
