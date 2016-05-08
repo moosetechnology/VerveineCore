@@ -21,6 +21,7 @@ import eu.synectique.verveine.core.gen.famix.DeclaredException;
 import eu.synectique.verveine.core.gen.famix.Entity;
 import eu.synectique.verveine.core.gen.famix.Enum;
 import eu.synectique.verveine.core.gen.famix.EnumValue;
+import eu.synectique.verveine.core.gen.famix.Function;
 import eu.synectique.verveine.core.gen.famix.ImplicitVariable;
 import eu.synectique.verveine.core.gen.famix.Inheritance;
 import eu.synectique.verveine.core.gen.famix.Invocation;
@@ -52,6 +53,11 @@ public class Dictionary<B> {
 	public static final String STUB_METHOD_CONTAINER_NAME = "<StubMethodContainer>";
 	public static final String SELF_NAME = "self";
 	public static final String SUPER_NAME = "super";
+	
+	/**
+	 * An MSE marker for methods
+	 */
+	public static final String CONSTRUCTOR_KIND_MARKER = "constructor";
 
 	/**
 	 * The FAMIX repository where all FAMIX entities are created and stored
@@ -83,7 +89,7 @@ public class Dictionary<B> {
 	 * Used to keep the two possible ImplicitVariable for a given Class binding
 	 * @author anquetil
 	 */
-	private class ImplicitVars {
+	protected class ImplicitVars {
 		public ImplicitVariable self_iv;
 		public ImplicitVariable super_iv;
 	}
@@ -197,7 +203,7 @@ public class Dictionary<B> {
 	 * The Entity is always created (see {@link Dictionary#ensureFamixEntity(Class, Object, String, boolean)}).
 	 * @param fmxClass -- the FAMIX class of the instance to create
 	 * @param name -- the name of the new instance must not be null (and this is not tested)
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the Entity should be persisted in the Famix repository
 	 * @return the FAMIX Entity or null in case of a FAMIX error
 	 */
 	protected <T extends NamedEntity> T createFamixEntity(Class<T> fmxClass, String name, boolean persistIt) {
@@ -236,7 +242,7 @@ public class Dictionary<B> {
 	 * @param fmxClass -- the FAMIX class of the instance to create
 	 * @param bnd -- the binding to map to the new instance
 	 * @param name -- the name of the new instance (used if <tt>bnd == null</tt>)
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the Entity should be persisted in the Famix repository
 	 * @return the FAMIX Entity or null if <b>bnd</b> was null or in case of a FAMIX error
 	 */
 	@SuppressWarnings("unchecked")
@@ -282,7 +288,7 @@ public class Dictionary<B> {
 	 * Returns a FAMIX Type with the given <b>name</b>, creating it if it does not exist yet.
 	 * In the second case, sets some default properties: not Abstract, not Final, not Private, not Protected, not Public, not Interface
 	 * @param name -- the name of the FAMIX Class
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the Type should be persisted in the Famix repository
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public Type ensureFamixType(B key, String name, ContainerEntity owner, boolean persistIt) {
@@ -296,7 +302,7 @@ public class Dictionary<B> {
 	 * @param key to which the entity will be mapped (may be null, but then it will be difficult to recover the entity)
 	 * @param name -- the name of the FAMIX Method (MUST NOT be null, but this is not checked)
 	 * @param owner -- type defining the method (should not be null, but it will work if it is) 
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the Class should be persisted in the Famix repository
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public eu.synectique.verveine.core.gen.famix.Class ensureFamixClass(B key, String name, ContainerEntity owner, boolean persistIt) {
@@ -306,10 +312,10 @@ public class Dictionary<B> {
 	}
 
 	/**
-	 * Returns a FAMIX Class with the given <b>name</b>, creating it if it does not exist yet
+	 * Returns a FAMIX ParameterizableClass with the given <b>name</b>, creating it if it does not exist yet
 	 * In the second case, sets some default properties: not Abstract, not Final, not Private, not Protected, not Public, not Interface
 	 * @param name -- the name of the FAMIX Class
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the ParameterizableClass should be persisted in the Famix repository
 	 * @return the FAMIX Class or null in case of a FAMIX error
 	 */
 	public ParameterizableClass ensureFamixParameterizableClass(B key, String name, ContainerEntity owner, boolean persistIt) {
@@ -318,6 +324,12 @@ public class Dictionary<B> {
 		return fmx;
 	}
 
+	/**
+	 * Returns a FAMIX ParameterizableType with the given <b>name</b>, creating it if it does not exist yet
+	 * @param name -- the name of the FAMIX Type
+	 * @param persistIt -- whether the ParameterizableClass should be persisted in the Famix repository
+	 * @return the FAMIX ParameterizableType or null in case of a FAMIX error
+	 */
 	public ParameterizedType ensureFamixParameterizedType(B key, String name, ParameterizableClass generic, ContainerEntity owner, boolean persistIt) {
 		ParameterizedType fmx = ensureFamixEntity(ParameterizedType.class, key, name, persistIt);
 		fmx.setContainer(owner);
@@ -329,7 +341,7 @@ public class Dictionary<B> {
 	 * Returns a FAMIX ParameterType (created by a FAMIX ParameterizableClass) with the given <b>name</b>, creating it if it does not exist yet
 	 * In the second case, sets some default properties: not Abstract, not Final, not Private, not Protected, not Public
 	 * @param name -- the name of the FAMIX ParameterType
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the ParameterType should be persisted in the Famix repository
 	 * @return the FAMIX ParameterType or null in case of a FAMIX error
 	 */
 	public ParameterType ensureFamixParameterType(B key, String name, ContainerEntity owner, boolean persistIt) {
@@ -402,7 +414,7 @@ public class Dictionary<B> {
 	 * @param sig -- method's signature, including type of parameters and return type (should not be null, but it will work if it is)
 	 * @param ret -- Famix Type returned by the method (ideally should only be null in case of a constructor, but will accept it in any case)
 	 * @param owner -- type defining the method (should not be null, but it will work if it is)
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the Method should be persisted in the Famix repository
 	 * @return the FAMIX Method or null in case of a FAMIX error
 	 */
 	public Method ensureFamixMethod(B key, String name, String sig, Type ret, Type owner, boolean persistIt) {
@@ -412,6 +424,24 @@ public class Dictionary<B> {
 		fmx.setParentType(owner);
 		return fmx;
 	}
+	
+	/**
+	 * Returns a FAMIX Function with the given <b>name</b>, creating it if it does not exist yet
+	 * @param key to which the entity will be mapped (may be null, but then it will be difficult to recover the entity)
+	 * @param name -- the name of the FAMIX Function (MUST NOT be null, but this is not checked)
+	 * @param sig -- method's signature, including type of parameters and return type (should not be null, but it will work if it is)
+	 * @param ret -- Famix Type returned by the method (ideally should only be null in case of a constructor, but will accept it in any case)
+	 * @param owner -- container defining the method (should not be null, but it will work if it is)
+	 * @param persistIt -- whether the Function should be persisted in the Famix repository
+	 * @return the FAMIX Method or null in case of a FAMIX error
+	 */
+	public Function ensureFamixFunction(B key, String name, String sig, Type ret, ContainerEntity owner, boolean persistIt) {
+		Function fmx = (Function) ensureFamixEntity(Function.class, key, name, persistIt);
+		fmx.setSignature(sig);
+		fmx.setDeclaredType(ret);
+		fmx.setContainer(owner);;
+		return fmx;
+	}
 
 	/**
 	 * Returns a FAMIX Attribute with the given <b>name</b>, creating it if it does not exist yet
@@ -419,7 +449,7 @@ public class Dictionary<B> {
 	 * @param name -- the name of the FAMIX Attribute (MUST NOT be null, but this is not checked)
 	 * @param type -- Famix Type of the Attribute (should not be null, but it will work if it is)
 	 * @param owner -- type defining the Attribute (should not be null, but it will work if it is)
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the Attribute should be persisted in the Famix repository
 	 * @return the FAMIX Attribute or null in case of a FAMIX error
 	 */
 	public Attribute ensureFamixAttribute(B key, String name, Type type, Type owner, boolean persistIt) {
@@ -432,7 +462,7 @@ public class Dictionary<B> {
 	/**
 	 * Returns a FAMIX LocalVariable with the given <b>name</b>, creating it if it does not exist yet
 	 * @param name -- the name of the FAMIX LocalVariable
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the LocalVariable should be persisted in the Famix repository
 	 * @return the FAMIX LocalVariable or null in case of a FAMIX error
 	 */
 	public LocalVariable ensureFamixLocalVariable(B key, String name, Type type, BehaviouralEntity owner, boolean persistIt) {
@@ -465,7 +495,7 @@ public class Dictionary<B> {
 	 * @param name -- the name of the parameter
 	 * @param type -- the type of the parameter
 	 * @param owner -- the entity concerned by this parameter
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the Parameter should be persisted in the Famix repository
 	 * @return the FAMIX parameter
 	 */
 	public Parameter createFamixParameter(B key, String name, Type type, BehaviouralEntity owner, boolean persistIt) {
@@ -579,7 +609,7 @@ public class Dictionary<B> {
 		return acc;
 	}
 
-	private void chainPrevNext(Association prev, Association next) {
+	protected void chainPrevNext(Association prev, Association next) {
 		if (prev != null) {
 			next.setPrevious(prev);  // not yet implemented in importer
 		}
@@ -680,7 +710,7 @@ public class Dictionary<B> {
 	 * @param name -- the name of the FAMIX ImplicitVariable (should be Dictionary.SELF_NAME or Dictionary.SUPER_NAME)
 	 * @param type -- the Famix Type for this ImplicitVariable (should not be null)
 	 * @param owner -- the ContainerEntity where the implicit variable appears (usually a method inside <b>type</b>)
-	 * @param persistIt TODO
+	 * @param persistIt -- whether the ImplicitVariable should be persisted in the Famix repository
 	 * @return the FAMIX ImplicitVariable or null in case of a FAMIX error
 	 */
 	public ImplicitVariable ensureFamixImplicitVariable(String name, Type type, BehaviouralEntity owner, boolean persistIt) {

@@ -15,8 +15,7 @@ public class BehaviouralEntity extends Entity {
 
     @FameProperty(name = "statements", derived = true)
     public Collection<Statement> getStatements() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+        return this.statementBlock.getStatements();
     }
         
     private StatementBlock statementBlock;

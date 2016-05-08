@@ -34,6 +34,17 @@ public class PropertyGroup extends Group {
         this.sizeRatio = sizeRatio;
     }
     
+    private String property;
+    
+    @FameProperty(name = "property")
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+    
     private Number propertyRatio;
     
     @FameProperty(name = "propertyRatio")
@@ -54,17 +65,6 @@ public class PropertyGroup extends Group {
 
     public void setPropertyTotalOriginal(Number propertyTotalOriginal) {
         this.propertyTotalOriginal = propertyTotalOriginal;
-    }
-    
-    private String property;
-    
-    @FameProperty(name = "property")
-    public String getProperty() {
-        return property;
-    }
-
-    public void setProperty(String property) {
-        this.property = property;
     }
     
     private Number propertyTotal;

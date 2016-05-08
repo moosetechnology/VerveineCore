@@ -2,9 +2,9 @@
 package eu.synectique.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
-import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
+import java.util.*;
 import ch.akuhn.fame.FamePackage;
 
 
@@ -14,23 +14,12 @@ public class StructuralEntity extends LeafEntity {
 
 
 
-    private Type declaredType;
-    
-    @FameProperty(name = "declaredType", opposite = "structuresWithDeclaredType")
-    public Type getDeclaredType() {
-        return declaredType;
+    @FameProperty(name = "accessors", derived = true)
+    public Collection<BehaviouralEntity> getAccessors() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
-
-    public void setDeclaredType(Type declaredType) {
-        if (this.declaredType != null) {
-            if (this.declaredType.equals(declaredType)) return;
-            this.declaredType.getStructuresWithDeclaredType().remove(this);
-        }
-        this.declaredType = declaredType;
-        if (declaredType == null) return;
-        declaredType.getStructuresWithDeclaredType().add(this);
-    }
-    
+        
     private Collection<Access> incomingAccesses; 
 
     @FameProperty(name = "incomingAccesses", opposite = "variable", derived = true)
@@ -84,13 +73,78 @@ public class StructuralEntity extends LeafEntity {
         return !getIncomingAccesses().isEmpty();
     }
     
-/*                
-    @FameProperty(name = "accessors", derived = true)
-    public Collection<BehaviouralEntity> getAccessors() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+                
+    private Type declaredType;
+    
+    @FameProperty(name = "declaredType", opposite = "structuresWithDeclaredType")
+    public Type getDeclaredType() {
+        return declaredType;
     }
-*/        
+
+    public void setDeclaredType(Type declaredType) {
+        if (this.declaredType != null) {
+            if (this.declaredType.equals(declaredType)) return;
+            this.declaredType.getStructuresWithDeclaredType().remove(this);
+        }
+        this.declaredType = declaredType;
+        if (declaredType == null) return;
+        declaredType.getStructuresWithDeclaredType().add(this);
+    }
+    
+    private Collection<DereferencedInvocation> dereferencedInvocations; 
+
+    @FameProperty(name = "dereferencedInvocations", opposite = "referencer", derived = true)
+    public Collection<DereferencedInvocation> getDereferencedInvocations() {
+        if (dereferencedInvocations == null) {
+            dereferencedInvocations = new MultivalueSet<DereferencedInvocation>() {
+                @Override
+                protected void clearOpposite(DereferencedInvocation e) {
+                    e.setReferencer(null);
+                }
+                @Override
+                protected void setOpposite(DereferencedInvocation e) {
+                    e.setReferencer(StructuralEntity.this);
+                }
+            };
+        }
+        return dereferencedInvocations;
+    }
+    
+    public void setDereferencedInvocations(Collection<? extends DereferencedInvocation> dereferencedInvocations) {
+        this.getDereferencedInvocations().clear();
+        this.getDereferencedInvocations().addAll(dereferencedInvocations);
+    }                    
+    
+        
+    public void addDereferencedInvocations(DereferencedInvocation one) {
+        this.getDereferencedInvocations().add(one);
+    }   
+    
+    public void addDereferencedInvocations(DereferencedInvocation one, DereferencedInvocation... many) {
+        this.getDereferencedInvocations().add(one);
+        for (DereferencedInvocation each : many)
+            this.getDereferencedInvocations().add(each);
+    }   
+    
+    public void addDereferencedInvocations(Iterable<? extends DereferencedInvocation> many) {
+        for (DereferencedInvocation each : many)
+            this.getDereferencedInvocations().add(each);
+    }   
+                
+    public void addDereferencedInvocations(DereferencedInvocation[] many) {
+        for (DereferencedInvocation each : many)
+            this.getDereferencedInvocations().add(each);
+    }
+    
+    public int numberOfDereferencedInvocations() {
+        return getDereferencedInvocations().size();
+    }
+
+    public boolean hasDereferencedInvocations() {
+        return !getDereferencedInvocations().isEmpty();
+    }
+    
+                
 
 
 }

@@ -3,6 +3,7 @@ package eu.synectique.verveine.core.gen.fast;
 
 import ch.akuhn.fame.internal.MultivalueSet;
 import eu.synectique.verveine.core.gen.famix.Type;
+
 import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;

@@ -4,13 +4,11 @@ import java.util.Stack;
 
 import eu.synectique.verveine.core.gen.famix.Access;
 import eu.synectique.verveine.core.gen.famix.AnnotationTypeAttribute;
-import eu.synectique.verveine.core.gen.famix.ContainerEntity;
 import eu.synectique.verveine.core.gen.famix.Invocation;
 import eu.synectique.verveine.core.gen.famix.Method;
 import eu.synectique.verveine.core.gen.famix.NamedEntity;
 import eu.synectique.verveine.core.gen.famix.Namespace;
 import eu.synectique.verveine.core.gen.famix.Reference;
-import eu.synectique.verveine.core.gen.famix.Type;
 
 /** A stack of FAMIX Entities so that we know in what container each new Entity is declared
  * @author anquetil
@@ -18,126 +16,34 @@ import eu.synectique.verveine.core.gen.famix.Type;
 public class EntityStack {
 	public static final int EMPTY_CYCLO = 0;
 	public static final int EMPTY_NOS = 0;
-	
-	private Namespace fmxPckg;
-	private Stack<TypeStack> fmxType;
 
-	/**
-	 * A structure to hold a Famix class and its current method
-	 */
-	private class TypeStack {
-		private Type fmxType;  // can be a FamixClass, or Enum, or FamixAnnotationType
-		private NamedEntity fmxMember; // can be a FamixMethod or a FamixAnnotationAttribute
+	private Stack<NamedEntity> stack;
+	
+	private class MetricHolder extends NamedEntity {
 		private int metric_cyclo = EMPTY_CYCLO;  // Cyclomatic Complexity
 		private int metric_nos = EMPTY_NOS;      // Number Of Statements
-		
-		
- 		public TypeStack(Type e) {
-			fmxType = e;
-			clearFmxMember();
-		}
+		private Method meth;
 
-		public Type getFmxType() {
-			return (Type) fmxType;
+		protected MetricHolder(Method meth) {
+			this.meth = meth;
 		}
-
-		/**
-		 * Returns the Famix Method on top of the context stack
-		 */
-		public Method getFmxMethod() {
-			if (fmxMember instanceof Method) {
-				return (Method) fmxMember;
-			}
-			else {
-				return null;
-			}
-		}
-
-		public AnnotationTypeAttribute getFmxAnnotationAttribute() {
-			if (fmxMember instanceof AnnotationTypeAttribute) {
-				return (AnnotationTypeAttribute) fmxMember;
-			}
-			else {
-				return null;
-			}
-		}
-
-		/**
-		 * Returns the Cyclomatic complexity of the Famix Method on top of the context stack
-		 */
-		public int getFmxMethodCyclo() {
+		protected int getCyclo() {
 			return metric_cyclo;
 		}
-
-		/**
-		 * Returns the Number of Statements of the Famix Method on top of the context stack
-		 */
-		public int getFmxMethodNOS() {
+		protected void setCyclo(int metric_cyclo) {
+			this.metric_cyclo = metric_cyclo;
+		}
+		protected int getNos() {
 			return metric_nos;
 		}
-		
-		/**
-		 * Reset the Famix Method on top of the context stack
-		 */
-		public void setFmxMethod(Method fmxMethod) {
-			clearFmxMember();
-			this.fmxMember = fmxMethod;
+		protected void setNos(int metric_nos) {
+			this.metric_nos = metric_nos;
 		}
-
-		public void setFmxAnnotationAttribute(AnnotationTypeAttribute fmxAtt) {
-			clearFmxMember();
-			this.fmxMember = fmxAtt;
+		protected Method getMeth() {
+			return meth;
 		}
-
-		/**
-		 * Sets the Cyclomatic complexity of the Famix Method on top of the context stack
-		 */
-		public void setFmxMethodCyclo(int c) {
-			metric_cyclo = c;
-		}
-
-		/**
-		 * Sets to the Number of Statements of the Famix Method on top of the context stack
-		 */
-		public void setFmxMethodNOS(int n) {
-			metric_nos = n;
-		}
-		
-		/**
-		 * Adds to the Cyclomatic complexity of the Famix Method on top of the context stack
-		 */
-		public void addFmxMethodCyclo(int c) {
-			metric_cyclo += c;
-		}
-
-		/**
-		 * Adds to the Number of Statements of the Famix Method on top of the context stack
-		 */
-		public void addFmxMethodNOS(int n) {
-			metric_nos += n;
-		}
-		
-		/**
-		 * Empties the context stack of Famix types
-		 */
-		public void clearFmxType() {
-			fmxType = null;
-			clearFmxMember();
-		}
-		
-		/**
-		 * Empties the Famix Method on top of the context stack
-		 */
-		public void clearFmxMember() {
-			fmxMember = null;
-			metric_cyclo = EMPTY_CYCLO;
-			metric_nos = EMPTY_NOS;
-			setLastInvocation(null);
-			setLastAccess(null);
-		}
-
 	}
-	
+
 	/**
 	 * last Invocation registered to set the previous/next
 	 */
@@ -181,15 +87,6 @@ public class EntityStack {
 		clearPckg();  // initializes (to empty) Pckgs, classes and methods
 	}
 
-	private TypeStack getTopType() {
-		if (fmxType.isEmpty()) {
-			return null;
-		}
-		else {
-			return fmxType.peek();
-		}
-	}
-
 	// WRITE ON THE STACK
 	
 	/**
@@ -197,18 +94,7 @@ public class EntityStack {
 	 * @param e -- the entity
 	 */
 	public void push(NamedEntity e) {
-		if (e instanceof Method) {
-			pushMethod((Method) e);
-		}
-		else if (e instanceof eu.synectique.verveine.core.gen.famix.Type) {
-			pushType((eu.synectique.verveine.core.gen.famix.Type) e);
-		}
-		else if (e instanceof AnnotationTypeAttribute) {
-			pushAnnotationMember((AnnotationTypeAttribute) e);
-		}
-		else if (e instanceof Namespace) {
-			pushPckg((Namespace) e);
-		}
+		stack.push(e);
 	}
 
 	/**
@@ -217,8 +103,7 @@ public class EntityStack {
 	 * @param e -- the Famix method
 	 */
 	public void pushPckg(Namespace e) {
-		clearTypes();
-		fmxPckg = e;
+		push(e);
 	}
 
 	/**
@@ -226,7 +111,7 @@ public class EntityStack {
 	 * @param t -- the FamixType
 	 */
 	public void pushType(eu.synectique.verveine.core.gen.famix.Type t) {
-		fmxType.push(new TypeStack(t));
+		push(t);
 	}
 
 	/**
@@ -234,29 +119,75 @@ public class EntityStack {
 	 * @param e -- the Famix method
 	 */
 	public void pushMethod(Method e) {
-		getTopType().setFmxMethod(e);
+		push(e);
+		push( new MetricHolder(e) );
 	}
 
 	public void pushAnnotationMember(AnnotationTypeAttribute fmx) {
-		getTopType().setFmxAnnotationAttribute(fmx);	
+		push(fmx);	
 	}
 	
 	/**
 	 * Empties the context stack of package and associated classes
 	 */
 	public void clearPckg() {
-		clearTypes();
-		fmxPckg = null;
+		stack = new Stack<NamedEntity>();
 	}
 
 	/**
 	 * Empties the context stack of Famix classes
 	 */
 	public void clearTypes() {
-		fmxType = new Stack<TypeStack>();
+		while (! (this.top() instanceof Namespace)) {
+			this.popUpto(eu.synectique.verveine.core.gen.famix.Type.class);			
+		}
 	}
 	
 	// READ FROM THE STACK
+
+	private <T extends NamedEntity> T popUpto(Class<T> clazz) {
+		NamedEntity ent = null;
+		while ( (! stack.isEmpty()) && (! clazz.isInstance(ent)) ) {
+			ent = this.pop();
+		}
+
+		if (stack.isEmpty()) {
+			return null;
+		}
+		else {
+			return (T) ent;
+		}
+	}
+
+	private <T extends NamedEntity> T lookUpto(Class<T> clazz) {
+		int i=this.stack.size()-1;
+
+		while ( (i >= 0) && (! clazz.isInstance(stack.get(i))) ) {
+			i--;
+		}
+
+		if (i < 0) {
+			return null;
+		}
+		else {
+			return (T)stack.get(i);
+		}
+	}
+
+	public NamedEntity pop() {
+		if (stack.isEmpty()) {
+			return null;
+		}
+		else {
+			NamedEntity e = stack.pop();
+			if (e instanceof MetricHolder) {
+				return stack.pop();
+			}
+			else {
+				return e;
+			}
+		}
+	}
 
 	/**
 	 * Removes and returns the Famix package from the "context stack"
@@ -265,9 +196,7 @@ public class EntityStack {
 	 * @return the Famix method
 	 */
 	public Namespace popPckg() {
-		Namespace ret = fmxPckg;
-		clearPckg();
-		return ret;
+		return this.popUpto(Namespace.class);
 	}
 
 	/**
@@ -276,8 +205,7 @@ public class EntityStack {
 	 * @return the Famix class
 	 */
 	public eu.synectique.verveine.core.gen.famix.Type popType() {
-		TypeStack tmp = fmxType.pop();
-		return tmp.getFmxType();
+		return this.popUpto(eu.synectique.verveine.core.gen.famix.Type.class);
 	}
 
 	/**
@@ -286,17 +214,11 @@ public class EntityStack {
 	 * @return the Famix method
 	 */
 	public Method popMethod() {
-		TypeStack tmp = getTopType();
-		Method ret = tmp.getFmxMethod();
-		tmp.clearFmxMember();
-		return ret;
+		return this.popUpto(Method.class);
 	}
 	
 	public AnnotationTypeAttribute popAnnotationMember() {
-		TypeStack tmp = getTopType();
-		AnnotationTypeAttribute ret = tmp.getFmxAnnotationAttribute();
-		tmp.clearFmxMember();
-		return ret;
+		return this.popUpto(AnnotationTypeAttribute.class);
 	}
 
 	/**
@@ -304,20 +226,19 @@ public class EntityStack {
 	 * Note: does not check that there is such an entity
 	 * @return the Famix entity
 	 */
-	public ContainerEntity top() {
-		ContainerEntity ret = null;
-		TypeStack topc = getTopType();
-		if (topc != null) {
-			ret = topc.getFmxMethod();
-			if (ret == null) {
-				ret = topc.getFmxType();
-			}
+	public NamedEntity top() {
+		if (stack.isEmpty()) {
+			return null;
 		}
 		else {
-			ret = topPckg();
+			NamedEntity e = stack.peek();
+			if (e instanceof MetricHolder) {
+				return ((MetricHolder) e).getMeth();
+			}
+			else {
+				return e;
+			}
 		}
-
-		return ret;
 	}
 
 	/**
@@ -326,7 +247,7 @@ public class EntityStack {
 	 * @return the Famix namespace
 	 */
 	public Namespace topPckg() {
-		return fmxPckg;
+		return this.lookUpto(Namespace.class);
 	}
 
 	/**
@@ -335,7 +256,7 @@ public class EntityStack {
 	 * @return the Famix class
 	 */
 	public eu.synectique.verveine.core.gen.famix.Type topType() {
-		return ( getTopType() == null) ? null : getTopType().getFmxType();
+		return this.lookUpto(eu.synectique.verveine.core.gen.famix.Type.class);
 	}
 
 	/**
@@ -344,11 +265,11 @@ public class EntityStack {
 	 * @return the Famix method
 	 */
 	public Method topMethod() {
-		return ( getTopType() == null) ? null : getTopType().getFmxMethod();
+		return this.lookUpto(Method.class);
 	}
 
 	public AnnotationTypeAttribute topAnnotationMember() {
-		return ( getTopType() == null) ? null : getTopType().getFmxAnnotationAttribute();
+		return this.lookUpto(AnnotationTypeAttribute.class);
 	}
 
 	// PROPERTIES OF THE TOP METHOD
@@ -357,8 +278,10 @@ public class EntityStack {
 	 * Returns the Cyclomatic complexity of the Famix Method on top of the context stack
 	 */
 	public int getTopMethodCyclo() {
-		if (getTopType() != null) {
-			return getTopType().getFmxMethodCyclo();
+		MetricHolder met = this.lookUpto(MetricHolder.class);
+
+		if (met != null) {
+			return met.getCyclo();
 		}
 		else {
 			return EMPTY_CYCLO;
@@ -369,8 +292,10 @@ public class EntityStack {
 	 * Returns the Number of Statements of the Famix Method on top of the context stack
 	 */
 	public int getTopMethodNOS() {
-		if (getTopType() != null) {
-			return getTopType().getFmxMethodNOS();
+		MetricHolder met = this.lookUpto(MetricHolder.class);
+
+		if (met != null) {
+			return met.getNos();
 		}
 		else {
 			return EMPTY_NOS;
@@ -381,8 +306,10 @@ public class EntityStack {
 	 * Sets the Cyclomatic complexity of the Famix Method on top of the context stack
 	 */
 	public void setTopMethodCyclo(int c) {
-		if (getTopType() != null) {
-			getTopType().setFmxMethodCyclo(c);
+		MetricHolder met = this.lookUpto(MetricHolder.class);
+
+		if (met != null) {
+			met.setCyclo(c);
 		}
 	}
 
@@ -390,8 +317,10 @@ public class EntityStack {
 	 * Sets to the Number of Statements of the Famix Method on top of the context stack
 	 */
 	public void setTopMethodNOS(int n) {
-		if (getTopType() != null) {
-			getTopType().setFmxMethodNOS(n);
+		MetricHolder met = this.lookUpto(MetricHolder.class);
+
+		if (met != null) {
+			met.setNos(n);
 		}
 	}
 	
@@ -399,8 +328,10 @@ public class EntityStack {
 	 * Adds to the Cyclomatic complexity of the Famix Method on top of the context stack
 	 */
 	public void addTopMethodCyclo(int c) {
-		if (getTopType() != null) {
-			getTopType().addFmxMethodCyclo(c);
+		MetricHolder met = this.lookUpto(MetricHolder.class);
+
+		if (met != null) {
+			met.setCyclo( met.getCyclo()+c );
 		}
 	}
 
@@ -408,8 +339,10 @@ public class EntityStack {
 	 * Adds to the Number of Statements of the Famix Method on top of the context stack
 	 */
 	public void addTopMethodNOS(int n) {
-		if (getTopType() != null) {
-			getTopType().addFmxMethodNOS(n);
+		MetricHolder met = this.lookUpto(MetricHolder.class);
+
+		if (met != null) {
+			met.setNos( met.getNos()+n );
 		}
 	}
 
