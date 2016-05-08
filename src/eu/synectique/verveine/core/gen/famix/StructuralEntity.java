@@ -13,13 +13,14 @@ import ch.akuhn.fame.FamePackage;
 public class StructuralEntity extends LeafEntity {
 
 
-
+/*
     @FameProperty(name = "accessors", derived = true)
     public Collection<BehaviouralEntity> getAccessors() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-        
+*/
+
     private Collection<Access> incomingAccesses; 
 
     @FameProperty(name = "incomingAccesses", opposite = "variable", derived = true)
