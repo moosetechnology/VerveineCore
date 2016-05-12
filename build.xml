@@ -38,7 +38,7 @@
 
 	<!-- Compiles the java code -->
 	<target name="compile" depends="clean, makedir">
-		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
+		<javac target="1.5" srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
 		</javac>
 	</target>
 

@@ -98,9 +98,16 @@ public class EntityStack {
 	}
 
 	/**
+	 * Sets the Famix Package on top of the "context stack"
+	 * @param e -- the Famix Package
+	 */
+	public void pushPckg(eu.synectique.verveine.core.gen.famix.Package e) {
+		push(e);
+	}
+
+	/**
 	 * Sets the Famix namespace on top of the "context stack"
-	 * Not really a push, but keep the same convention as the others
-	 * @param e -- the Famix method
+	 * @param e -- the Famix namespace
 	 */
 	public void pushPckg(Namespace e) {
 		push(e);
@@ -195,8 +202,8 @@ public class EntityStack {
 	 * Note: does not check that there is such a namespace
 	 * @return the Famix method
 	 */
-	public Namespace popPckg() {
-		return this.popUpto(Namespace.class);
+	public eu.synectique.verveine.core.gen.famix.Package popPckg() {
+		return this.popUpto(eu.synectique.verveine.core.gen.famix.Package.class);
 	}
 
 	/**
@@ -206,6 +213,15 @@ public class EntityStack {
 	 */
 	public eu.synectique.verveine.core.gen.famix.Type popType() {
 		return this.popUpto(eu.synectique.verveine.core.gen.famix.Type.class);
+	}
+
+	/**
+	 * Pops the top Famix Namespace from the "context stack"<BR>
+	 * Note: does not check that there is such a namesapce, so could possibly throw an EmptyStackException
+	 * @return the Famix Namespace
+	 */
+	public Namespace popNamespace() {
+		return this.popUpto(Namespace.class);
 	}
 
 	/**
@@ -246,8 +262,8 @@ public class EntityStack {
 	 * Note: does not check that there is such a package
 	 * @return the Famix namespace
 	 */
-	public Namespace topPckg() {
-		return this.lookUpto(Namespace.class);
+	public eu.synectique.verveine.core.gen.famix.Package topPckg() {
+		return this.lookUpto(eu.synectique.verveine.core.gen.famix.Package.class);
 	}
 
 	/**
@@ -257,6 +273,15 @@ public class EntityStack {
 	 */
 	public eu.synectique.verveine.core.gen.famix.Type topType() {
 		return this.lookUpto(eu.synectique.verveine.core.gen.famix.Type.class);
+	}
+
+	/**
+	 * Returns the Famix Namespace on top of the "context stack"
+	 * Note: does not check that there is such a Namespace, so could possibly throw an EmptyStackException
+	 * @return the Famix Namespace
+	 */
+	public Namespace topNamespace() {
+		return this.lookUpto(Namespace.class);
 	}
 
 	/**

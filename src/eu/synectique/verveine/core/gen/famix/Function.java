@@ -28,7 +28,12 @@ public class Function extends BehaviouralEntity {
         if (container == null) return;
         container.getFunctions().add(this);
     }
-    
+
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getContainer();
+	}
+
 
 
 }
