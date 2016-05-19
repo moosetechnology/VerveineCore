@@ -13,17 +13,6 @@ public class Model extends AbstractGroup {
 
 
 
-    private SourceLanguage sourceLanguage;
-    
-    @FameProperty(name = "sourceLanguage")
-    public SourceLanguage getSourceLanguage() {
-        return sourceLanguage;
-    }
-
-    public void setSourceLanguage(SourceLanguage sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
-    }
-    
     private Number numberOfPackages;
     
     @FameProperty(name = "numberOfPackages")
@@ -33,6 +22,17 @@ public class Model extends AbstractGroup {
 
     public void setNumberOfPackages(Number numberOfPackages) {
         this.numberOfPackages = numberOfPackages;
+    }
+    
+    private SourceLanguage sourceLanguage;
+    
+    @FameProperty(name = "sourceLanguage")
+    public SourceLanguage getSourceLanguage() {
+        return sourceLanguage;
+    }
+
+    public void setSourceLanguage(SourceLanguage sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
     }
     
 

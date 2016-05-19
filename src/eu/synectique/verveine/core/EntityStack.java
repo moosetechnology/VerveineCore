@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import eu.synectique.verveine.core.gen.famix.Access;
 import eu.synectique.verveine.core.gen.famix.AnnotationTypeAttribute;
+import eu.synectique.verveine.core.gen.famix.BehaviouralEntity;
 import eu.synectique.verveine.core.gen.famix.Invocation;
 import eu.synectique.verveine.core.gen.famix.Method;
 import eu.synectique.verveine.core.gen.famix.NamedEntity;
@@ -22,10 +23,10 @@ public class EntityStack {
 	private class MetricHolder extends NamedEntity {
 		private int metric_cyclo = EMPTY_CYCLO;  // Cyclomatic Complexity
 		private int metric_nos = EMPTY_NOS;      // Number Of Statements
-		private Method meth;
+		private BehaviouralEntity ent;
 
-		protected MetricHolder(Method meth) {
-			this.meth = meth;
+		protected MetricHolder(BehaviouralEntity ent) {
+			this.ent = ent;
 		}
 		protected int getCyclo() {
 			return metric_cyclo;
@@ -39,8 +40,8 @@ public class EntityStack {
 		protected void setNos(int metric_nos) {
 			this.metric_nos = metric_nos;
 		}
-		protected Method getMeth() {
-			return meth;
+		protected BehaviouralEntity getEntity() {
+			return ent;
 		}
 	}
 
@@ -123,9 +124,20 @@ public class EntityStack {
 
 	/**
 	 * Pushes a Famix method on top of the "context stack" for the current Famix Type
+	 * Adds also a special entity to hold the metrics for the method
 	 * @param e -- the Famix method
 	 */
 	public void pushMethod(Method e) {
+		push(e);
+		push( new MetricHolder(e) );
+	}
+
+	/**
+	 * Pushes a Famix BehaviouralEntity on top of the "context stack"
+	 * Adds also a special entity to hold the metrics for the BehaviouralEntity
+	 * @param e -- the Famix BehaviouralEntity
+	 */
+	public void pushBehaviouralEntity(BehaviouralEntity e) {
 		push(e);
 		push( new MetricHolder(e) );
 	}
@@ -249,7 +261,7 @@ public class EntityStack {
 		else {
 			NamedEntity e = stack.peek();
 			if (e instanceof MetricHolder) {
-				return ((MetricHolder) e).getMeth();
+				return ((MetricHolder) e).getEntity();
 			}
 			else {
 				return e;
@@ -282,6 +294,15 @@ public class EntityStack {
 	 */
 	public Namespace topNamespace() {
 		return this.lookUpto(Namespace.class);
+	}
+
+	/**
+	 * Returns the Famix BehaviouralEntity on top of the "context stack"
+	 * Note: does not check that there is such a BehaviouralEntity, so could possibly throw an EmptyStackException
+	 * @return the Famix BehaviouralEntity
+	 */
+	public BehaviouralEntity topBehaviouralEntity() {
+		return this.lookUpto(BehaviouralEntity.class);
 	}
 
 	/**

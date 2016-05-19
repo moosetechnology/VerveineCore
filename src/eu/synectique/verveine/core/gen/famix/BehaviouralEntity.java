@@ -14,7 +14,6 @@ import eu.synectique.verveine.core.gen.fast.NamedBehaviouralEntity;
 public class BehaviouralEntity extends ContainerEntity {
 
 
-
 	private NamedBehaviouralEntity fastBehaviouralEntity;
 
 	@FameProperty(name = "fastBehaviouralEntity", opposite = "famixBehaviouralEntity")
@@ -30,7 +29,8 @@ public class BehaviouralEntity extends ContainerEntity {
 			if (fastBehaviouralEntity != null) fastBehaviouralEntity.setFamixBehaviouralEntity(this);
 		}
 	}
-    	
+ 	        
+
     private Number numberOfStatements;
     
     @FameProperty(name = "numberOfStatements")
@@ -478,6 +478,113 @@ public class BehaviouralEntity extends ContainerEntity {
         this.signature = signature;
     }
     
+    private Collection<BehaviouralReference> references; 
+
+    @FameProperty(name = "references", opposite = "pointed", derived = true)
+    public Collection<BehaviouralReference> getReferences() {
+        if (references == null) {
+            references = new MultivalueSet<BehaviouralReference>() {
+                @Override
+                protected void clearOpposite(BehaviouralReference e) {
+                    e.setPointed(null);
+                }
+                @Override
+                protected void setOpposite(BehaviouralReference e) {
+                    e.setPointed(BehaviouralEntity.this);
+                }
+            };
+        }
+        return references;
+    }
+    
+    public void setReferences(Collection<? extends BehaviouralReference> references) {
+        this.getReferences().clear();
+        this.getReferences().addAll(references);
+    }                    
+    
+        
+    public void addReferences(BehaviouralReference one) {
+        this.getReferences().add(one);
+    }   
+    
+    public void addReferences(BehaviouralReference one, BehaviouralReference... many) {
+        this.getReferences().add(one);
+        for (BehaviouralReference each : many)
+            this.getReferences().add(each);
+    }   
+    
+    public void addReferences(Iterable<? extends BehaviouralReference> many) {
+        for (BehaviouralReference each : many)
+            this.getReferences().add(each);
+    }   
+                
+    public void addReferences(BehaviouralReference[] many) {
+        for (BehaviouralReference each : many)
+            this.getReferences().add(each);
+    }
+    
+    public int numberOfReferences() {
+        return getReferences().size();
+    }
+
+    public boolean hasReferences() {
+        return !getReferences().isEmpty();
+    }
+    
+                
+    private Collection<BehaviouralReference> behaviouralPointers; 
+
+    @FameProperty(name = "behaviouralPointers", opposite = "referer", derived = true)
+    public Collection<BehaviouralReference> getBehaviouralPointers() {
+        if (behaviouralPointers == null) {
+            behaviouralPointers = new MultivalueSet<BehaviouralReference>() {
+                @Override
+                protected void clearOpposite(BehaviouralReference e) {
+                    e.setReferer(null);
+                }
+                @Override
+                protected void setOpposite(BehaviouralReference e) {
+                    e.setReferer(BehaviouralEntity.this);
+                }
+            };
+        }
+        return behaviouralPointers;
+    }
+    
+    public void setBehaviouralPointers(Collection<? extends BehaviouralReference> behaviouralPointers) {
+        this.getBehaviouralPointers().clear();
+        this.getBehaviouralPointers().addAll(behaviouralPointers);
+    }                    
+    
+        
+    public void addBehaviouralPointers(BehaviouralReference one) {
+        this.getBehaviouralPointers().add(one);
+    }   
+    
+    public void addBehaviouralPointers(BehaviouralReference one, BehaviouralReference... many) {
+        this.getBehaviouralPointers().add(one);
+        for (BehaviouralReference each : many)
+            this.getBehaviouralPointers().add(each);
+    }   
+    
+    public void addBehaviouralPointers(Iterable<? extends BehaviouralReference> many) {
+        for (BehaviouralReference each : many)
+            this.getBehaviouralPointers().add(each);
+    }   
+                
+    public void addBehaviouralPointers(BehaviouralReference[] many) {
+        for (BehaviouralReference each : many)
+            this.getBehaviouralPointers().add(each);
+    }
+    
+    public int numberOfBehaviouralPointers() {
+        return getBehaviouralPointers().size();
+    }
+
+    public boolean hasBehaviouralPointers() {
+        return !getBehaviouralPointers().isEmpty();
+    }
+
 
 
 }

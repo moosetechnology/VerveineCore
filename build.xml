@@ -6,9 +6,9 @@
 	<property name="build.dir"    location="bin" />
 	<property name="docs.dir"     location="docs" />
 	<property name="dist.dir"     location="lib" />
-	<property name="famix.jar"    location="${dist.dir}/famix.jar" />
-	<property name="fast.jar"    location="${dist.dir}/fast.jar" />
-	<property name="verveine.jar" location="${dist.dir}/verveine.core.jar" />
+	<property name="famix.jar"    location="${dist.dir}/famix" />
+	<property name="fast.jar"    location="${dist.dir}/fast" />
+	<property name="verveine.jar" location="${dist.dir}/verveine.core" />
 	<property name="test.dir" location="src/tests/eu/synectique/verveine/core" />
 	<property name="test.report.dir" location="testrep" />
 
@@ -38,7 +38,7 @@
 
 	<!-- Compiles the java code -->
 	<target name="compile" depends="clean, makedir">
-		<javac target="1.5" srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
+		<javac target="1.8" srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
 		</javac>
 	</target>
 
@@ -54,14 +54,15 @@
 
 	<!--Creates the deployable jar files  -->
 	<target name="jar" depends="compile">
-		<jar destfile="${famix.jar}" basedir="${build.dir}">
+		<tstamp/>   <!--sets the standard DSTAMP, TSTAMP properties -->
+		<jar destfile="${famix.jar}-${DSTAMP}_${TSTAMP}.jar" basedir="${build.dir}">
 			<include name="eu/synectique/verveine/core/gen/famix/*.class"/>
 			<include name="eu/synectique/verveine/core/gen/moose/*.class"/>
 		</jar>
-		<jar destfile="${fast.jar}" basedir="${build.dir}">
+		<jar destfile="${fast.jar}-${DSTAMP}_${TSTAMP}.jar" basedir="${build.dir}">
 			<include name="eu/synectique/verveine/core/gen/fast/*.class"/>
 		</jar>
-		<jar destfile="${verveine.jar}" basedir="${build.dir}">
+		<jar destfile="${verveine.jar}-${DSTAMP}_${TSTAMP}.jar" basedir="${build.dir}">
 			<include name="eu/synectique/verveine/core/*.class"/>
 			<include name="test/eu/synectique/verveine/core/*.class"/>
 		</jar>
