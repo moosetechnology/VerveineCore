@@ -473,6 +473,22 @@ public class Dictionary<B> {
 	}
 
 	/**
+	 * Creates and returns a FAMIX Comment not associated to any Entity
+	 * @param cmt -- the content (String) of the comment 
+	 * @return the FAMIX Comment
+	 */
+	public Comment createFamixComment(String cmt) {
+		Comment fmx = null;
+		
+		if (cmt != null) {
+			fmx = new Comment();
+			fmx.setContent(cmt);
+			this.famixRepo.add(fmx);
+		}
+		return fmx;
+	}
+
+	/**
 	 * Creates and returns a FAMIX Comment and associates it with an Entity (ex: for Javadocs)
 	 * @param cmt -- the content (String) of the comment 
 	 * @param owner -- the entity concerned by this comment
@@ -482,10 +498,8 @@ public class Dictionary<B> {
 		Comment fmx = null;
 		
 		if ( (cmt != null) && (owner != null) ) {
-			fmx = new Comment();
-			fmx.setContent(cmt);
+			fmx = createFamixComment(cmt);
 			fmx.setContainer(owner);
-			this.famixRepo.add(fmx);
 		}
 		return fmx;
 	}

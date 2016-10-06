@@ -2,9 +2,9 @@
 package eu.synectique.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
-import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
+import java.util.*;
 import ch.akuhn.fame.FamePackage;
 
 
@@ -14,62 +14,6 @@ public class Invocation extends Association {
 
 
 
-    private BehaviouralEntity sender;
-    
-    @FameProperty(name = "sender", opposite = "outgoingInvocations")
-    public BehaviouralEntity getSender() {
-        return sender;
-    }
-
-    public void setSender(BehaviouralEntity sender) {
-        if (this.sender != null) {
-            if (this.sender.equals(sender)) return;
-            this.sender.getOutgoingInvocations().remove(this);
-        }
-        this.sender = sender;
-        if (sender == null) return;
-        sender.getOutgoingInvocations().add(this);
-    }
-    
-    private NamedEntity receiver;
-    
-    @FameProperty(name = "receiver", opposite = "receivingInvocations")
-    public NamedEntity getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(NamedEntity receiver) {
-        if (this.receiver != null) {
-            if (this.receiver.equals(receiver)) return;
-            this.receiver.getReceivingInvocations().remove(this);
-        }
-        this.receiver = receiver;
-        if (receiver == null) return;
-        receiver.getReceivingInvocations().add(this);
-    }
-    
-    private String receiverSourceCode;
-    
-    @FameProperty(name = "receiverSourceCode")
-    public String getReceiverSourceCode() {
-        return receiverSourceCode;
-    }
-
-    public void setReceiverSourceCode(String receiverSourceCode) {
-        this.receiverSourceCode = receiverSourceCode;
-    }
-    
-    private String signature;
-    
-    @FameProperty(name = "signature")
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-    
     private Collection<BehaviouralEntity> candidates; 
 
     @FameProperty(name = "candidates", opposite = "incomingInvocations")
@@ -121,18 +65,116 @@ public class Invocation extends Association {
     public boolean hasCandidates() {
         return !getCandidates().isEmpty();
     }
+    
+                
+    private NamedEntity receiver;
+    
+    @FameProperty(name = "receiver", opposite = "receivingInvocations")
+    public NamedEntity getReceiver() {
+        return receiver;
+    }
 
-    @Override
-	public NamedEntity getFrom() {
-		return this.getSender();
-	}
+    public void setReceiver(NamedEntity receiver) {
+        if (this.receiver != null) {
+            if (this.receiver.equals(receiver)) return;
+            this.receiver.getReceivingInvocations().remove(this);
+        }
+        this.receiver = receiver;
+        if (receiver == null) return;
+        receiver.getReceivingInvocations().add(this);
+    }
+    
+    private String signature;
+    
+    @FameProperty(name = "signature")
+    public String getSignature() {
+        return signature;
+    }
 
-    @Override
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+    
+    private BehaviouralEntity sender;
+    
+    @FameProperty(name = "sender", opposite = "outgoingInvocations")
+    public BehaviouralEntity getSender() {
+        return sender;
+    }
+
+    public void setSender(BehaviouralEntity sender) {
+        if (this.sender != null) {
+            if (this.sender.equals(sender)) return;
+            this.sender.getOutgoingInvocations().remove(this);
+        }
+        this.sender = sender;
+        if (sender == null) return;
+        sender.getOutgoingInvocations().add(this);
+    }
+    
+    private Collection<Association> arguments; 
+
+    @FameProperty(name = "arguments")
+    public Collection<Association> getArguments() {
+        if (arguments == null) arguments = new HashSet<Association>();
+        return arguments;
+    }
+    
+    public void setArguments(Collection<? extends Association> arguments) {
+        this.getArguments().clear();
+        this.getArguments().addAll(arguments);
+    }                    
+
+    public void addArguments(Association one) {
+        this.getArguments().add(one);
+    }   
+    
+    public void addArguments(Association one, Association... many) {
+        this.getArguments().add(one);
+        for (Association each : many)
+            this.getArguments().add(each);
+    }   
+    
+    public void addArguments(Iterable<? extends Association> many) {
+        for (Association each : many)
+            this.getArguments().add(each);
+    }   
+                
+    public void addArguments(Association[] many) {
+        for (Association each : many)
+            this.getArguments().add(each);
+    }
+    
+    public int numberOfArguments() {
+        return getArguments().size();
+    }
+
+    public boolean hasArguments() {
+        return !getArguments().isEmpty();
+    }
+    
+                
+    private String receiverSourceCode;
+    
+    @FameProperty(name = "receiverSourceCode")
+    public String getReceiverSourceCode() {
+        return receiverSourceCode;
+    }
+
+    public void setReceiverSourceCode(String receiverSourceCode) {
+        this.receiverSourceCode = receiverSourceCode;
+    }
+    
+
+	@Override
 	public NamedEntity getTo() {
 		return this.getReceiver();
 	}
-    
-                
+
+	@Override
+	public NamedEntity getFrom() {
+		return this.getSender();
+	}
 
 
 }

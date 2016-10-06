@@ -38,7 +38,7 @@
 
 	<!-- Compiles the java code -->
 	<target name="compile" depends="clean, makedir">
-		<javac target="1.8" srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
+		<javac source="1.7" target="1.7" srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath">
 		</javac>
 	</target>
 
@@ -56,6 +56,7 @@
 	<target name="jar" depends="compile">
 		<tstamp/>   <!--sets the standard DSTAMP, TSTAMP properties -->
 		<jar destfile="${famix.jar}-${DSTAMP}_${TSTAMP}.jar" basedir="${build.dir}">
+			<include name="eu/synectique/verveine/core/gen/file/*.class"/>
 			<include name="eu/synectique/verveine/core/gen/famix/*.class"/>
 			<include name="eu/synectique/verveine/core/gen/moose/*.class"/>
 		</jar>
