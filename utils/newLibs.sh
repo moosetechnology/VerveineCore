@@ -2,7 +2,7 @@
 # Generates new libs and copies them in the destination dir (first arg)
 # if optional 2nd arg present, commits the project with message 2nd arg
 
-test -z "$1" && { echo "Give the destination dir"; exit 1; }
+test -z "$1" && { echo "Give the destination project (should contain a lib sub-directory)"; exit 1; }
 
 # if subdir "lib" does not exist, we must be in subdir "utils"
 # therefore go up in parent dir
@@ -27,3 +27,4 @@ test -z "$2" || svn commit -m "$2"
 DEST=$1
 rm -f ${DEST}/lib/*-${OLD_DATE}.jar
 cp lib/*-${NEW_DATE}.jar ${DEST}/lib
+

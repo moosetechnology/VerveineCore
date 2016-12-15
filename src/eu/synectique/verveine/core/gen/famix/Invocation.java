@@ -116,7 +116,7 @@ public class Invocation extends Association {
 
     @FameProperty(name = "arguments")
     public Collection<Association> getArguments() {
-        if (arguments == null) arguments = new HashSet<Association>();
+        if (arguments == null) arguments = new ArrayList<Association>();
         return arguments;
     }
     

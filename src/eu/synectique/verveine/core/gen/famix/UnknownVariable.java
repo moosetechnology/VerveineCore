@@ -13,7 +13,7 @@ public class UnknownVariable extends StructuralEntity {
 
     @Override
 	public ContainerEntity getBelongsTo() {
-		return null;
+		return getParentPackage();
 	}
 
 

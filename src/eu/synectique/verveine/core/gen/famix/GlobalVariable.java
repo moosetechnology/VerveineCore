@@ -30,6 +30,11 @@ public class GlobalVariable extends StructuralEntity {
     }
     
 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentScope();
+	}
+
 
 }
 
