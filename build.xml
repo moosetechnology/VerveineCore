@@ -16,7 +16,7 @@
 	-->
 	<path id="build.classpath">
 		<fileset dir="${dist.dir}">
-			<include name="*.jar" />
+			<include name="**/*.jar" />
 		</fileset>
 	</path>
 
