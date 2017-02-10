@@ -6,9 +6,11 @@ test -z "$1" && { echo "Give the destination project (should contain a lib sub-d
 
 # if subdir "lib" does not exist, we must be in subdir "utils"
 # therefore go up in parent dir
+RUNNING_DIR=${CWD}
 test -d lib || cd ..
+LIB_DIR="${CWD}/lib"
 
-OLD_DATE=`ls lib/famix*.jar | awk -F[-.] '{print $2}'`
+OLD_DATE=`ls ${LIB_DIR}/famix*.jar | awk -F[-.] '{print $2}'`
 
 #if ant jar files, stop all
 ant jar || { echo "ant jar failed"; exit 1; }
@@ -16,15 +18,16 @@ ant jar || { echo "ant jar failed"; exit 1; }
 NEW_DATE=`date '+%Y%m%d_%H%M'`
 
 # did we generate new libs correctly?
-NEW_FAMIX="lib/famix-${NEW_DATE}.jar"
+NEW_FAMIX="${LIB_DIR}/famix-${NEW_DATE}.jar"
 test -f ${NEW_FAMIX} || { echo "${NEW_FAMIX} not found"; exit 1; }
 
-rm -f lib/*-${OLD_DATE}.jar
+rm -f ${LIB_DIR}/*-${OLD_DATE}.jar
 
 # If there is a commit message then commit
 test -z "$2" || svn commit -m "$2"
 
 DEST=$1
 rm -f ${DEST}/lib/*-${OLD_DATE}.jar
-cp lib/*-${NEW_DATE}.jar ${DEST}/lib
+cd ${RUNNING_DIR}  # need to go back to running dir because project dir can be relative to it
+cp ${LIB_DIR}/*-${NEW_DATE}.jar ${DEST}/lib
 
