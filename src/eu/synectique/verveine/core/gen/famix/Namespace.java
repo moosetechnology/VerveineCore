@@ -1,7 +1,6 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.famix;
 
-import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;

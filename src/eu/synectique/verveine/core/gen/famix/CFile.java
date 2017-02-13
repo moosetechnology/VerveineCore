@@ -6,7 +6,6 @@ import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import java.util.*;
 import ch.akuhn.fame.FamePackage;
-import eu.synectique.verveine.core.gen.file.File;
 
 
 @FamePackage("FAMIX")
