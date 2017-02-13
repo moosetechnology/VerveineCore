@@ -13,7 +13,6 @@ import ch.akuhn.fame.Repository;
 import eu.synectique.verveine.core.gen.famix.Entity;
 import eu.synectique.verveine.core.gen.famix.FAMIXModel;
 import eu.synectique.verveine.core.gen.famix.SourceLanguage;
-import eu.synectique.verveine.core.gen.fast.FASTModel;
 
 public abstract class VerveineParser {
 
