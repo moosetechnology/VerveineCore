@@ -131,7 +131,7 @@ public class Dictionary<B> {
 			catch (NullPointerException e) { acc.setIsWrite(Boolean.FALSE); }
 		}
 	}
-	
+
 	protected void mapEntityToName(String name, NamedEntity ent) {
 		Collection<NamedEntity> l_ent = nameToEntity.get(name);
 		if (l_ent == null) {
@@ -139,6 +139,18 @@ public class Dictionary<B> {
 		}
 		l_ent.add(ent);
 		nameToEntity.put(name, l_ent);
+	}
+
+	public void removeEntity( NamedEntity ent) {
+		B key;
+		key = entityToKey.get(ent);
+		entityToKey.remove(ent);
+		keyToEntity.remove(key);
+
+		Collection<NamedEntity> l_ent = nameToEntity.get(ent.getName());
+		l_ent.remove(ent);
+
+		famixRepo.getElements().remove(ent);
 	}
 	
 	protected void mapEntityToKey(B key, NamedEntity ent) {

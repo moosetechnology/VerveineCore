@@ -6,9 +6,9 @@ test -z "$1" && { echo "Give the destination project (should contain a lib sub-d
 
 # if subdir "lib" does not exist, we must be in subdir "utils"
 # therefore go up in parent dir
-RUNNING_DIR=${CWD}
+RUNNING_DIR=${PWD}
 test -d lib || cd ..
-LIB_DIR="${CWD}/lib"
+LIB_DIR="${PWD}/lib"
 
 OLD_DATE=`ls ${LIB_DIR}/famix*.jar | awk -F[-.] '{print $2}'`
 
