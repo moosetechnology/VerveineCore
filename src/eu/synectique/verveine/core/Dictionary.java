@@ -382,7 +382,7 @@ public class Dictionary<B> {
 
 	public AnnotationTypeAttribute ensureFamixAnnotationTypeAttribute(B key, String name, AnnotationType owner, boolean persistIt) {
 		AnnotationTypeAttribute fmx = ensureFamixEntity(AnnotationTypeAttribute.class, key, name, persistIt);
-		fmx.setParentAnnotationType(owner);
+		fmx.setParentType(owner);
 		return fmx;
 	}
 
@@ -567,7 +567,7 @@ public class Dictionary<B> {
 	 * @param prev -- previous reference relationship in the same context
 	 * @return the FamixReference
 	 */
-	public Reference addFamixReference(ContainerEntity src, ContainerEntity tgt, Association prev) {
+	public Reference addFamixReference(BehaviouralEntity src, Type tgt, Association prev) {
 		if ( (src == null) || (tgt == null) ) {
 			return null;
 		}

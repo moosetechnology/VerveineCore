@@ -9,24 +9,30 @@ import ch.akuhn.fame.FamePackage;
 
 @FamePackage("FAST")
 @FameDescription("BehaviouralEntity")
-public class BehaviouralEntity extends Entity {
+public class BehaviouralEntity extends ScopableEntity {
 
 
 
     @FameProperty(name = "statements", derived = true)
     public Collection<Statement> getStatements() {
-        return this.statementBlock.getStatements();
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
         
     private StatementBlock statementBlock;
     
-    @FameProperty(name = "statementBlock")
+    @FameProperty(name = "statementBlock", opposite = "fastBehaviouralParent")
     public StatementBlock getStatementBlock() {
         return statementBlock;
     }
 
     public void setStatementBlock(StatementBlock statementBlock) {
-        this.statementBlock = statementBlock;
+        if (this.statementBlock == null ? statementBlock != null : !this.statementBlock.equals(statementBlock)) {
+            StatementBlock old_statementBlock = this.statementBlock;
+            this.statementBlock = statementBlock;
+            if (old_statementBlock != null) old_statementBlock.setFastBehaviouralParent(null);
+            if (statementBlock != null) statementBlock.setFastBehaviouralParent(this);
+        }
     }
     
     private Collection<NamedEntity> localVariables; 

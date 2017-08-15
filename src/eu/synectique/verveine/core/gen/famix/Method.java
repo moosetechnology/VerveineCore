@@ -14,6 +14,12 @@ public class Method extends BehaviouralEntity {
 
 
 
+    @FameProperty(name = "isImplementing", derived = true)
+    public Boolean getIsImplementing() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
     private Collection<CaughtException> caughtExceptions; 
 
     @FameProperty(name = "caughtExceptions", opposite = "definingMethod", derived = true)
@@ -66,8 +72,7 @@ public class Method extends BehaviouralEntity {
     public boolean hasCaughtExceptions() {
         return !getCaughtExceptions().isEmpty();
     }
-    
-/*                
+        
     @FameProperty(name = "numberOfInvokedMethods", derived = true)
     public Number getNumberOfInvokedMethods() {
         // TODO: this is a derived property, implement this method manually.
@@ -79,7 +84,24 @@ public class Method extends BehaviouralEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
+    @FameProperty(name = "isJUnit4Test", derived = true)
+    public Boolean getIsJUnit4Test() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
+    private String timeStamp;
+    
+    @FameProperty(name = "timeStamp")
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+    
     private Collection<DeclaredException> declaredExceptions; 
 
     @FameProperty(name = "declaredExceptions", opposite = "definingMethod", derived = true)
@@ -132,8 +154,7 @@ public class Method extends BehaviouralEntity {
     public boolean hasDeclaredExceptions() {
         return !getDeclaredExceptions().isEmpty();
     }
-    
-/*                
+       
     @FameProperty(name = "isOverriding", derived = true)
     public Boolean getIsOverriding() {
         // TODO: this is a derived property, implement this method manually.
@@ -158,8 +179,37 @@ public class Method extends BehaviouralEntity {
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
     
+    @FameProperty(name = "isGetter", derived = true)
+    public Boolean getIsGetter() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    @FameProperty(name = "isSetter", derived = true)
+    public Boolean getIsSetter() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
+    private String category;
+    
+    @FameProperty(name = "category")
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     @FameProperty(name = "numberOfAnnotationInstances", derived = true)
     public Number getNumberOfAnnotationInstances() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    @FameProperty(name = "isConstructor", derived = true)
+    public Boolean getIsConstructor() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
@@ -175,7 +225,13 @@ public class Method extends BehaviouralEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+    
+    @FameProperty(name = "isInternalImplementation", derived = true)
+    public Boolean getIsInternalImplementation() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
     private Boolean hasClassScope;
     
     @FameProperty(name = "hasClassScope")
@@ -239,19 +295,13 @@ public class Method extends BehaviouralEntity {
     public boolean hasThrownExceptions() {
         return !getThrownExceptions().isEmpty();
     }
-    
-                
+          
     private Type parentType;
     
-    @FameProperty(name = "parentType", opposite = "methods")
+    @FameProperty(name = "parentType", opposite = "methods", container = true)
     public Type getParentType() {
         return parentType;
     }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getParentType();
-	}
 
     public void setParentType(Type parentType) {
         if (this.parentType != null) {
@@ -262,7 +312,19 @@ public class Method extends BehaviouralEntity {
         if (parentType == null) return;
         parentType.getMethods().add(this);
     }
-    
+ 
+    @FameProperty(name = "isConstant", derived = true)
+    public Boolean getIsConstant() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
+    @FameProperty(name = "isClassInitializer", derived = true)
+    public Boolean getIsClassInitializer() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
     private String kind;
     
     @FameProperty(name = "kind")
@@ -273,7 +335,19 @@ public class Method extends BehaviouralEntity {
     public void setKind(String kind) {
         this.kind = kind;
     }
+ 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentType();
+	}
     
+    @Override
+    public void setBelongsTo(ContainerEntity container) {
+    	if (container instanceof Type) {
+    		setParentType((Type) container);
+    	}
+    }
+
 
 
 }

@@ -1,5 +1,7 @@
 package eu.synectique.verveine.core;
 
+import java.io.IOException;
+
 import ch.akuhn.fame.Tower;
 import ch.akuhn.fame.codegen.CodeGeneration;
 import ch.akuhn.fame.parser.InputSource;
@@ -18,6 +20,13 @@ public class GenerateFamix {
 	public static final String OUTPUT_PACKAGE = "eu.synectique.verveine.core.gen";
 	
 	public static void main(String[] args) {
+		System.out.print("[ENTER] to confirm generation of Famix classes ... ");
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		InputSource input = InputSource.fromFilename(FAMIX_MSE_FILE);
         Tower t = new Tower();
         t.getMetamodel().importMSE(input);

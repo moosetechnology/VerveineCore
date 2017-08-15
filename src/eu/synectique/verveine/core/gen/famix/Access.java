@@ -39,13 +39,13 @@ public class Access extends Association {
         if (accessor == null) return;
         accessor.getAccesses().add(this);
     }
-/*    
+
     @FameProperty(name = "isReadWriteUnknown", derived = true)
     public Boolean getIsReadWriteUnknown() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
     private StructuralEntity variable;
     
     @FameProperty(name = "variable", opposite = "incomingAccesses")
@@ -65,7 +65,6 @@ public class Access extends Association {
     
     @FameProperty(name = "isRead", derived = true)
     public Boolean getIsRead() {
-        // TODO: this is a derived property, implement this method manually.
     	return ! getIsWrite(); 
     }
     

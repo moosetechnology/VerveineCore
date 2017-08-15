@@ -23,7 +23,7 @@ public class NamedEntity extends SourcedEntity {
     public Boolean getIsPrivate() {
         return hasModifier("private");
     }
-
+    
     @FameProperty(name = "isPackage", derived = true)
     public Boolean getIsPackage() {
         return hasModifier("package");
@@ -31,7 +31,7 @@ public class NamedEntity extends SourcedEntity {
     
     private Package parentPackage;
     
-    @FameProperty(name = "parentPackage", opposite = "childNamedEntities")
+    @FameProperty(name = "parentPackage", opposite = "childNamedEntities", container = true)
     public Package getParentPackage() {
         return parentPackage;
     }
@@ -76,6 +76,29 @@ public class NamedEntity extends SourcedEntity {
     @FameProperty(name = "isProtected", derived = true)
     public Boolean getIsProtected() {
         return hasModifier("protected");
+    }
+
+    @FameProperty(name = "nameByPolicy", derived = true)
+    public String getNameByPolicy() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
+    private Template parentTemplate;
+    
+    @FameProperty(name = "parentTemplate", opposite = "templateParameters")
+    public Template getParentTemplate() {
+        return parentTemplate;
+    }
+
+    public void setParentTemplate(Template parentTemplate) {
+        if (this.parentTemplate != null) {
+            if (this.parentTemplate.equals(parentTemplate)) return;
+            this.parentTemplate.getTemplateParameters().remove(this);
+        }
+        this.parentTemplate = parentTemplate;
+        if (parentTemplate == null) return;
+        parentTemplate.getTemplateParameters().add(this);
     }
     
     private Collection<Invocation> receivingInvocations; 
@@ -130,14 +153,13 @@ public class NamedEntity extends SourcedEntity {
     public boolean hasReceivingInvocations() {
         return !getReceivingInvocations().isEmpty();
     }
-    
-/*    
+
     @FameProperty(name = "nameLength", derived = true)
     public Number getNameLength() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
     private Collection<AnnotationInstance> annotationInstances; 
 
     @FameProperty(name = "annotationInstances", opposite = "annotatedEntity", derived = true)
@@ -194,14 +216,6 @@ public class NamedEntity extends SourcedEntity {
     
     private Collection<String> modifiers; 
 
-    protected Boolean hasModifier(String mod) {
-    	for (String m : this.getModifiers()) {
-    		if (m.equals(mod))
-    			return true;
-    	}
-    	return false;
-    }
-
     @FameProperty(name = "modifiers")
     public Collection<String> getModifiers() {
         if (modifiers == null) modifiers = new HashSet<String>();
@@ -240,7 +254,15 @@ public class NamedEntity extends SourcedEntity {
     public boolean hasModifiers() {
         return !getModifiers().isEmpty();
     }
-    
+
+    protected Boolean hasModifier(String mod) {
+    	for (String m : this.getModifiers()) {
+    		if (m.equals(mod))
+    			return true;
+    	}
+    	return false;
+    }
+
     private Collection<eu.synectique.verveine.core.gen.fast.NamedEntity> fastNamedEntities; 
 
     @FameProperty(name = "fastNamedEntities", opposite = "famixNamedEntity")
@@ -253,7 +275,7 @@ public class NamedEntity extends SourcedEntity {
                 }
                 @Override
                 protected void setOpposite(eu.synectique.verveine.core.gen.fast.NamedEntity e) {
-                    e.setFamixNamedEntity(eu.synectique.verveine.core.gen.famix.NamedEntity.this);
+                    e.setFamixNamedEntity(NamedEntity.this);
                 }
             };
         }
@@ -295,12 +317,6 @@ public class NamedEntity extends SourcedEntity {
     }
     
                 
-    @FameProperty(name = "belongsTo", derived = true)
-    public ContainerEntity getBelongsTo() {
-        // this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("NamedEntity.getBelongsTo() not implemented in class "+this.getClass().getName()); 
-    }
-                
     @FameProperty(name = "isFinal", derived = true)
     public Boolean getIsFinal() {
         return hasModifier("final");
@@ -312,7 +328,16 @@ public class NamedEntity extends SourcedEntity {
 		// mainly for debugging purposes (in Eclipse debugger)
 		return "a " + this.getClass().getSimpleName() + " named: " + this.getName();
 	}
-    
+
+    public ContainerEntity getBelongsTo() {
+        // this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("NamedEntity.getBelongsTo() not implemented in class "+this.getClass().getName()); 
+    }
+
+    public void setBelongsTo(ContainerEntity container) {
+        // defaults to doing nothing
+    }
+
 
 }
 

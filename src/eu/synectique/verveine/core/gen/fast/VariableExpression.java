@@ -12,17 +12,6 @@ public class VariableExpression extends Expression {
 
 
 
-    private Expression receiver;
-    
-    @FameProperty(name = "receiver")
-    public Expression getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(Expression receiver) {
-        this.receiver = receiver;
-    }
-    
     private String name;
     
     @FameProperty(name = "name")

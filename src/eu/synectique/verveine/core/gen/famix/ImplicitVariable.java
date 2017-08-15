@@ -14,15 +14,10 @@ public class ImplicitVariable extends StructuralEntity {
 
     private BehaviouralEntity parentBehaviouralEntity;
     
-    @FameProperty(name = "parentBehaviouralEntity", opposite = "implicitVariables")
+    @FameProperty(name = "parentBehaviouralEntity", opposite = "implicitVariables", container = true)
     public BehaviouralEntity getParentBehaviouralEntity() {
         return parentBehaviouralEntity;
     }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getParentBehaviouralEntity();
-	}
 
     public void setParentBehaviouralEntity(BehaviouralEntity parentBehaviouralEntity) {
         if (this.parentBehaviouralEntity != null) {
@@ -33,7 +28,18 @@ public class ImplicitVariable extends StructuralEntity {
         if (parentBehaviouralEntity == null) return;
         parentBehaviouralEntity.getImplicitVariables().add(this);
     }
+
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentBehaviouralEntity();
+	}
     
+    @Override
+    public void setBelongsTo(ContainerEntity container) {
+    	if (container instanceof BehaviouralEntity) {
+    		setParentBehaviouralEntity((BehaviouralEntity) container);
+    	}
+    }
 
 
 }

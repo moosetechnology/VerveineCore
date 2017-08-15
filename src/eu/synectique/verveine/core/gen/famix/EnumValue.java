@@ -14,15 +14,10 @@ public class EnumValue extends StructuralEntity {
 
     private Enum parentEnum;
     
-    @FameProperty(name = "parentEnum", opposite = "values")
+    @FameProperty(name = "parentEnum", opposite = "values", container = true)
     public Enum getParentEnum() {
         return parentEnum;
     }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getParentEnum();
-	}
 
     public void setParentEnum(Enum parentEnum) {
         if (this.parentEnum != null) {
@@ -33,6 +28,18 @@ public class EnumValue extends StructuralEntity {
         if (parentEnum == null) return;
         parentEnum.getValues().add(this);
     }
+
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentEnum();
+	}
+    
+    @Override
+    public void setBelongsTo(ContainerEntity container) {
+    	if (container instanceof Enum) {
+    		setParentEnum((Enum) container);
+    	}
+	}
     
 
 

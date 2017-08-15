@@ -23,6 +23,17 @@ public class AbstractGroup extends Entity {
         this.numberOfItems = numberOfItems;
     }
     
+    private Number numberOfPackages;
+    
+    @FameProperty(name = "numberOfPackages")
+    public Number getNumberOfPackages() {
+        return numberOfPackages;
+    }
+
+    public void setNumberOfPackages(Number numberOfPackages) {
+        this.numberOfPackages = numberOfPackages;
+    }
+    
 
 
 }

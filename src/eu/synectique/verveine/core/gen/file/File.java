@@ -1,7 +1,10 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.file;
 
+import ch.akuhn.fame.internal.MultivalueSet;
+import java.util.*;
 import ch.akuhn.fame.FameProperty;
+import eu.synectique.verveine.core.gen.famix.SourcedEntity;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
 
@@ -11,18 +14,12 @@ import ch.akuhn.fame.FamePackage;
 public class File extends AbstractFile {
 
 
-
-    private Number numberOfKiloBytes;
-    
-    @FameProperty(name = "numberOfKiloBytes")
+    @FameProperty(name = "numberOfKiloBytes", derived = true)
     public Number getNumberOfKiloBytes() {
-        return numberOfKiloBytes;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
-
-    public void setNumberOfKiloBytes(Number numberOfKiloBytes) {
-        this.numberOfKiloBytes = numberOfKiloBytes;
-    }
-    
+ 
     private Number numberOfExternalClones;
     
     @FameProperty(name = "numberOfExternalClones")
@@ -33,46 +30,32 @@ public class File extends AbstractFile {
     public void setNumberOfExternalClones(Number numberOfExternalClones) {
         this.numberOfExternalClones = numberOfExternalClones;
     }
-    
-    private Number numberOfBytes;
-    
-    @FameProperty(name = "numberOfBytes")
+ 
+    @FameProperty(name = "numberOfBytes", derived = true)
     public Number getNumberOfBytes() {
-        return numberOfBytes;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+   
+    @FameProperty(name = "numberOfCharacters", derived = true)
+    public Number getNumberOfCharacters() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
 
-    public void setNumberOfBytes(Number numberOfBytes) {
-        this.numberOfBytes = numberOfBytes;
-    }
-    
     private Number averageNumberOfCharactersPerLine;
-    
-    @FameProperty(name = "averageNumberOfCharactersPerLine")
+   
+    @FameProperty(name = "averageNumberOfCharactersPerLine", derived = true)
     public Number getAverageNumberOfCharactersPerLine() {
         return averageNumberOfCharactersPerLine;
     }
-
-    public void setAverageNumberOfCharactersPerLine(Number averageNumberOfCharactersPerLine) {
-        this.averageNumberOfCharactersPerLine = averageNumberOfCharactersPerLine;
-    }
-    
-    private Number numberOfCharacters;
-    
-    @FameProperty(name = "numberOfCharacters")
-    public Number getNumberOfCharacters() {
-        return numberOfCharacters;
-    }
-
-    public void setNumberOfCharacters(Number numberOfCharacters) {
-        this.numberOfCharacters = numberOfCharacters;
-    }
-    
+  
     @FameProperty(name = "numberOfExternalDuplications", derived = true)
     public Number getNumberOfExternalDuplications() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+
     private Number numberOfDuplicatedFiles;
     
     @FameProperty(name = "numberOfDuplicatedFiles")
@@ -83,24 +66,65 @@ public class File extends AbstractFile {
     public void setNumberOfDuplicatedFiles(Number numberOfDuplicatedFiles) {
         this.numberOfDuplicatedFiles = numberOfDuplicatedFiles;
     }
+        
+    private Collection<SourcedEntity> entities; 
+
+    @FameProperty(name = "entities", opposite = "containerFiles")
+    public Collection<SourcedEntity> getEntities() {
+        if (entities == null) {
+            entities = new MultivalueSet<SourcedEntity>() {
+                @Override
+                protected void clearOpposite(SourcedEntity e) {
+                    e.getContainerFiles().remove(File.this);
+                }
+                @Override
+                protected void setOpposite(SourcedEntity e) {
+                    e.getContainerFiles().add(File.this);
+                }
+            };
+        }
+        return entities;
+    }
     
+    public void setEntities(Collection<? extends SourcedEntity> entities) {
+        this.getEntities().clear();
+        this.getEntities().addAll(entities);
+    }
+    
+    public void addEntities(SourcedEntity one) {
+        this.getEntities().add(one);
+    }   
+    
+    public void addEntities(SourcedEntity one, SourcedEntity... many) {
+        this.getEntities().add(one);
+        for (SourcedEntity each : many)
+            this.getEntities().add(each);
+    }   
+    
+    public void addEntities(Iterable<? extends SourcedEntity> many) {
+        for (SourcedEntity each : many)
+            this.getEntities().add(each);
+    }   
+                
+    public void addEntities(SourcedEntity[] many) {
+        for (SourcedEntity each : many)
+            this.getEntities().add(each);
+    }
+    
+    public int numberOfEntities() {
+        return getEntities().size();
+    }
+
+    public boolean hasEntities() {
+        return !getEntities().isEmpty();
+    }
+      
     @FameProperty(name = "numberOfInternalDuplications", derived = true)
     public Number getNumberOfInternalDuplications() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
-    private Number numberOfInternalMultiplications;
-    
-    @FameProperty(name = "numberOfInternalMultiplications")
-    public Number getNumberOfInternalMultiplications() {
-        return numberOfInternalMultiplications;
-    }
 
-    public void setNumberOfInternalMultiplications(Number numberOfInternalMultiplications) {
-        this.numberOfInternalMultiplications = numberOfInternalMultiplications;
-    }
-    
     private Number numberOfInternalClones;
     
     @FameProperty(name = "numberOfInternalClones")
@@ -111,40 +135,24 @@ public class File extends AbstractFile {
     public void setNumberOfInternalClones(Number numberOfInternalClones) {
         this.numberOfInternalClones = numberOfInternalClones;
     }
-    
-    private Number totalNumberOfLinesOfText;
-    
-    @FameProperty(name = "totalNumberOfLinesOfText")
+
+    @FameProperty(name = "totalNumberOfLinesOfText", derived = true)
     public Number getTotalNumberOfLinesOfText() {
-        return totalNumberOfLinesOfText;
-    }
-
-    public void setTotalNumberOfLinesOfText(Number totalNumberOfLinesOfText) {
-        this.totalNumberOfLinesOfText = totalNumberOfLinesOfText;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
     
-    private Number numberOfLinesOfText;
-    
-    @FameProperty(name = "numberOfLinesOfText")
+    @FameProperty(name = "numberOfLinesOfText", derived = true)
     public Number getNumberOfLinesOfText() {
-        return numberOfLinesOfText;
-    }
-
-    public void setNumberOfLinesOfText(Number numberOfLinesOfText) {
-        this.numberOfLinesOfText = numberOfLinesOfText;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
     
-    private Number numberOfEmptyLinesOfText;
-    
-    @FameProperty(name = "numberOfEmptyLinesOfText")
+    @FameProperty(name = "numberOfEmptyLinesOfText", derived = true)
     public Number getNumberOfEmptyLinesOfText() {
-        return numberOfEmptyLinesOfText;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
-
-    public void setNumberOfEmptyLinesOfText(Number numberOfEmptyLinesOfText) {
-        this.numberOfEmptyLinesOfText = numberOfEmptyLinesOfText;
-    }
-    
 
 
 }

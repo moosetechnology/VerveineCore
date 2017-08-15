@@ -1,6 +1,7 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.fast;
 
+import ch.akuhn.fame.internal.MultivalueSet;
 import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
@@ -13,11 +14,38 @@ public class StatementBlock extends Statement {
 
 
 
+    private BehaviouralEntity fastBehaviouralParent;
+    
+    @FameProperty(name = "fastBehaviouralParent", opposite = "statementBlock")
+    public BehaviouralEntity getFastBehaviouralParent() {
+        return fastBehaviouralParent;
+    }
+
+    public void setFastBehaviouralParent(BehaviouralEntity fastBehaviouralParent) {
+        if (this.fastBehaviouralParent == null ? fastBehaviouralParent != null : !this.fastBehaviouralParent.equals(fastBehaviouralParent)) {
+            BehaviouralEntity old_fastBehaviouralParent = this.fastBehaviouralParent;
+            this.fastBehaviouralParent = fastBehaviouralParent;
+            if (old_fastBehaviouralParent != null) old_fastBehaviouralParent.setStatementBlock(null);
+            if (fastBehaviouralParent != null) fastBehaviouralParent.setStatementBlock(this);
+        }
+    }
+    
     private Collection<Statement> statements; 
 
-    @FameProperty(name = "statements")
+    @FameProperty(name = "statements", opposite = "statementContainer", derived = true)
     public Collection<Statement> getStatements() {
-        if (statements == null) statements = new HashSet<Statement>();
+        if (statements == null) {
+            statements = new MultivalueSet<Statement>() {
+                @Override
+                protected void clearOpposite(Statement e) {
+                    e.setStatementContainer(null);
+                }
+                @Override
+                protected void setOpposite(Statement e) {
+                    e.setStatementContainer(StatementBlock.this);
+                }
+            };
+        }
         return statements;
     }
     

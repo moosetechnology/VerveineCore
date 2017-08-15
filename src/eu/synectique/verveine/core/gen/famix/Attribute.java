@@ -11,7 +11,7 @@ import ch.akuhn.fame.FamePackage;
 public class Attribute extends StructuralEntity {
 
 
-/*
+
     @FameProperty(name = "numberOfLocalAccesses", derived = true)
     public Number getNumberOfLocalAccesses() {
         // TODO: this is a derived property, implement this method manually.
@@ -29,7 +29,7 @@ public class Attribute extends StructuralEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+    
     private Boolean hasClassScope;
     
     @FameProperty(name = "hasClassScope")
@@ -40,7 +40,7 @@ public class Attribute extends StructuralEntity {
     public void setHasClassScope(Boolean hasClassScope) {
         this.hasClassScope = hasClassScope;
     }
-/*    
+    
     @FameProperty(name = "numberOfAccessingMethods", derived = true)
     public Number getNumberOfAccessingMethods() {
         // TODO: this is a derived property, implement this method manually.
@@ -52,10 +52,10 @@ public class Attribute extends StructuralEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
-    protected Type parentType;
     
-    @FameProperty(name = "parentType", opposite = "attributes")
+    private Type parentType;
+    
+    @FameProperty(name = "parentType", opposite = "attributes", container = true)
     public Type getParentType() {
         return parentType;
     }
@@ -63,6 +63,13 @@ public class Attribute extends StructuralEntity {
     @Override
 	public ContainerEntity getBelongsTo() {
 		return getParentType();
+	}
+
+    @Override
+    public void setBelongsTo(ContainerEntity container) {
+    	if (container instanceof Type) {
+    		setParentType((Type) container);
+    	}
 	}
 
     public void setParentType(Type parentType) {
@@ -74,13 +81,13 @@ public class Attribute extends StructuralEntity {
         if (parentType == null) return;
         parentType.getAttributes().add(this);
     }
-/*    
+    
     @FameProperty(name = "numberOfGlobalAccesses", derived = true)
     public Number getNumberOfGlobalAccesses() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+    
 
 
 }

@@ -25,9 +25,15 @@
 	<target name="clean">
 		<delete dir="${build.dir}" />
 		<delete dir="${docs.dir}" />
-		<delete file="${famix.jar}" />
-		<delete file="${fast.jar}" />
-		<delete file="${verveine.jar}" />
+		<delete>
+		  <fileset dir="${dist.dir}" includes="famix*.jar" />
+		</delete>
+		<delete>
+		  <fileset dir="${dist.dir}" includes="fast*.jar" />
+		</delete>
+		<delete>
+		  <fileset dir="${dist.dir}" includes="verveine*.jar" />
+		</delete>
 	</target>
 
 	<!-- Creates the  build, docs and dist directory-->
@@ -59,13 +65,16 @@
 			<include name="eu/synectique/verveine/core/gen/famix/*.class"/>
 			<include name="eu/synectique/verveine/core/gen/moose/*.class"/>
 		</jar>
-		<jar destfile="${fast.jar}.jar" basedir="${build.dir}">
+		<symlink overwrite="true" link="${famix.jar}.jar" resource="${famix.jar}-${DSTAMP}_${TSTAMP}.jar"/>
+		<jar destfile="${fast.jar}-${DSTAMP}_${TSTAMP}.jar" basedir="${build.dir}">
 			<include name="eu/synectique/verveine/core/gen/fast/*.class"/>
 		</jar>
-		<jar destfile="${verveine.jar}.jar" basedir="${build.dir}">
+		<symlink overwrite="true" link="${fast.jar}.jar" resource="${fast.jar}-${DSTAMP}_${TSTAMP}.jar"/>
+		<jar destfile="${verveine.jar}-${DSTAMP}_${TSTAMP}.jar" basedir="${build.dir}">
 			<include name="eu/synectique/verveine/core/*.class"/>
 			<include name="test/eu/synectique/verveine/core/*.class"/>
 		</jar>
+		<symlink overwrite="true" link="${verveine.jar}.jar" resource="${verveine.jar}-${DSTAMP}_${TSTAMP}.jar"/>
 	</target>
 
 	<!-- Run the JUnit Tests -->

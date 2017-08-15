@@ -1,6 +1,7 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.famix;
 
+import eu.synectique.verveine.core.gen.file.File;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -21,6 +22,17 @@ public class AbstractFileAnchor extends SourceAnchor {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+    
+    private File correspondingFile;
+    
+    @FameProperty(name = "correspondingFile")
+    public File getCorrespondingFile() {
+        return correspondingFile;
+    }
+
+    public void setCorrespondingFile(File correspondingFile) {
+        this.correspondingFile = correspondingFile;
     }
     
 

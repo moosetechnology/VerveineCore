@@ -2,23 +2,18 @@
 package eu.synectique.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
-import ch.akuhn.fame.FameProperty;
-import ch.akuhn.fame.FameDescription;
 import java.util.*;
+import ch.akuhn.fame.FameProperty;
+import eu.synectique.verveine.core.gen.file.File;
+import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
 
 
 @FamePackage("FAMIX")
 @FameDescription("CFile")
-public class CFile extends NamedEntity {
+public class CFile extends File {
 
 
-
-	@FameProperty(name = "belongsTo", derived = true)
-	public ContainerEntity getBelongsTo() {
-		// this is a derived property, implement this method manually.
-		return null; 
-	}
 
     private Collection<Include> incomingIncludeRelations; 
 
@@ -72,8 +67,7 @@ public class CFile extends NamedEntity {
     public boolean hasIncomingIncludeRelations() {
         return !getIncomingIncludeRelations().isEmpty();
     }
-    
-                
+
     private Collection<Include> outgoingIncludeRelations; 
 
     @FameProperty(name = "outgoingIncludeRelations", opposite = "source", derived = true)
@@ -126,6 +120,20 @@ public class CFile extends NamedEntity {
     public boolean hasOutgoingIncludeRelations() {
         return !getOutgoingIncludeRelations().isEmpty();
     }
+   
+    @FameProperty(name = "includingFiles", derived = true)
+    public Collection<CFile> getIncludingFiles() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+                
+    @FameProperty(name = "includedFiles", derived = true)
+    public Collection<CFile> getIncludedFiles() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
 
 
 }

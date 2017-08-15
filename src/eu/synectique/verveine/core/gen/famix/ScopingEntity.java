@@ -16,15 +16,10 @@ public class ScopingEntity extends ContainerEntity {
 
     private ScopingEntity parentScope;
     
-    @FameProperty(name = "parentScope", opposite = "childScopes")
+    @FameProperty(name = "parentScope", opposite = "childScopes", container = true)
     public ScopingEntity getParentScope() {
         return parentScope;
     }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getParentScope();
-	}
 
     public void setParentScope(ScopingEntity parentScope) {
         if (this.parentScope != null) {
@@ -141,6 +136,18 @@ public class ScopingEntity extends ContainerEntity {
 
     public boolean hasGlobalVariables() {
         return !getGlobalVariables().isEmpty();
+    }
+
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getParentScope();
+	}
+    
+    @Override
+    public void setBelongsTo(ContainerEntity container) {
+    	if (container instanceof ScopingEntity) {
+    		setParentScope( (ScopingEntity) container);
+    	}
     }
     
                 

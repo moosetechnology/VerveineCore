@@ -23,15 +23,15 @@ public class PreprocessorIfdef extends PreprocessorStatement {
         this.macro = macro;
     }
     
-    private Boolean isNegated;
+    private Boolean negated;
     
-    @FameProperty(name = "isNegated")
-    public Boolean getIsNegated() {
-        return isNegated;
+    @FameProperty(name = "negated")
+    public Boolean getNegated() {
+        return negated;
     }
 
-    public void setIsNegated(Boolean isNegated) {
-        this.isNegated = isNegated;
+    public void setNegated(Boolean negated) {
+        this.negated = negated;
     }
     
 

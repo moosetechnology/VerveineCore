@@ -2,6 +2,8 @@
 package eu.synectique.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
+import eu.synectique.verveine.core.gen.file.File;
+
 import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
@@ -46,19 +48,72 @@ public class SourcedEntity extends Entity {
         if (declaredSourceLanguage == null) return;
         declaredSourceLanguage.getSourcedEntities().add(this);
     }
-/*    
+
     @FameProperty(name = "numberOfLinesOfCodeWithMoreThanOneCharacter", derived = true)
     public Number getNumberOfLinesOfCodeWithMoreThanOneCharacter() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
     
+                
     @FameProperty(name = "numberOfJavaNullChecks", derived = true)
     public Number getNumberOfJavaNullChecks() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
+    private Collection<File> containerFiles; 
+
+    @FameProperty(name = "containerFiles", opposite = "entities")
+    public Collection<File> getContainerFiles() {
+        if (containerFiles == null) {
+            containerFiles = new MultivalueSet<File>() {
+                @Override
+                protected void clearOpposite(File e) {
+                    e.getEntities().remove(SourcedEntity.this);
+                }
+                @Override
+                protected void setOpposite(File e) {
+                    e.getEntities().add(SourcedEntity.this);
+                }
+            };
+        }
+        return containerFiles;
+    }
+    
+    public void setContainerFiles(Collection<? extends File> containerFiles) {
+        this.getContainerFiles().clear();
+        this.getContainerFiles().addAll(containerFiles);
+    }
+    
+    public void addContainerFiles(File one) {
+        this.getContainerFiles().add(one);
+    }   
+    
+    public void addContainerFiles(File one, File... many) {
+        this.getContainerFiles().add(one);
+        for (File each : many)
+            this.getContainerFiles().add(each);
+    }   
+    
+    public void addContainerFiles(Iterable<? extends File> many) {
+        for (File each : many)
+            this.getContainerFiles().add(each);
+    }   
+                
+    public void addContainerFiles(File[] many) {
+        for (File each : many)
+            this.getContainerFiles().add(each);
+    }
+    
+    public int numberOfContainerFiles() {
+        return getContainerFiles().size();
+    }
+
+    public boolean hasContainerFiles() {
+        return !getContainerFiles().isEmpty();
+    }
+    
     private Collection<Comment> comments; 
 
     @FameProperty(name = "comments", opposite = "container", derived = true)

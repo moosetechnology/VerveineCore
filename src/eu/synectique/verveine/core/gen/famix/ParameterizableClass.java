@@ -70,16 +70,8 @@ public class ParameterizableClass extends Class {
                 
     @FameProperty(name = "parameters", derived = true)
     public Collection<ParameterType> getParameters() {
-        // this is a derived property, implement this method manually.
-    	Collection<ParameterType> ret = new LinkedList<ParameterType>();
-    	
-        for (Type inner : getTypes()) {
-        	if (inner instanceof ParameterType) {
-        		ret.add((ParameterType) inner);
-        	}
-        }
-        
-        return ret;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
         
 

@@ -45,7 +45,7 @@ public class Inheritance extends Association {
         if (subclass == null) return;
         subclass.getSuperInheritances().add(this);
     }
-
+    
 	@Override
 	public NamedEntity getFrom() {
 		return getSubclass();

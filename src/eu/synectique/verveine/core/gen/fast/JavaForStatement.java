@@ -1,9 +1,7 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.fast;
 
-import ch.akuhn.fame.internal.MultivalueSet;
 import java.util.*;
-
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -59,20 +57,9 @@ public class JavaForStatement extends Statement {
                 
     private Collection<Expression> incrementors; 
 
-    @FameProperty(name = "incrementors", opposite = "parentNode")
+    @FameProperty(name = "incrementors")
     public Collection<Expression> getIncrementors() {
-        if (incrementors == null) {
-            incrementors = new MultivalueSet<Expression>() {
-                @Override
-                protected void clearOpposite(Expression e) {
-                    e.setParentNode(null);
-                }
-                @Override
-                protected void setOpposite(Expression e) {
-                    e.setParentNode(JavaForStatement.this);
-                }
-            };
-        }
+        if (incrementors == null) incrementors = new HashSet<Expression>();
         return incrementors;
     }
     

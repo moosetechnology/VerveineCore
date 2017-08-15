@@ -1,9 +1,7 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.fast;
 
-import ch.akuhn.fame.internal.MultivalueSet;
 import eu.synectique.verveine.core.gen.famix.Type;
-
 import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
@@ -18,20 +16,9 @@ public class JavaVarDeclStatement extends Statement {
 
     private Collection<JavaVariableDeclarator> declarators; 
 
-    @FameProperty(name = "declarators", opposite = "parentNode")
+    @FameProperty(name = "declarators")
     public Collection<JavaVariableDeclarator> getDeclarators() {
-        if (declarators == null) {
-            declarators = new MultivalueSet<JavaVariableDeclarator>() {
-                @Override
-                protected void clearOpposite(JavaVariableDeclarator e) {
-                    e.setParentNode(null);
-                }
-                @Override
-                protected void setOpposite(JavaVariableDeclarator e) {
-                    e.setParentNode(JavaVarDeclStatement.this);
-                }
-            };
-        }
+        if (declarators == null) declarators = new HashSet<JavaVariableDeclarator>();
         return declarators;
     }
     
@@ -39,8 +26,7 @@ public class JavaVarDeclStatement extends Statement {
         this.getDeclarators().clear();
         this.getDeclarators().addAll(declarators);
     }                    
-    
-        
+
     public void addDeclarators(JavaVariableDeclarator one) {
         this.getDeclarators().add(one);
     }   

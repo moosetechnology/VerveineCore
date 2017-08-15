@@ -16,7 +16,7 @@ public class Type extends ContainerEntity {
 
     private Collection<Method> methods; 
 
-    @FameProperty(name = "methods", opposite = "parentType", derived = true)
+    @FameProperty(name = "methods", opposite = "parentType", derived = true, container = true)
     public Collection<Method> getMethods() {
         if (methods == null) {
             methods = new MultivalueSet<Method>() {
@@ -66,15 +66,13 @@ public class Type extends ContainerEntity {
     public boolean hasMethods() {
         return !getMethods().isEmpty();
     }
-    
-                
-/*    
+
     @FameProperty(name = "numberOfParents", derived = true)
     public Number getNumberOfParents() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+                
     @FameProperty(name = "numberOfStatements", derived = true)
     public Number getNumberOfStatements() {
         // TODO: this is a derived property, implement this method manually.
@@ -86,7 +84,7 @@ public class Type extends ContainerEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
     private Collection<Inheritance> superInheritances; 
 
     @FameProperty(name = "superInheritances", opposite = "subclass", derived = true)
@@ -140,7 +138,6 @@ public class Type extends ContainerEntity {
         return !getSuperInheritances().isEmpty();
     }
     
-                
     private Collection<StructuralEntity> structuresWithDeclaredType; 
 
     @FameProperty(name = "structuresWithDeclaredType", opposite = "declaredType", derived = true)
@@ -193,27 +190,25 @@ public class Type extends ContainerEntity {
     public boolean hasStructuresWithDeclaredType() {
         return !getStructuresWithDeclaredType().isEmpty();
     }
-    
-/*                
+        
     @FameProperty(name = "weightOfAClass", derived = true)
     public Number getWeightOfAClass() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-                
+    
     @FameProperty(name = "numberOfMethodsOverriden", derived = true)
     public Number getNumberOfMethodsOverriden() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+                
     @FameProperty(name = "numberOfConstructorMethods", derived = true)
     public Number getNumberOfConstructorMethods() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
     
-                
     @FameProperty(name = "numberOfRevealedAttributes", derived = true)
     public Number getNumberOfRevealedAttributes() {
         // TODO: this is a derived property, implement this method manually.
@@ -231,18 +226,18 @@ public class Type extends ContainerEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+                
     @FameProperty(name = "numberOfProtectedMethods", derived = true)
     public Number getNumberOfProtectedMethods() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
     @FameProperty(name = "isAbstract", derived = true)
     public Boolean getIsAbstract() {
         return this.hasModifier("abstract");
     }
-/*    
+
     @FameProperty(name = "numberOfAttributes", derived = true)
     public Number getNumberOfAttributes() {
         // TODO: this is a derived property, implement this method manually.
@@ -308,7 +303,7 @@ public class Type extends ContainerEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
     private Collection<ParameterizedType> argumentsInParameterizedTypes; 
 
     @FameProperty(name = "argumentsInParameterizedTypes", opposite = "arguments", derived = true)
@@ -360,14 +355,13 @@ public class Type extends ContainerEntity {
     public boolean hasArgumentsInParameterizedTypes() {
         return !getArgumentsInParameterizedTypes().isEmpty();
     }
-    
-/*                
+         
     @FameProperty(name = "numberOfPublicAttributes", derived = true)
     public Number getNumberOfPublicAttributes() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
     private Collection<TypeAlias> typeAliases; 
 
     @FameProperty(name = "typeAliases", opposite = "aliasedType", derived = true)
@@ -420,8 +414,7 @@ public class Type extends ContainerEntity {
     public boolean hasTypeAliases() {
         return !getTypeAliases().isEmpty();
     }
-    
-                
+       
     private Collection<BehaviouralEntity> behavioursWithDeclaredType; 
 
     @FameProperty(name = "behavioursWithDeclaredType", opposite = "declaredType", derived = true)
@@ -474,19 +467,19 @@ public class Type extends ContainerEntity {
     public boolean hasBehavioursWithDeclaredType() {
         return !getBehavioursWithDeclaredType().isEmpty();
     }
-/*                
+     
     @FameProperty(name = "fanOut", derived = true)
     public Number getFanOut() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+                
     @FameProperty(name = "clientTypes", derived = true)
     public Collection<Type> getClientTypes() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-        
+    
     @FameProperty(name = "numberOfLinesOfCode", derived = true)
     public Number getNumberOfLinesOfCode() {
         // TODO: this is a derived property, implement this method manually.
@@ -498,7 +491,7 @@ public class Type extends ContainerEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+        
     @FameProperty(name = "numberOfMessageSends", derived = true)
     public Number getNumberOfMessageSends() {
         // TODO: this is a derived property, implement this method manually.
@@ -546,18 +539,13 @@ public class Type extends ContainerEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+
     private ContainerEntity container;
     
     @FameProperty(name = "container", opposite = "types")
     public ContainerEntity getContainer() {
         return container;
     }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getContainer();
-	}
 
     public void setContainer(ContainerEntity container) {
         if (this.container != null) {
@@ -568,7 +556,37 @@ public class Type extends ContainerEntity {
         if (container == null) return;
         container.getTypes().add(this);
     }
-/*    
+
+    @FameProperty(name = "numberOfDuplicatedLinesOfCodeInternally", derived = true)
+    public Number getNumberOfDuplicatedLinesOfCodeInternally() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+ 
+    @FameProperty(name = "numberOfMethodProtocols", derived = true)
+    public Number getNumberOfMethodProtocols() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
+    @FameProperty(name = "isTestCase", derived = true)
+    public Boolean getIsTestCase() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    @FameProperty(name = "isJUnit4TestCase", derived = true)
+    public Boolean getIsJUnit4TestCase() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    @FameProperty(name = "isInnerClass", derived = true)
+    public Boolean getIsInnerClass() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+
     @FameProperty(name = "numberOfChildren", derived = true)
     public Number getNumberOfChildren() {
         // TODO: this is a derived property, implement this method manually.
@@ -580,8 +598,7 @@ public class Type extends ContainerEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
-                
+  
     private Collection<Attribute> attributes; 
 
     @FameProperty(name = "attributes", opposite = "parentType", derived = true)
@@ -635,7 +652,6 @@ public class Type extends ContainerEntity {
         return !getAttributes().isEmpty();
     }
     
-                
     private Collection<Inheritance> subInheritances; 
 
     @FameProperty(name = "subInheritances", opposite = "superclass", derived = true)
@@ -688,13 +704,70 @@ public class Type extends ContainerEntity {
     public boolean hasSubInheritances() {
         return !getSubInheritances().isEmpty();
     }
-/*                
-    @FameProperty(name = "numberOfDuplicatedLinesOfCodeInternally", derived = true)
-    public Number getNumberOfDuplicatedLinesOfCodeInternally() {
-        // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+    
+    private Collection<Reference> incomingReferences; 
+
+    @FameProperty(name = "incomingReferences", opposite = "target", derived = true)
+    public Collection<Reference> getIncomingReferences() {
+        if (incomingReferences == null) {
+            incomingReferences = new MultivalueSet<Reference>() {
+                @Override
+                protected void clearOpposite(Reference e) {
+                    e.setTarget(null);
+                }
+                @Override
+                protected void setOpposite(Reference e) {
+                    e.setTarget(Type.this);
+                }
+            };
+        }
+        return incomingReferences;
     }
-*/    
+    
+    public void setIncomingReferences(Collection<? extends Reference> incomingReferences) {
+        this.getIncomingReferences().clear();
+        this.getIncomingReferences().addAll(incomingReferences);
+    }                    
+    
+        
+    public void addIncomingReferences(Reference one) {
+        this.getIncomingReferences().add(one);
+    }   
+    
+    public void addIncomingReferences(Reference one, Reference... many) {
+        this.getIncomingReferences().add(one);
+        for (Reference each : many)
+            this.getIncomingReferences().add(each);
+    }   
+    
+    public void addIncomingReferences(Iterable<? extends Reference> many) {
+        for (Reference each : many)
+            this.getIncomingReferences().add(each);
+    }   
+                
+    public void addIncomingReferences(Reference[] many) {
+        for (Reference each : many)
+            this.getIncomingReferences().add(each);
+    }
+    
+    public int numberOfIncomingReferences() {
+        return getIncomingReferences().size();
+    }
+
+    public boolean hasIncomingReferences() {
+        return !getIncomingReferences().isEmpty();
+    }
+
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getContainer();
+	}
+    
+    @Override
+    public void setBelongsTo(ContainerEntity container) {
+    	setContainer( container);
+    }
+
                 
 
 

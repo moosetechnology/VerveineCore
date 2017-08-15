@@ -12,17 +12,6 @@ public class JavaCaseStatement extends Statement {
 
 
 
-    private Boolean isDefault;
-    
-    @FameProperty(name = "isDefault")
-    public Boolean getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
     private Expression expression;
     
     @FameProperty(name = "expression")

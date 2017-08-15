@@ -16,11 +16,8 @@ public class AnnotationTypeAttribute extends Attribute {
 
     @FameProperty(name = "parentAnnotationType", derived = true)
     public AnnotationType getParentAnnotationType() {
-        return (AnnotationType)parentType;
-    }
-
-    public void setParentAnnotationType(AnnotationType parentAnnotationType) {
-        this.setParentType( parentAnnotationType);
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
     
     private Collection<AnnotationInstanceAttribute> annotationAttributeInstances; 

@@ -164,6 +164,7 @@ public class EntityStack {
 	
 	// READ FROM THE STACK
 
+	@SuppressWarnings("unchecked")
 	private <T extends NamedEntity> T popUpto(Class<T> clazz) {
 		NamedEntity ent = null;
 		while ( (! stack.isEmpty()) && (! clazz.isInstance(ent)) ) {
@@ -178,6 +179,7 @@ public class EntityStack {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends NamedEntity> T lookUpto(Class<T> clazz) {
 		int i=this.stack.size()-1;
 

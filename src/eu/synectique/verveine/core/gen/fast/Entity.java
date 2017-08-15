@@ -13,15 +13,20 @@ public class Entity extends SourcedEntity {
 
 
 
-    private Entity parentNode;
+    private Expression expression;
     
-    @FameProperty(name = "parentNode")
-    public Entity getParentNode() {
-        return parentNode;
+    @FameProperty(name = "expression", opposite = "fastParentEntity")
+    public Expression getExpression() {
+        return expression;
     }
 
-    public void setParentNode(Entity parentNode) {
-        this.parentNode = parentNode;
+    public void setExpression(Expression expression) {
+        if (this.expression == null ? expression != null : !this.expression.equals(expression)) {
+            Expression old_expression = this.expression;
+            this.expression = expression;
+            if (old_expression != null) old_expression.setFastParentEntity(null);
+            if (expression != null) expression.setFastParentEntity(this);
+        }
     }
     
 

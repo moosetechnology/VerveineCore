@@ -12,14 +12,14 @@ public class Reference extends Association {
 
 
 
-    private ContainerEntity source;
+    private BehaviouralEntity source;
     
     @FameProperty(name = "source", opposite = "outgoingReferences")
-    public ContainerEntity getSource() {
+    public BehaviouralEntity getSource() {
         return source;
     }
 
-    public void setSource(ContainerEntity source) {
+    public void setSource(BehaviouralEntity source) {
         if (this.source != null) {
             if (this.source.equals(source)) return;
             this.source.getOutgoingReferences().remove(this);
@@ -29,14 +29,14 @@ public class Reference extends Association {
         source.getOutgoingReferences().add(this);
     }
     
-    private ContainerEntity target;
+    private Type target;
     
     @FameProperty(name = "target", opposite = "incomingReferences")
-    public ContainerEntity getTarget() {
+    public Type getTarget() {
         return target;
     }
 
-    public void setTarget(ContainerEntity target) {
+    public void setTarget(Type target) {
         if (this.target != null) {
             if (this.target.equals(target)) return;
             this.target.getIncomingReferences().remove(this);
@@ -54,7 +54,7 @@ public class Reference extends Association {
 	@Override
 	public NamedEntity getTo() {
 		return getTarget();
-	}
+    }
     
 
 

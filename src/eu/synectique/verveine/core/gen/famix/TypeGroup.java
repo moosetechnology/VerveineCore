@@ -12,7 +12,7 @@ import ch.akuhn.fame.FamePackage;
 public class TypeGroup extends Group {
 
 
-/*
+
     @FameProperty(name = "distance", derived = true)
     public Number getDistance() {
         // TODO: this is a derived property, implement this method manually.
@@ -36,17 +36,6 @@ public class TypeGroup extends Group {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
-    private Number averageNumberOfMethods;
-    
-    @FameProperty(name = "averageNumberOfMethods")
-    public Number getAverageNumberOfMethods() {
-        return averageNumberOfMethods;
-    }
-
-    public void setAverageNumberOfMethods(Number averageNumberOfMethods) {
-        this.averageNumberOfMethods = averageNumberOfMethods;
-    }
     
     private Number averageNumberOfAttributes;
     
@@ -58,11 +47,22 @@ public class TypeGroup extends Group {
     public void setAverageNumberOfAttributes(Number averageNumberOfAttributes) {
         this.averageNumberOfAttributes = averageNumberOfAttributes;
     }
-/*    
+    
     @FameProperty(name = "afferentCoupling", derived = true)
     public Number getAfferentCoupling() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+    
+    private Number averageNumberOfMethods;
+    
+    @FameProperty(name = "averageNumberOfMethods")
+    public Number getAverageNumberOfMethods() {
+        return averageNumberOfMethods;
+    }
+
+    public void setAverageNumberOfMethods(Number averageNumberOfMethods) {
+        this.averageNumberOfMethods = averageNumberOfMethods;
     }
     
     @FameProperty(name = "abstractness", derived = true)
@@ -70,7 +70,7 @@ public class TypeGroup extends Group {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+    
     private Number averageNumberOfStatements;
     
     @FameProperty(name = "averageNumberOfStatements")
@@ -81,13 +81,13 @@ public class TypeGroup extends Group {
     public void setAverageNumberOfStatements(Number averageNumberOfStatements) {
         this.averageNumberOfStatements = averageNumberOfStatements;
     }
-/*    
+    
     @FameProperty(name = "totalNumberOfLinesOfCode", derived = true)
     public Number getTotalNumberOfLinesOfCode() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+    
 
 
 }

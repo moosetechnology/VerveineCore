@@ -1,6 +1,7 @@
 // Automagically generated code, please do not change
 package eu.synectique.verveine.core.gen.famix;
 
+import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -12,17 +13,12 @@ public class Namespace extends ScopingEntity {
 
 
 
-    private Number numberOfAttributes;
-    
-    @FameProperty(name = "numberOfAttributes")
+    @FameProperty(name = "numberOfAttributes", derived = true)
     public Number getNumberOfAttributes() {
-        return numberOfAttributes;
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
 
-    public void setNumberOfAttributes(Number numberOfAttributes) {
-        this.numberOfAttributes = numberOfAttributes;
-    }
-/*    
     @FameProperty(name = "numberOfClasses", derived = true)
     public Number getNumberOfClasses() {
         // TODO: this is a derived property, implement this method manually.
@@ -34,7 +30,7 @@ public class Namespace extends ScopingEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-        
+    
     @FameProperty(name = "efferentCoupling", derived = true)
     public Number getEfferentCoupling() {
         // TODO: this is a derived property, implement this method manually.
@@ -46,13 +42,19 @@ public class Namespace extends ScopingEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-        
+    
     @FameProperty(name = "abstractness", derived = true)
     public Number getAbstractness() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
+        
+    @FameProperty(name = "numberOfLinesOfCode", derived = true)
+    public Number getNumberOfLinesOfCode() {
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
+    }
+        
     @FameProperty(name = "distance", derived = true)
     public Number getDistance() {
         // TODO: this is a derived property, implement this method manually.
@@ -82,18 +84,7 @@ public class Namespace extends ScopingEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
-    private Number numberOfLinesOfCode;
     
-    @FameProperty(name = "numberOfLinesOfCode", derived = true)
-    public Number getNumberOfLinesOfCode() {
-        return numberOfLinesOfCode;
-    }
-
-    public void setNumberOfLinesOfCode(Number numberOfLinesOfCode) {
-        this.numberOfLinesOfCode = numberOfLinesOfCode;
-    }
-/*    
     @FameProperty(name = "afferentCoupling", derived = true)
     public Number getAfferentCoupling() {
         // TODO: this is a derived property, implement this method manually.
@@ -105,7 +96,7 @@ public class Namespace extends ScopingEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/    
+   
 
 
 }

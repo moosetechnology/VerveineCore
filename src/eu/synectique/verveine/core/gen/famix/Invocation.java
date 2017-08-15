@@ -2,9 +2,9 @@
 package eu.synectique.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
+import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
-import java.util.*;
 import ch.akuhn.fame.FamePackage;
 
 
@@ -13,7 +13,7 @@ import ch.akuhn.fame.FamePackage;
 public class Invocation extends Association {
 
 
-
+    
     private Collection<BehaviouralEntity> candidates; 
 
     @FameProperty(name = "candidates", opposite = "incomingInvocations")
@@ -65,7 +65,6 @@ public class Invocation extends Association {
     public boolean hasCandidates() {
         return !getCandidates().isEmpty();
     }
-    
                 
     private NamedEntity receiver;
     
@@ -94,7 +93,7 @@ public class Invocation extends Association {
     public void setSignature(String signature) {
         this.signature = signature;
     }
-    
+
     private BehaviouralEntity sender;
     
     @FameProperty(name = "sender", opposite = "outgoingInvocations")
@@ -116,6 +115,7 @@ public class Invocation extends Association {
 
     @FameProperty(name = "arguments")
     public Collection<Association> getArguments() {
+    	// changed from HashSet to ArrayList to make sure the order of arguments is kept
         if (arguments == null) arguments = new ArrayList<Association>();
         return arguments;
     }
@@ -153,7 +153,7 @@ public class Invocation extends Association {
         return !getArguments().isEmpty();
     }
     
-                
+    
     private String receiverSourceCode;
     
     @FameProperty(name = "receiverSourceCode")
@@ -165,7 +165,7 @@ public class Invocation extends Association {
         this.receiverSourceCode = receiverSourceCode;
     }
     
-
+                
 	@Override
 	public NamedEntity getTo() {
 		return this.getReceiver();

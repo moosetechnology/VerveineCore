@@ -17,6 +17,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/akuhn-util-r28011.jar"/>
-	<classpathentry kind="lib" path="lib/fame-201403040925.jar"/>
+	<classpathentry kind="lib" path="lib/fame.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

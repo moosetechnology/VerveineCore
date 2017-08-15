@@ -122,60 +122,6 @@ public class ContainerEntity extends NamedEntity {
     }
     
                 
-    private Collection<Reference> outgoingReferences; 
-
-    @FameProperty(name = "outgoingReferences", opposite = "source", derived = true)
-    public Collection<Reference> getOutgoingReferences() {
-        if (outgoingReferences == null) {
-            outgoingReferences = new MultivalueSet<Reference>() {
-                @Override
-                protected void clearOpposite(Reference e) {
-                    e.setSource(null);
-                }
-                @Override
-                protected void setOpposite(Reference e) {
-                    e.setSource(ContainerEntity.this);
-                }
-            };
-        }
-        return outgoingReferences;
-    }
-    
-    public void setOutgoingReferences(Collection<? extends Reference> outgoingReferences) {
-        this.getOutgoingReferences().clear();
-        this.getOutgoingReferences().addAll(outgoingReferences);
-    }                    
-    
-        
-    public void addOutgoingReferences(Reference one) {
-        this.getOutgoingReferences().add(one);
-    }   
-    
-    public void addOutgoingReferences(Reference one, Reference... many) {
-        this.getOutgoingReferences().add(one);
-        for (Reference each : many)
-            this.getOutgoingReferences().add(each);
-    }   
-    
-    public void addOutgoingReferences(Iterable<? extends Reference> many) {
-        for (Reference each : many)
-            this.getOutgoingReferences().add(each);
-    }   
-                
-    public void addOutgoingReferences(Reference[] many) {
-        for (Reference each : many)
-            this.getOutgoingReferences().add(each);
-    }
-    
-    public int numberOfOutgoingReferences() {
-        return getOutgoingReferences().size();
-    }
-
-    public boolean hasOutgoingReferences() {
-        return !getOutgoingReferences().isEmpty();
-    }
-    
-                
     private Collection<Type> types; 
 
     @FameProperty(name = "types", opposite = "container", derived = true)
@@ -230,60 +176,22 @@ public class ContainerEntity extends NamedEntity {
     }
     
                 
-    private Collection<Reference> incomingReferences; 
+    private Template templateDescriptor;
+    
+    @FameProperty(name = "templateDescriptor", opposite = "generic")
+    public Template getTemplateDescriptor() {
+        return templateDescriptor;
+    }
 
-    @FameProperty(name = "incomingReferences", opposite = "target", derived = true)
-    public Collection<Reference> getIncomingReferences() {
-        if (incomingReferences == null) {
-            incomingReferences = new MultivalueSet<Reference>() {
-                @Override
-                protected void clearOpposite(Reference e) {
-                    e.setTarget(null);
-                }
-                @Override
-                protected void setOpposite(Reference e) {
-                    e.setTarget(ContainerEntity.this);
-                }
-            };
+    public void setTemplateDescriptor(Template templateDescriptor) {
+        if (this.templateDescriptor == null ? templateDescriptor != null : !this.templateDescriptor.equals(templateDescriptor)) {
+            Template old_templateDescriptor = this.templateDescriptor;
+            this.templateDescriptor = templateDescriptor;
+            if (old_templateDescriptor != null) old_templateDescriptor.setGeneric(null);
+            if (templateDescriptor != null) templateDescriptor.setGeneric(this);
         }
-        return incomingReferences;
     }
     
-    public void setIncomingReferences(Collection<? extends Reference> incomingReferences) {
-        this.getIncomingReferences().clear();
-        this.getIncomingReferences().addAll(incomingReferences);
-    }                    
-    
-        
-    public void addIncomingReferences(Reference one) {
-        this.getIncomingReferences().add(one);
-    }   
-    
-    public void addIncomingReferences(Reference one, Reference... many) {
-        this.getIncomingReferences().add(one);
-        for (Reference each : many)
-            this.getIncomingReferences().add(each);
-    }   
-    
-    public void addIncomingReferences(Iterable<? extends Reference> many) {
-        for (Reference each : many)
-            this.getIncomingReferences().add(each);
-    }   
-                
-    public void addIncomingReferences(Reference[] many) {
-        for (Reference each : many)
-            this.getIncomingReferences().add(each);
-    }
-    
-    public int numberOfIncomingReferences() {
-        return getIncomingReferences().size();
-    }
-
-    public boolean hasIncomingReferences() {
-        return !getIncomingReferences().isEmpty();
-    }
-    
-                
 
 
 }

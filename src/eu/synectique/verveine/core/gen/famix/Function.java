@@ -14,7 +14,7 @@ public class Function extends BehaviouralEntity {
 
     private ContainerEntity container;
     
-    @FameProperty(name = "container", opposite = "functions")
+    @FameProperty(name = "container", opposite = "functions", container = true)
     public ContainerEntity getContainer() {
         return container;
     }
@@ -28,12 +28,7 @@ public class Function extends BehaviouralEntity {
         if (container == null) return;
         container.getFunctions().add(this);
     }
-
-    @Override
-	public ContainerEntity getBelongsTo() {
-		return getContainer();
-	}
-
+    
     private Module parentModule;
     
     @FameProperty(name = "parentModule")
@@ -44,7 +39,18 @@ public class Function extends BehaviouralEntity {
     public void setParentModule(Module parentModule) {
         this.parentModule = parentModule;
     }
+ 
+    @Override
+	public ContainerEntity getBelongsTo() {
+		return getContainer();
+	}
     
+    @Override
+    public void setBelongsTo(ContainerEntity container) {
+    	setContainer(container);
+    }
+
+
 
 
 }

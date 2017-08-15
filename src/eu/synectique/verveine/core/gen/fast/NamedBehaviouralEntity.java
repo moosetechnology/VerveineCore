@@ -11,20 +11,19 @@ import ch.akuhn.fame.FamePackage;
 public class NamedBehaviouralEntity extends BehaviouralEntity {
 
 
+    private eu.synectique.verveine.core.gen.famix.BehaviouralEntity famixNamedEntity;
 
-    private eu.synectique.verveine.core.gen.famix.BehaviouralEntity famixBehaviouralEntity;
-    
-    @FameProperty(name = "parentNode", opposite = "fastBehaviouralEntity")
-    public eu.synectique.verveine.core.gen.famix.BehaviouralEntity getFamixBehaviouralEntity() {
-        return famixBehaviouralEntity;
+    @FameProperty(name = "famixNamedEntity", opposite = "fastBehaviouralEntity")
+    public eu.synectique.verveine.core.gen.famix.BehaviouralEntity getFamixNamedEntity() {
+        return famixNamedEntity;
     }
 
-    public void setFamixBehaviouralEntity(eu.synectique.verveine.core.gen.famix.BehaviouralEntity famixBehaviouralEntity) {
-        if (this.famixBehaviouralEntity == null ? famixBehaviouralEntity != null : !this.famixBehaviouralEntity.equals(famixBehaviouralEntity)) {
-        	eu.synectique.verveine.core.gen.famix.BehaviouralEntity old_famixBehaviouralEntity = this.famixBehaviouralEntity;
-            this.famixBehaviouralEntity = famixBehaviouralEntity;
-            if (old_famixBehaviouralEntity != null) old_famixBehaviouralEntity.setFastBehaviouralEntity(null);
-            if (famixBehaviouralEntity != null) famixBehaviouralEntity.setFastBehaviouralEntity(this);
+    public void setFamixNamedEntity(eu.synectique.verveine.core.gen.famix.BehaviouralEntity famixNamedEntity) {
+        if (this.famixNamedEntity == null ? famixNamedEntity != null : !this.famixNamedEntity.equals(famixNamedEntity)) {
+            eu.synectique.verveine.core.gen.famix.BehaviouralEntity old_famixNamedEntity = this.famixNamedEntity;
+            this.famixNamedEntity = famixNamedEntity;
+            if (old_famixNamedEntity != null) old_famixNamedEntity.setFastBehaviouralEntity(null);
+            if (famixNamedEntity != null) famixNamedEntity.setFastBehaviouralEntity(this);
         }
     }
     

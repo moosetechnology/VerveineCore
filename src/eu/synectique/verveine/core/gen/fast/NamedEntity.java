@@ -14,7 +14,8 @@ public class NamedEntity extends Entity {
 
     @FameProperty(name = "nameByPolicy", derived = true)
     public String getNameByPolicy() {
-        return this.getName();  
+        // TODO: this is a derived property, implement this method manually.
+        throw new UnsupportedOperationException("Not yet implemented!");  
     }
 
     private String name;

@@ -2,9 +2,9 @@
 package eu.synectique.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
+import java.util.*;
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
-import java.util.*;
 import ch.akuhn.fame.FamePackage;
 
 
@@ -13,13 +13,12 @@ import ch.akuhn.fame.FamePackage;
 public class StructuralEntity extends LeafEntity {
 
 
-/*
+
     @FameProperty(name = "accessors", derived = true)
     public Collection<BehaviouralEntity> getAccessors() {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-*/
 
     private Collection<Access> incomingAccesses; 
 
@@ -73,8 +72,7 @@ public class StructuralEntity extends LeafEntity {
     public boolean hasIncomingAccesses() {
         return !getIncomingAccesses().isEmpty();
     }
-    
-                
+
     private Type declaredType;
     
     @FameProperty(name = "declaredType", opposite = "structuresWithDeclaredType")
@@ -90,8 +88,8 @@ public class StructuralEntity extends LeafEntity {
         this.declaredType = declaredType;
         if (declaredType == null) return;
         declaredType.getStructuresWithDeclaredType().add(this);
-    }
-    
+    }    
+                
     private Collection<DereferencedInvocation> dereferencedInvocations; 
 
     @FameProperty(name = "dereferencedInvocations", opposite = "referencer", derived = true)
@@ -145,7 +143,7 @@ public class StructuralEntity extends LeafEntity {
         return !getDereferencedInvocations().isEmpty();
     }
     
-                
+        
 
 
 }
