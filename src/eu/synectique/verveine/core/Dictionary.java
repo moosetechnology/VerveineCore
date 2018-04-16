@@ -816,7 +816,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Namespace or null in case of a FAMIX error
 	 */
 	public Namespace ensureFamixNamespace(B key, String name) {
-		return  ensureFamixUniqEntity(Namespace.class, key, name);
+		return  ensureFamixEntity(Namespace.class, key, name);
 	}
 
 	/**
@@ -825,7 +825,7 @@ public class Dictionary<B> {
 	 * @return a Famix Namespace
 	 */
 	public Namespace ensureFamixNamespaceDefault() {
-		Namespace fmx =  ensureFamixUniqEntity(Namespace.class, null, DEFAULT_PCKG_NAME);
+		Namespace fmx =  ensureFamixEntity(Namespace.class, null, DEFAULT_PCKG_NAME);
 
 		return fmx;
 	}
