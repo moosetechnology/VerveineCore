@@ -260,7 +260,6 @@ public class Dictionary<B> {
 	@SuppressWarnings("unchecked")
 	protected <T extends NamedEntity> T ensureFamixEntity(Class<T> fmxClass, B bnd, String name, boolean persistIt) {
 		T fmx = null;
-
 		if (ImplicitVariable.class.isAssignableFrom(fmxClass)) {
 			return null;
 		}
@@ -816,7 +815,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Namespace or null in case of a FAMIX error
 	 */
 	public Namespace ensureFamixNamespace(B key, String name) {
-		return  ensureFamixEntity(Namespace.class, key, name);
+		return  ensureFamixEntity(Namespace.class, key, name, true);
 	}
 
 	/**
@@ -825,7 +824,7 @@ public class Dictionary<B> {
 	 * @return a Famix Namespace
 	 */
 	public Namespace ensureFamixNamespaceDefault() {
-		Namespace fmx =  ensureFamixEntity(Namespace.class, null, DEFAULT_PCKG_NAME);
+		Namespace fmx =  ensureFamixUniqEntity(Namespace.class, null, DEFAULT_PCKG_NAME);
 
 		return fmx;
 	}
