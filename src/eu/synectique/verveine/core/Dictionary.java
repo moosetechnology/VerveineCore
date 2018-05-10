@@ -733,7 +733,7 @@ public class Dictionary<B> {
 	 * If this ImplicitVariable does not exist yet, it is created
 	 * @param name -- the name of the FAMIX ImplicitVariable (should be Dictionary.SELF_NAME or Dictionary.SUPER_NAME)
 	 * @param type -- the Famix Type for this ImplicitVariable (should not be null)
-	 * @param method 
+	 * @param owner -- the ContainerEntity where the implicit variable appears (should be a method inside <b>type</b>)
 	 * @param persistIt -- whether the ImplicitVariable should be persisted in the Famix repository
 	 * @return the FAMIX ImplicitVariable or null in case of a FAMIX error
 	 */
@@ -741,29 +741,6 @@ public class Dictionary<B> {
 		ImplicitVariable fmx;
 		fmx = ensureFamixEntity(ImplicitVariable.class, key, name, persistIt);
 		fmx.setParentBehaviouralEntity(owner);
-/*		fmx = getImplicitVariableByType(type, name);
-		if (fmx == null) {
-			fmx = (ImplicitVariable) createFamixEntity(ImplicitVariable.class, name, persistIt);
-			if (fmx != null) {
-				fmx.setBelongsTo(method);
-				fmx.setIsStub(Boolean.FALSE);
-
-				ImplicitVars iv = typeToImpVar.get(type);				
-				if (iv == null) {
-					iv = new ImplicitVars();
-				}
-
-				if (name.equals(SELF_NAME)) {
-					iv.self_iv = fmx;
-				}
-				else if (name.equals(SUPER_NAME)) {
-					iv.super_iv = fmx;
-				}
-				
-				typeToImpVar.put(type, iv);
-			}
-		}
-*/
 		return fmx;
 	}
 
@@ -817,7 +794,7 @@ public class Dictionary<B> {
 	 * @return the FAMIX Namespace or null in case of a FAMIX error
 	 */
 	public Namespace ensureFamixNamespace(B key, String name) {
-		return  ensureFamixEntity(Namespace.class, key, name, true);
+		return ensureFamixUniqEntity(Namespace.class, key, name);
 	}
 
 	/**
