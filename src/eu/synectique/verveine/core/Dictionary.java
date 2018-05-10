@@ -83,12 +83,14 @@ public class Dictionary<B> {
 	 * Because they are implicit, they may not have a binding provided by the parser,
 	 * or may have the same binding than their associated type so they can't be kept easily in {@link Dictionary#keyToEntity}
 	 */
+	@Deprecated
 	protected Map<Type,ImplicitVars> typeToImpVar;
 
 	/**
 	 * Used to keep the two possible ImplicitVariable for a given Class binding
 	 * @author anquetil
 	 */
+	@Deprecated
 	protected class ImplicitVars {
 		public ImplicitVariable self_iv;
 		public ImplicitVariable super_iv;
@@ -203,7 +205,7 @@ public class Dictionary<B> {
 
 	/**
 	 * Returns the key associated to a Famix Entity.
-	 * @param ent -- the Named entity
+	 * @param e -- the Named entity
 	 * @return the key associated to this entity or null if none
 	 */
 	public B getEntityKey(NamedEntity e) {
@@ -250,7 +252,6 @@ public class Dictionary<B> {
 	/**
 	 * Returns a FAMIX Entity of the type <b>fmxClass</b> and maps it to its binding <b>bnd</b> (if not null).
 	 * The Entity is created if it did not exist.
-	 * <b>Note</b>: Should not be used to create ImplicitVariables and will silently fail if one tries. Use {@link Dictionary#ensureFamixImplicitVariable} instead.
 	 * @param fmxClass -- the FAMIX class of the instance to create
 	 * @param bnd -- the binding to map to the new instance
 	 * @param name -- the name of the new instance (used if <tt>bnd == null</tt>)
@@ -260,10 +261,6 @@ public class Dictionary<B> {
 	@SuppressWarnings("unchecked")
 	protected <T extends NamedEntity> T ensureFamixEntity(Class<T> fmxClass, B bnd, String name, boolean persistIt) {
 		T fmx = null;
-		if (ImplicitVariable.class.isAssignableFrom(fmxClass)) {
-			return null;
-		}
-		
 		if (bnd != null) {
 			fmx = (T) getEntityByKey(bnd);
 			if (fmx != null) {
@@ -701,6 +698,7 @@ public class Dictionary<B> {
 	 * @param bnd -- the binding
 	 * @return the Famix Entity associated to the binding or null if not found
 	 */
+	@Deprecated
 	public ImplicitVariable getImplicitVariableByBinding(B bnd, String iv_name) {
 		return getImplicitVariableByType((eu.synectique.verveine.core.gen.famix.Class)getEntityByKey(bnd), iv_name);
 	}
@@ -711,6 +709,7 @@ public class Dictionary<B> {
 	 * @param name -- name of the ImplicitVariable (should be Dictionary.SELF_NAME or Dictionary.SUPER_NAME)
 	 * @return the Famix ImplicitVariable associated to the Type or null if not found
 	 */
+	@Deprecated
 	public ImplicitVariable getImplicitVariableByType(Type type, String name) {
 		ImplicitVars iv = typeToImpVar.get(type);
 		ImplicitVariable ret = null;
@@ -734,16 +733,19 @@ public class Dictionary<B> {
 	 * If this ImplicitVariable does not exist yet, it is created
 	 * @param name -- the name of the FAMIX ImplicitVariable (should be Dictionary.SELF_NAME or Dictionary.SUPER_NAME)
 	 * @param type -- the Famix Type for this ImplicitVariable (should not be null)
-	 * @param owner -- the ContainerEntity where the implicit variable appears (usually a method inside <b>type</b>)
+	 * @param method 
 	 * @param persistIt -- whether the ImplicitVariable should be persisted in the Famix repository
 	 * @return the FAMIX ImplicitVariable or null in case of a FAMIX error
 	 */
-	public ImplicitVariable ensureFamixImplicitVariable(String name, Type type, BehaviouralEntity owner, boolean persistIt) {
-		ImplicitVariable fmx = getImplicitVariableByType(type, name);
+	public ImplicitVariable ensureFamixImplicitVariable(B key, String name, Type type, Method owner, boolean persistIt) {
+		ImplicitVariable fmx;
+		fmx = ensureFamixEntity(ImplicitVariable.class, key, name, persistIt);
+		fmx.setParentBehaviouralEntity(owner);
+/*		fmx = getImplicitVariableByType(type, name);
 		if (fmx == null) {
 			fmx = (ImplicitVariable) createFamixEntity(ImplicitVariable.class, name, persistIt);
-			if (fmx!=null) {
-				fmx.setParentBehaviouralEntity(owner);
+			if (fmx != null) {
+				fmx.setBelongsTo(method);
 				fmx.setIsStub(Boolean.FALSE);
 
 				ImplicitVars iv = typeToImpVar.get(type);				
@@ -761,7 +763,7 @@ public class Dictionary<B> {
 				typeToImpVar.put(type, iv);
 			}
 		}
-
+*/
 		return fmx;
 	}
 
