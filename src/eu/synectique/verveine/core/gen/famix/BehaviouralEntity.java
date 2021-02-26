@@ -196,23 +196,6 @@ public class BehaviouralEntity extends ContainerEntity {
     public boolean hasAccesses() {
         return !getAccesses().isEmpty();
     }
-    
-
-    private NamedBehaviouralEntity fastBehaviouralEntity;
-    
-    @FameProperty(name = "fastBehaviouralEntity", opposite = "famixNamedEntity")
-    public NamedBehaviouralEntity getFastBehaviouralEntity() {
-        return fastBehaviouralEntity;
-    }
-
-    public void setFastBehaviouralEntity(NamedBehaviouralEntity fastBehaviouralEntity) {
-        if (this.fastBehaviouralEntity == null ? fastBehaviouralEntity != null : !this.fastBehaviouralEntity.equals(fastBehaviouralEntity)) {
-            NamedBehaviouralEntity old_fastBehaviouralEntity = this.fastBehaviouralEntity;
-            this.fastBehaviouralEntity = fastBehaviouralEntity;
-            if (old_fastBehaviouralEntity != null) old_fastBehaviouralEntity.setFamixNamedEntity(null);
-            if (fastBehaviouralEntity != null) fastBehaviouralEntity.setFamixNamedEntity(this);
-        }
-    }
 
     @FameProperty(name = "clientBehaviours", derived = true)
     public Collection<BehaviouralEntity> getClientBehaviours() {
