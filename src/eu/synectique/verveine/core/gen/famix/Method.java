@@ -348,7 +348,16 @@ public class Method extends BehaviouralEntity {
     	}
     }
 
+    private Boolean isSynchronized;
 
+    @FameProperty(name = "isSynchronized")
+    public Boolean getIsSynchronized() {
+        return isSynchronized;
+    }
+
+    public void setIsSynchronized(Boolean isSynchronized) {
+        this.isSynchronized = isSynchronized;
+    }
 
 }
 

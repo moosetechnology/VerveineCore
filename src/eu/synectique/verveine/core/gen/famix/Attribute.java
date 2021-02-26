@@ -87,8 +87,28 @@ public class Attribute extends StructuralEntity {
         // TODO: this is a derived property, implement this method manually.
         throw new UnsupportedOperationException("Not yet implemented!");  
     }
-    
 
+    private Boolean isVolatile;
+
+    @FameProperty(name = "isVolatile")
+    public Boolean getIsVolatile() {
+        return isVolatile;
+    }
+
+    public void setIsVolatile(Boolean isVolatile) {
+        this.isVolatile = isVolatile;
+    }
+
+    private Boolean isTransient;
+
+    @FameProperty(name = "isTransient")
+    public Boolean getIsTransient() {
+        return isTransient;
+    }
+
+    public void setIsTransient(Boolean isTransient) {
+        this.isTransient = isTransient;
+    }
 
 }
 
