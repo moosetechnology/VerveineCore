@@ -3,6 +3,8 @@ package eu.synectique.verveine.core.gen.famix;
 
 import ch.akuhn.fame.internal.MultivalueSet;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import ch.akuhn.fame.FameProperty;
 import ch.akuhn.fame.FameDescription;
 import ch.akuhn.fame.FamePackage;
@@ -71,7 +73,8 @@ public class ParameterizableClass extends Class {
     @FameProperty(name = "parameters", derived = true)
     public Collection<ParameterType> getParameters() {
         // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
+        return this.getTypes().stream().filter(tType -> tType instanceof ParameterType)
+                .map(tType -> (ParameterType) tType).collect(Collectors.toList());
     }
         
 

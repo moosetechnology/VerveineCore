@@ -21,7 +21,7 @@ public class Class extends Type {
     
     @FameProperty(name = "isInterface")
     public Boolean getIsInterface() {
-        return isInterface;
+        return this.isInterface != null && this.isInterface;
     }
 
     public void setIsInterface(Boolean isInterface) {
