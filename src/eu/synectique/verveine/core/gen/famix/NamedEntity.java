@@ -11,23 +11,6 @@ import ch.akuhn.fame.FamePackage;
 @FamePackage("FAMIX")
 @FameDescription("NamedEntity")
 public class NamedEntity extends SourcedEntity {
-
-
-    
-    @FameProperty(name = "isAbstract", derived = true)
-    public Boolean getIsAbstract() {
-        return hasModifier("abstract");
-    }
-                
-    @FameProperty(name = "isPrivate", derived = true)
-    public Boolean getIsPrivate() {
-        return hasModifier("private");
-    }
-    
-    @FameProperty(name = "isPackage", derived = true)
-    public Boolean getIsPackage() {
-        return hasModifier("package");
-    }
     
     private Package parentPackage;
     
@@ -67,16 +50,7 @@ public class NamedEntity extends SourcedEntity {
     public void setIsStub(Boolean isStub) {
         this.isStub = isStub;
     }
-    
-    @FameProperty(name = "isPublic", derived = true)
-    public Boolean getIsPublic() {
-        return hasModifier("public");
-    }
-                
-    @FameProperty(name = "isProtected", derived = true)
-    public Boolean getIsProtected() {
-        return hasModifier("protected");
-    }
+
 
     @FameProperty(name = "nameByPolicy", derived = true)
     public String getNameByPolicy() {
@@ -212,56 +186,6 @@ public class NamedEntity extends SourcedEntity {
     public boolean hasAnnotationInstances() {
         return !getAnnotationInstances().isEmpty();
     }
-    
-    
-    private Collection<String> modifiers; 
-
-    @FameProperty(name = "modifiers")
-    public Collection<String> getModifiers() {
-        if (modifiers == null) modifiers = new HashSet<String>();
-        return modifiers;
-    }
-    
-    public void setModifiers(Collection<? extends String> modifiers) {
-        this.getModifiers().clear();
-        this.getModifiers().addAll(modifiers);
-    }                    
-
-    public void addModifiers(String one) {
-        this.getModifiers().add(one);
-    }   
-    
-    public void addModifiers(String one, String... many) {
-        this.getModifiers().add(one);
-        for (String each : many)
-            this.getModifiers().add(each);
-    }   
-    
-    public void addModifiers(Iterable<? extends String> many) {
-        for (String each : many)
-            this.getModifiers().add(each);
-    }   
-                
-    public void addModifiers(String[] many) {
-        for (String each : many)
-            this.getModifiers().add(each);
-    }
-    
-    public int numberOfModifiers() {
-        return getModifiers().size();
-    }
-
-    public boolean hasModifiers() {
-        return !getModifiers().isEmpty();
-    }
-
-    protected Boolean hasModifier(String mod) {
-    	for (String m : this.getModifiers()) {
-    		if (m.equals(mod))
-    			return true;
-    	}
-    	return false;
-    }
 
     private Collection<eu.synectique.verveine.core.gen.fast.NamedEntity> fastNamedEntities; 
 
@@ -316,12 +240,6 @@ public class NamedEntity extends SourcedEntity {
         return !getFastNamedEntities().isEmpty();
     }
     
-                
-    @FameProperty(name = "isFinal", derived = true)
-    public Boolean getIsFinal() {
-        return hasModifier("final");
-    }
-    
 
 	@Override
 	public String toString() {
@@ -338,6 +256,93 @@ public class NamedEntity extends SourcedEntity {
         // defaults to doing nothing
     }
 
+    private Boolean isClassSide = false;
+
+    @FameProperty(name = "isClassSide")
+    public Boolean getIsClassSide() {
+        return isClassSide;
+    }
+
+    public void setIsClassSide(Boolean isClassSide) {
+        this.isClassSide = isClassSide;
+    }
+
+    private Boolean isFinal = false;
+
+    @FameProperty(name = "isFinal")
+    public Boolean getIsFinal() {
+        return isFinal;
+    }
+
+    public void setIsFinal(Boolean isFinal) {
+        this.isFinal = isFinal;
+    }
+
+    private String visibility = "";
+
+    @FameProperty(name = "isPrivate", derived = true)
+    public Boolean getIsPrivate() {
+        return this.visibility.equals("private");
+    }
+
+    public void setIsPrivate(Boolean b) {
+        if (b) {
+            this.visibility = "private";
+        }
+    }
+
+    @FameProperty(name = "isProtected", derived = true)
+    public Boolean getIsProtected() {
+        return this.visibility.equals("protected");
+    }
+
+    public void setIsProtected(Boolean b) {
+        if (b) {
+            this.visibility = "protected";
+        }
+    }
+
+    @FameProperty(name = "isPublic", derived = true)
+    public Boolean getIsPublic() {
+        return this.visibility.equals("public");
+    }
+
+    public void setIsPublic(Boolean b) {
+        if (b) {
+            this.visibility = "public";
+        }
+    }
+
+    @FameProperty(name = "isPackage", derived = true)
+    public Boolean getIsPackage() {
+        return this.visibility.equals("package");
+    }
+
+    public void setIsPackage(Boolean b) {
+        if (b) {
+            this.visibility = "package";
+        }
+    }
+
+    @FameProperty(name = "visibility")
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
+    private Boolean isAbstract = false;
+
+    @FameProperty(name = "isAbstract")
+    public Boolean getIsAbstract() {
+        return isAbstract;
+    }
+
+    public void setIsAbstract(Boolean isAbstract) {
+        this.isAbstract = isAbstract;
+    }
 
 }
 

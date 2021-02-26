@@ -230,12 +230,7 @@ public class Type extends ContainerEntity {
     @FameProperty(name = "numberOfProtectedMethods", derived = true)
     public Number getNumberOfProtectedMethods() {
         // TODO: this is a derived property, implement this method manually.
-        throw new UnsupportedOperationException("Not yet implemented!");  
-    }
-
-    @FameProperty(name = "isAbstract", derived = true)
-    public Boolean getIsAbstract() {
-        return this.hasModifier("abstract");
+        throw new UnsupportedOperationException("Not yet implemented!");
     }
 
     @FameProperty(name = "numberOfAttributes", derived = true)
